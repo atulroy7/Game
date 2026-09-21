@@ -16,14 +16,13 @@ const CATEGORIES = [
   { key: 'spatial', icon: '🔷', label: 'Spatial'  },
 ];
 
-const GAMES_CATALOG = [
+const GAMES_LIST = [
   {
     id: 'quiz',
     icon: '🧠',
     title: 'Aptitude Quiz',
     tag: 'Cognitive IQ',
-    shortDesc: 'Aptitude & Reasoning',
-    desc: '32 curated aptitude & reasoning questions across 5 categories with lives, 50:50, and time boosters.',
+    desc: '32 curated reasoning & aptitude challenges across 5 categories with 3 lives, 50:50, and time boosters.',
     accent: 'var(--violet)',
     soft: 'var(--violet-soft)',
   },
@@ -31,9 +30,8 @@ const GAMES_CATALOG = [
     id: 'chronoBeat',
     icon: '⏱️',
     title: 'Chrono Beat',
-    tag: 'Unique Time Sense',
-    shortDesc: 'Blind Clock Test',
-    desc: 'Can your brain measure seconds without looking? Counter blinds at 1.2s — tap stop at the exact millisecond!',
+    tag: 'Blind Clock',
+    desc: 'Can your brain measure seconds without looking? The counter blinds after 1.2s — tap stop at the exact millisecond!',
     accent: 'var(--amber)',
     soft: 'var(--amber-soft)',
   },
@@ -41,9 +39,8 @@ const GAMES_CATALOG = [
     id: 'arrowClash',
     icon: '🧭',
     title: 'Arrow Clash',
-    tag: 'Unique Spatial Reflex',
-    shortDesc: 'Inversion Reflex',
-    desc: 'Directional arrows flash rapidly while rules dynamically switch between Direct and Inverted opposites!',
+    tag: 'Inversion Reflex',
+    desc: 'Directional arrows flash while rules switch between Direct (same) and Inverted (opposite). Tests cognitive control!',
     accent: 'var(--coral)',
     soft: 'var(--coral-soft)',
   },
@@ -51,9 +48,8 @@ const GAMES_CATALOG = [
     id: 'reflexStrike',
     icon: '🎯',
     title: 'Reflex Strike',
-    tag: 'Speed & Precision',
-    shortDesc: 'Tap & Dodge',
-    desc: 'Fast target taps on a 3×3 grid. Catch targets & bonus golden stars while avoiding hazard bombs!',
+    tag: 'Speed & Reaction',
+    desc: 'Lightning target taps on a 3×3 grid. Catch targets & bonus golden stars before they vanish, but avoid hazard bombs!',
     accent: 'var(--coral)',
     soft: 'var(--coral-soft)',
   },
@@ -62,8 +58,7 @@ const GAMES_CATALOG = [
     icon: '🔤',
     title: 'Word Scramble',
     tag: 'Word Puzzle',
-    shortDesc: 'Anagram Dash',
-    desc: 'Unscramble jumbled letter tiles against the clock with clue hints and letter shuffle tools.',
+    desc: 'Unscramble jumbled letter tiles against the clock with clue hints, shuffle tools, and bonus time additions.',
     accent: 'var(--amber)',
     soft: 'var(--amber-soft)',
   },
@@ -71,9 +66,8 @@ const GAMES_CATALOG = [
     id: 'sumDrop',
     icon: '🔢',
     title: 'Sum Drop',
-    tag: 'Tactical Math',
-    shortDesc: 'Target Sums',
-    desc: 'Select tiles from a 4×4 grid that sum to the target number to clear rows and score combos.',
+    tag: 'Math Puzzle',
+    desc: 'Pick tiles from a 4×4 grid that sum to the target number to clear rows and build multiplier streaks.',
     accent: 'var(--mint)',
     soft: 'var(--mint-soft)',
   },
@@ -81,8 +75,7 @@ const GAMES_CATALOG = [
     id: 'memoryMatch',
     icon: '🃏',
     title: 'Memory Match',
-    tag: 'Visual Memory',
-    shortDesc: 'Card Pairs',
+    tag: 'Visual Focus',
     desc: 'Clean 3D animal pair matching with streak combos, move counters, and a 3-star rating system.',
     accent: 'var(--orange)',
     soft: 'var(--orange-soft)',
@@ -100,176 +93,134 @@ export default function HomeScreen({
   theme,
   onToggleTheme,
 }) {
-  const [activeIdx, setActiveIdx] = useState(0);
-
-  const activeGame = GAMES_CATALOG[activeIdx];
-  const activeBestScore = stats[activeGame.id === 'quiz' ? 'highScore' : `${activeGame.id}High`] || 0;
-
-  const handlePrev = () => {
-    setActiveIdx((prev) => (prev > 0 ? prev - 1 : GAMES_CATALOG.length - 1));
-  };
-
-  const handleNext = () => {
-    setActiveIdx((prev) => (prev < GAMES_CATALOG.length - 1 ? prev + 1 : 0));
-  };
-
-  const handleLaunch = () => {
-    if (activeGame.id === 'quiz') {
-      onStartQuiz();
-    } else {
-      onSelectGame(activeGame.id);
-    }
-  };
+  const [showQuizConfig, setShowQuizConfig] = useState(false);
 
   return (
-    <div className="screen home-screen">
+    <div className="screen full-home-screen">
       <BgOrbs />
-      <div className="home-content arcade-home">
+      <div className="full-home-container">
 
-        {/* Top Header Bar */}
-        <div className="top-utility-bar">
-          <div className="brand-badge">✨ BrainBlitz Arena</div>
-          <button className="btn-theme-toggle" onClick={onToggleTheme} title="Toggle Theme">
-            {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
-          </button>
-        </div>
+        {/* Top Header Row (Full Width) */}
+        <header className="full-home-header">
+          <div className="header-brand-wrap">
+            <span className="brand-logo-icon">🧠</span>
+            <div>
+              <h1 className="brand-heading">Brain<span>Blitz</span></h1>
+              <p className="brand-tagline">7 Interactive Mind Games &amp; Cognitive Challenges</p>
+            </div>
+          </div>
 
-        {/* Logo */}
-        <div className="logo-wrap">
-          <span className="logo-icon">🧠</span>
-          <h1 className="logo-title">Brain<span>Blitz</span></h1>
-          <p className="logo-sub">Interactive Mind Games &amp; Reflex Challenges</p>
-        </div>
+          <div className="header-right-tools">
+            {/* Aggregate Stats */}
+            <div className="header-stat-badge">
+              <span className="h-num">{stats.gamesPlayed ?? 0}</span>
+              <span className="h-lbl">Rounds Played</span>
+            </div>
+            <div className="header-stat-badge">
+              <span className="h-num">{stats.highScore ?? 0}</span>
+              <span className="h-lbl">Quiz Record</span>
+            </div>
 
-        {/* ──────────────────────────────────────────────
-            ALTERNATIVE TO CARDS: INTERACTIVE GAME DOCK
-            ────────────────────────────────────────────── */}
-        <div className="game-dock-strip">
-          {GAMES_CATALOG.map((g, idx) => {
-            const isCurrent = idx === activeIdx;
+            {/* Theme Toggle */}
+            <button className="btn-theme-toggle" onClick={onToggleTheme} title="Toggle Theme">
+              {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
+            </button>
+          </div>
+        </header>
+
+        {/* Full-Screen Cards Grid */}
+        <div className="full-cards-grid">
+          {GAMES_LIST.map((game) => {
+            const bestScore = stats[game.id === 'quiz' ? 'highScore' : `${game.id}High`] || 0;
+            const isQuiz = game.id === 'quiz';
+
             return (
-              <button
-                key={g.id}
-                className={`dock-capsule ${isCurrent ? 'active' : ''}`}
+              <div
+                key={game.id}
+                className={`full-game-card ${isQuiz && showQuizConfig ? 'card-expanded' : ''}`}
                 style={{
-                  '--capsule-accent': g.accent,
-                  '--capsule-soft': g.soft,
+                  '--card-accent': game.accent,
+                  '--card-soft': game.soft,
                 }}
-                onClick={() => setActiveIdx(idx)}
               >
-                <span className="dock-icon">{g.icon}</span>
-                <span className="dock-label">{g.shortDesc}</span>
-              </button>
+                <div className="card-top-row">
+                  <span className="game-card-icon">{game.icon}</span>
+                  <span className="game-card-tag" style={{ background: game.soft, color: game.accent }}>
+                    {game.tag}
+                  </span>
+                </div>
+
+                <div className="card-body">
+                  <h3 className="game-card-title">{game.title}</h3>
+                  <p className="game-card-desc">{game.desc}</p>
+                </div>
+
+                {/* Inline Quiz Config Drawer */}
+                {isQuiz && showQuizConfig && (
+                  <div className="card-inline-drawer animate-pop">
+                    <div className="drawer-group">
+                      <label className="drawer-lbl">Difficulty</label>
+                      <div className="diff-pill-row">
+                        {DIFFICULTIES.map(d => (
+                          <button
+                            key={d.key}
+                            className={`mini-diff-pill ${difficulty === d.key ? 'selected' : ''}`}
+                            onClick={() => setDifficulty(d.key)}
+                          >
+                            {d.icon} {d.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="drawer-group">
+                      <label className="drawer-lbl">Category</label>
+                      <div className="cat-pill-wrap">
+                        {CATEGORIES.map(c => (
+                          <button
+                            key={c.key}
+                            className={`mini-cat-pill ${category === c.key ? 'selected' : ''}`}
+                            onClick={() => setCategory(c.key)}
+                          >
+                            {c.icon} {c.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="card-footer-row">
+                  <div className="card-best-badge">
+                    <span className="b-lbl">Best Score</span>
+                    <span className="b-val">{bestScore} pts</span>
+                  </div>
+
+                  <div className="card-action-wrap">
+                    {isQuiz && (
+                      <button
+                        className="btn-configure-toggle"
+                        onClick={() => setShowQuizConfig(prev => !prev)}
+                        title="Configure Difficulty & Category"
+                      >
+                        ⚙️ {showQuizConfig ? 'Close' : 'Setup'}
+                      </button>
+                    )}
+                    <button
+                      className="btn-card-launch"
+                      style={{ background: game.accent }}
+                      onClick={() => {
+                        if (isQuiz) onStartQuiz();
+                        else onSelectGame(game.id);
+                      }}
+                    >
+                      Play →
+                    </button>
+                  </div>
+                </div>
+              </div>
             );
           })}
-        </div>
-
-        {/* ──────────────────────────────────────────────
-            FEATURED HERO STAGE (CONSOLE ARENA)
-            ────────────────────────────────────────────── */}
-        <div
-          className="hero-stage-console animate-pop"
-          key={activeGame.id}
-          style={{
-            '--hero-accent': activeGame.accent,
-            '--hero-soft': activeGame.soft,
-          }}
-        >
-          {/* Navigation Controls */}
-          <button className="btn-stage-nav btn-prev" onClick={handlePrev} title="Previous Game">
-            ‹
-          </button>
-          <button className="btn-stage-nav btn-next" onClick={handleNext} title="Next Game">
-            ›
-          </button>
-
-          {/* Hero Header */}
-          <div className="hero-stage-badge" style={{ background: activeGame.soft, color: activeGame.accent }}>
-            {activeGame.tag}
-          </div>
-
-          <div className="hero-main-icon">
-            {activeGame.icon}
-          </div>
-
-          <h2 className="hero-game-title">{activeGame.title}</h2>
-          <p className="hero-game-desc">{activeGame.desc}</p>
-
-          <div className="hero-meta-row">
-            <div className="hero-stat-pill">
-              <span className="h-lbl">Personal Best</span>
-              <span className="h-val" style={{ color: activeGame.accent }}>
-                🏆 {activeBestScore} pts
-              </span>
-            </div>
-            <div className="hero-stat-pill">
-              <span className="h-lbl">Game</span>
-              <span className="h-val">{activeIdx + 1} of {GAMES_CATALOG.length}</span>
-            </div>
-          </div>
-
-          {/* If Quiz is active, show category & difficulty configurator */}
-          {activeGame.id === 'quiz' && (
-            <div className="stage-quiz-config">
-              <div className="section-block">
-                <p className="section-label">Difficulty</p>
-                <div className="difficulty-cards">
-                  {DIFFICULTIES.map(d => (
-                    <button
-                      key={d.key}
-                      className={`diff-card ${difficulty === d.key ? 'selected' : ''}`}
-                      onClick={() => setDifficulty(d.key)}
-                    >
-                      <span className="diff-icon">{d.icon}</span>
-                      <span className="diff-name">{d.label}</span>
-                      <span className="diff-time">{d.time}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="section-block">
-                <p className="section-label">Category</p>
-                <div className="category-grid">
-                  {CATEGORIES.map(c => (
-                    <button
-                      key={c.key}
-                      className={`cat-pill ${category === c.key ? 'selected' : ''}`}
-                      onClick={() => setCategory(c.key)}
-                    >
-                      {c.icon} {c.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Big Action Button */}
-          <button
-            className="btn-launch-hero"
-            style={{ background: activeGame.accent }}
-            onClick={handleLaunch}
-          >
-            <span>Launch {activeGame.title}</span>
-            <span className="btn-arrow">→</span>
-          </button>
-        </div>
-
-        {/* Overall Stats Footer */}
-        <div className="stats-row">
-          <div className="stat-box">
-            <span>{stats.highScore ?? 0}</span>
-            <label>Quiz Record</label>
-          </div>
-          <div className="stat-box">
-            <span>{stats.gamesPlayed ?? 0}</span>
-            <label>Rounds Played</label>
-          </div>
-          <div className="stat-box">
-            <span>{stats.bestStreak ?? 0}</span>
-            <label>Max Streak</label>
-          </div>
         </div>
 
       </div>
