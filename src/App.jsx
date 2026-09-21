@@ -10,6 +10,8 @@ import ReflexStrike    from './games/ReflexStrike';
 import WordScramble    from './games/WordScramble';
 import SumDrop         from './games/SumDrop';
 import MemoryMatch     from './games/MemoryMatch';
+import ChronoBeat      from './games/ChronoBeat';
+import ArrowClash      from './games/ArrowClash';
 import './App.css';
 
 const DIFFICULTY_TIME = { easy: 20, medium: 15, hard: 10 };
@@ -427,6 +429,20 @@ export default function App() {
       )}
       {screen === 'memoryMatch' && (
         <MemoryMatch
+          sound={sound}
+          onBack={() => setScreen('home')}
+          onSaveScore={handleSaveMiniGameScore}
+        />
+      )}
+      {screen === 'chronoBeat' && (
+        <ChronoBeat
+          sound={sound}
+          onBack={() => setScreen('home')}
+          onSaveScore={handleSaveMiniGameScore}
+        />
+      )}
+      {screen === 'arrowClash' && (
+        <ArrowClash
           sound={sound}
           onBack={() => setScreen('home')}
           onSaveScore={handleSaveMiniGameScore}

@@ -111,10 +111,18 @@ export function useSound() {
     [440, 554, 659, 880].forEach((f, i) => tone(f, 'triangle', t + i * 0.08, 0.25, 0.25, ac));
   }, []);
 
+  // 🔔 Bell chime for precision reveal
+  const playChime = useCallback(() => {
+    const ac = ctx();
+    const t  = ac.currentTime;
+    tone(1046, 'sine', t, 0.4, 0.2, ac);
+    tone(1318, 'sine', t + 0.1, 0.6, 0.2, ac);
+  }, []);
+
   return {
     playCorrect, playWrong, playTimeout, playStreak,
     playPowerup, playLifeLost, playTick,
-    playFlip, playMatch, playPadTone, playLevelUp
+    playFlip, playMatch, playPadTone, playLevelUp, playChime
   };
 }
 
