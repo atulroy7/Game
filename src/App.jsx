@@ -9,8 +9,8 @@ import ReviewScreen    from './components/ReviewScreen';
 import './App.css';
 
 const DIFFICULTY_TIME = { easy: 20, medium: 15, hard: 10 };
-const TOTAL_QUESTIONS = 10;
-const MAX_LIVES       = 3;
+const TARGET_QUESTIONS = 10; // desired max; may be less for small categories
+const MAX_LIVES        = 3;
 
 function shuffle(arr) {
   const a = [...arr];
@@ -34,48 +34,101 @@ export default function App() {
   const [category,   setCategory]   = useState('all');
 
   // ── Quiz state ─────────────────────────────────────────
-  const [questions,       setQuestions]       = useState([]);
-  const [qIndex,          setQIndex]          = useState(0);
-  const [score,           setScore]           = useState(0);
-  const [streak,          setStreak]          = useState(0);
-  const [bestStreak,      setBestStreak]      = useState(0);
-  const [timeLeft,        setTimeLeft]        = useState(20);
-  const [feedback,        setFeedback]        = useState(null);
-  const [answers,         setAnswers]         = useState([]);
+  const [questions,      setQuestions]      = useState([]);
+  const [totalQ,         setTotalQ]         = useState(TARGET_QUESTIONS); // actual count for this round
+  const [qIndex,         setQIndex]         = useState(0);
+  const [score,          setScore]          = useState(0);
+  const [streak,         setStreak]         = useState(0);
+  const [bestStreak,     setBestStreak]     = useState(0);
+  const [timeLeft,       setTimeLeft]       = useState(20);
+  const [feedback,       setFeedback]       = useState(null);
+  const [answers,        setAnswers]        = useState([]);
 
   // ── Fun additions ──────────────────────────────────────
-  const [lives,           setLives]           = useState(MAX_LIVES);
-  const [powerups,        setPowerups]        = useState({ fifty: true, timeBoost: true, skip: true });
-  const [eliminatedOpts,  setEliminatedOpts]  = useState([]);   // indexes removed by 50:50
-  const [lastPts,         setLastPts]         = useState(0);    // for ScorePop
-  const [scoreTrigger,    setScoreTrigger]    = useState(0);    // increments to trigger ScorePop
-  const [streakToast,     setStreakToast]     = useState('');
-  const [shakeOpt,        setShakeOpt]        = useState(-1);   // wrong option to shake
+  const [lives,          setLives]          = useState(MAX_LIVES);
+  const [powerups,       setPowerups]       = useState({ fifty: true, timeBoost: true, skip: true });
+  const [eliminatedOpts, setEliminatedOpts] = useState([]);
+  const [lastPts,        setLastPts]        = useState(0);
+  const [scoreTrigger,   setScoreTrigger]   = useState(0);
+  const [streakToast,    setStreakToast]    = useState('');
+  const [shakeOpt,       setShakeOpt]       = useState(-1);
 
-  // ── Stats ──────────────────────────────────────────────
+  // ── Persistent stats ───────────────────────────────────
   const [stats, setStats] = useState(loadStats);
 
   // ── Sound ──────────────────────────────────────────────
   const sound = useSound();
 
-  // ── Refs ───────────────────────────────────────────────
-  const timerRef    = useRef(null);
-  const feedbackRef = useRef(null);
-  const livesRef    = useRef(lives);      // keep a mutable copy to read inside closures
-  useEffect(() => { livesRef.current = lives; }, [lives]);
+  // ── Refs (mutable, always current — no stale-closure issues) ──
+  const timerRef     = useRef(null);
+  const feedbackRef  = useRef(null);
 
-  const scoreRef = useRef(score);
-  useEffect(() => { scoreRef.current = score; }, [score]);
+  // BUG FIX #1: Sync refs updated immediately (not via useEffect)
+  // so finishGame always reads the latest values even before React commits.
+  const scoreRef     = useRef(0);
+  const bestRef      = useRef(0);
+  const livesRef     = useRef(MAX_LIVES);
+  const qIndexRef    = useRef(0);
+  const totalQRef    = useRef(TARGET_QUESTIONS);
+  const diffRef      = useRef('easy');
 
-  const bestStreakRef = useRef(bestStreak);
-  useEffect(() => { bestStreakRef.current = bestStreak; }, [bestStreak]);
+  // Keep diffRef in sync with difficulty state
+  useEffect(() => { diffRef.current = difficulty; }, [difficulty]);
 
   // ─────────────────────────────────────────────────────
-  //  Build question set
+  //  FINISH GAME
+  //  Called directly — never inside a state updater.
+  // ─────────────────────────────────────────────────────
+  const finishGame = useCallback(() => {
+    clearInterval(timerRef.current);
+    clearTimeout(feedbackRef.current);
+
+    // BUG FIX #1: Use refs (sync) not state (async) for final values
+    const finalScore = scoreRef.current;
+    const finalBest  = bestRef.current;
+
+    const newStats = {
+      highScore:   Math.max(stats.highScore  || 0, finalScore),
+      gamesPlayed: (stats.gamesPlayed || 0) + 1,
+      bestStreak:  Math.max(stats.bestStreak || 0, finalBest),
+    };
+    setStats(newStats);
+    saveStats(newStats);
+    setTimeout(() => setScreen('results'), 300);
+  }, [stats]);
+
+  // ─────────────────────────────────────────────────────
+  //  ADVANCE QUESTION
+  //  BUG FIX #2: Never calls finishGame() inside a setState updater.
+  // ─────────────────────────────────────────────────────
+  const advanceQuestion = useCallback((forceFinish = false) => {
+    setFeedback(null);
+    setEliminatedOpts([]);
+    setShakeOpt(-1);
+
+    const nextIndex = qIndexRef.current + 1;
+
+    // BUG FIX #2: Decide finish BEFORE calling any setState
+    if (forceFinish || nextIndex >= totalQRef.current) {
+      finishGame();          // plain call — safe, not inside updater
+    } else {
+      qIndexRef.current = nextIndex;
+      setQIndex(nextIndex);
+      setTimeLeft(DIFFICULTY_TIME[diffRef.current]);
+    }
+  }, [finishGame]);
+
+  // ─────────────────────────────────────────────────────
+  //  BUILD QUESTION SET
+  //  BUG FIX #3: Use actual pool size — never request more than available
   // ─────────────────────────────────────────────────────
   const buildQuestions = useCallback((cat) => {
-    const pool = cat === 'all' ? ALL_QUESTIONS : ALL_QUESTIONS.filter(q => q.category === cat);
-    return shuffle(pool).slice(0, TOTAL_QUESTIONS);
+    const pool = cat === 'all'
+      ? ALL_QUESTIONS
+      : ALL_QUESTIONS.filter(q => q.category === cat);
+    const shuffled = shuffle(pool);
+    // BUG FIX #3: Clamp to available questions (Spatial only has 4, etc.)
+    return shuffled.slice(0, Math.min(TARGET_QUESTIONS, shuffled.length));
   }, []);
 
   // ─────────────────────────────────────────────────────
@@ -83,7 +136,17 @@ export default function App() {
   // ─────────────────────────────────────────────────────
   const startGame = useCallback(() => {
     const qs = buildQuestions(category);
+    const total = qs.length;
+
+    // Reset all sync refs
+    scoreRef.current    = 0;
+    bestRef.current     = 0;
+    livesRef.current    = MAX_LIVES;
+    qIndexRef.current   = 0;
+    totalQRef.current   = total;
+
     setQuestions(qs);
+    setTotalQ(total);
     setQIndex(0);
     setScore(0);
     setStreak(0);
@@ -109,69 +172,38 @@ export default function App() {
   }, [difficulty]);
 
   // ─────────────────────────────────────────────────────
-  //  FINISH GAME
-  // ─────────────────────────────────────────────────────
-  const finishGame = useCallback(() => {
-    clearInterval(timerRef.current);
-    clearTimeout(feedbackRef.current);
-    const finalScore  = scoreRef.current;
-    const finalBest   = bestStreakRef.current;
-    const newStats = {
-      highScore:   Math.max(stats.highScore   || 0, finalScore),
-      gamesPlayed: (stats.gamesPlayed || 0) + 1,
-      bestStreak:  Math.max(stats.bestStreak  || 0, finalBest),
-    };
-    setStats(newStats);
-    saveStats(newStats);
-    setTimeout(() => setScreen('results'), 300);
-  }, [stats]);
-
-  // ─────────────────────────────────────────────────────
-  //  ADVANCE QUESTION
-  // ─────────────────────────────────────────────────────
-  const advanceQuestion = useCallback((forceFinish = false) => {
-    setFeedback(null);
-    setEliminatedOpts([]);
-    setShakeOpt(-1);
-
-    setQIndex(i => {
-      const next = i + 1;
-      if (forceFinish || next >= TOTAL_QUESTIONS) {
-        finishGame();
-        return i;
-      }
-      setTimeLeft(DIFFICULTY_TIME[difficulty]);
-      return next;
-    });
-  }, [difficulty, finishGame]);
-
-  // ─────────────────────────────────────────────────────
-  //  TIMER
+  //  TIMER — TIMEOUT
   // ─────────────────────────────────────────────────────
   const handleTimeout = useCallback(() => {
     if (feedback) return;
-    const q = questions[qIndex];
+    const q = questions[qIndexRef.current];
+    if (!q) return;
+
     sound.playTimeout();
 
-    const newLives = livesRef.current - 1;
+    // BUG FIX #1: Update ref synchronously before using it
+    livesRef.current -= 1;
+    const newLives = livesRef.current;
     setLives(newLives);
     if (newLives <= 0) sound.playLifeLost();
 
     setFeedback({ type: 'timeout', selectedIdx: -1 });
     setStreak(0);
-    setAnswers(prev => [...prev, { question: q, selectedIdx: -1, correct: false, timedOut: true, pts: 0 }]);
+    setAnswers(prev => [...prev, {
+      question: q, selectedIdx: -1, correct: false, timedOut: true, pts: 0
+    }]);
 
     feedbackRef.current = setTimeout(() => {
       advanceQuestion(newLives <= 0);
     }, 1800);
-  }, [feedback, questions, qIndex, sound, advanceQuestion]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [feedback, questions, sound, advanceQuestion]);
 
   useEffect(() => {
     if (screen !== 'quiz' || feedback) return;
     timerRef.current = setInterval(() => {
       setTimeLeft(t => {
         if (t <= 1) { clearInterval(timerRef.current); handleTimeout(); return 0; }
-        // Danger tick sound when ≤ 5s
         if (t <= 5) sound.playTick();
         return t - 1;
       });
@@ -187,42 +219,52 @@ export default function App() {
     clearInterval(timerRef.current);
     clearTimeout(feedbackRef.current);
 
-    const q = questions[qIndex];
+    const q = questions[qIndexRef.current];
+    if (!q) return;
+
     const isCorrect = selectedIdx === q.answer;
 
-    let pts       = 0;
-    let newStreak = streak;
-    let newBest   = bestStreak;
-    let newLives  = livesRef.current;
+    let pts      = 0;
+    let newLives = livesRef.current;
+
+    // BUG FIX #5: Compute newStreak FIRST, then apply multiplier
+    let newStreak = isCorrect ? streak + 1 : 0;
+    let newBest   = Math.max(bestRef.current, newStreak);
 
     if (isCorrect) {
-      const timeBonus = Math.ceil(timeLeft / 2);
-      const diffMult  = difficulty === 'easy' ? 1 : difficulty === 'medium' ? 1.5 : 2;
+      const timeBonus  = Math.ceil(timeLeft / 2);
+      const diffMult   = difficulty === 'easy' ? 1 : difficulty === 'medium' ? 1.5 : 2;
+      // BUG FIX #5: Use newStreak (after increment) for multiplier
       const streakMult = newStreak >= 5 ? 1.5 : newStreak >= 3 ? 1.25 : 1;
       pts = Math.round((100 + timeBonus * 5) * diffMult * streakMult);
-      newStreak = streak + 1;
-      if (newStreak > newBest) newBest = newStreak;
       sound.playCorrect();
       setLastPts(pts);
       setScoreTrigger(t => t + 1);
     } else {
-      newStreak = 0;
-      newLives  = livesRef.current - 1;
+      // BUG FIX #1: Decrement ref synchronously
+      livesRef.current -= 1;
+      newLives = livesRef.current;
       setLives(newLives);
       setShakeOpt(selectedIdx);
       sound.playWrong();
       if (newLives <= 0) sound.playLifeLost();
     }
 
-    setScore(s => s + pts);
+    // BUG FIX #1: Update score ref synchronously so finishGame reads correct value
+    scoreRef.current += pts;
+    bestRef.current   = newBest;
+
+    setScore(scoreRef.current);
     setStreak(newStreak);
     setBestStreak(newBest);
     setFeedback({ type: isCorrect ? 'correct' : 'wrong', selectedIdx });
-    setAnswers(prev => [...prev, { question: q, selectedIdx, correct: isCorrect, timedOut: false, pts }]);
+    setAnswers(prev => [...prev, {
+      question: q, selectedIdx, correct: isCorrect, timedOut: false, pts
+    }]);
 
-    // Streak toast & sound at milestones
+    // Streak toast at milestones
     if (isCorrect && newStreak >= 3 && newStreak % 3 === 0) {
-      const labels = { 3:'On Fire! 🔥', 6:'Unstoppable! 💥', 9:'Legendary! 👑', 12:'GODMODE! 🌟' };
+      const labels = { 3: 'On Fire! 🔥', 6: 'Unstoppable! 💥', 9: 'Legendary! 👑', 12: 'GODMODE! 🌟' };
       const msg = labels[newStreak] || `${newStreak}× Streak!`;
       setStreakToast(`🔥 ${msg}`);
       sound.playStreak();
@@ -232,22 +274,21 @@ export default function App() {
     feedbackRef.current = setTimeout(() => {
       advanceQuestion(newLives <= 0);
     }, 1800);
-  }, [feedback, questions, qIndex, streak, bestStreak, timeLeft, difficulty, sound, advanceQuestion]);
+  }, [feedback, questions, streak, timeLeft, difficulty, sound, advanceQuestion]);
 
   // ─────────────────────────────────────────────────────
   //  POWER-UPS
   // ─────────────────────────────────────────────────────
   const handleFiftyFifty = useCallback(() => {
-    if (!powerups.fifty || feedback || !questions[qIndex]) return;
-    const q = questions[qIndex];
-    const wrongIndexes = q.options
+    if (!powerups.fifty || feedback || !questions[qIndexRef.current]) return;
+    const q = questions[qIndexRef.current];
+    const wrong = q.options
       .map((_, i) => i)
       .filter(i => i !== q.answer && !eliminatedOpts.includes(i));
-    const toRemove = shuffle(wrongIndexes).slice(0, 2);
-    setEliminatedOpts(toRemove);
+    setEliminatedOpts(shuffle(wrong).slice(0, 2));
     setPowerups(p => ({ ...p, fifty: false }));
     sound.playPowerup();
-  }, [powerups, feedback, questions, qIndex, eliminatedOpts, sound]);
+  }, [powerups, feedback, questions, eliminatedOpts, sound]);
 
   const handleTimeBoost = useCallback(() => {
     if (!powerups.timeBoost || feedback) return;
@@ -260,12 +301,15 @@ export default function App() {
     if (!powerups.skip || feedback) return;
     clearInterval(timerRef.current);
     clearTimeout(feedbackRef.current);
-    const q = questions[qIndex];
-    setAnswers(prev => [...prev, { question: q, selectedIdx: -2, correct: false, timedOut: false, pts: 0, skipped: true }]);
+    const q = questions[qIndexRef.current];
+    if (!q) return;
+    setAnswers(prev => [...prev, {
+      question: q, selectedIdx: -2, correct: false, timedOut: false, pts: 0, skipped: true
+    }]);
     setPowerups(p => ({ ...p, skip: false }));
     sound.playPowerup();
     advanceQuestion(false);
-  }, [powerups, feedback, questions, qIndex, sound, advanceQuestion]);
+  }, [powerups, feedback, questions, sound, advanceQuestion]);
 
   // ─────────────────────────────────────────────────────
   //  RENDER
@@ -286,7 +330,7 @@ export default function App() {
         <QuizScreen
           question={questions[qIndex]}
           qIndex={qIndex}
-          total={TOTAL_QUESTIONS}
+          total={totalQ}
           score={score}
           streak={streak}
           lives={lives}
