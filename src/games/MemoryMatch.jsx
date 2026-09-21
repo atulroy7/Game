@@ -39,6 +39,7 @@ export default function MemoryMatch({ sound, onBack, onSaveScore }) {
   const timerRef = useRef(null);
   const scoreRef = useRef(0);
   const lockBoardRef = useRef(false);
+  const timeLeftRef = useRef(60);
 
   const startGame = () => {
     const newDeck = generateDeck();
@@ -46,6 +47,7 @@ export default function MemoryMatch({ sound, onBack, onSaveScore }) {
     setFlippedCards([]);
     setMatchedIds([]);
     setMoves(0);
+    timeLeftRef.current = 60;
     setTimeLeft(60);
     setScore(0);
     setStreak(0);
@@ -65,18 +67,20 @@ export default function MemoryMatch({ sound, onBack, onSaveScore }) {
     if (onSaveScore) onSaveScore('memoryMatch', scoreRef.current);
   }, [sound, onSaveScore]);
 
-  // Timer loop
+  // Timer loop (pure, no setStates within updaters)
   useEffect(() => {
     if (gameState !== 'playing') return;
     timerRef.current = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev <= 1) {
-          endGame('gameover');
-          return 0;
-        }
-        if (prev <= 5) sound.playTick();
-        return prev - 1;
-      });
+      const next = timeLeftRef.current - 1;
+      if (next <= 0) {
+        timeLeftRef.current = 0;
+        setTimeLeft(0);
+        endGame('gameover');
+      } else {
+        timeLeftRef.current = next;
+        setTimeLeft(next);
+        if (next <= 5) sound.playTick();
+      }
     }, 1000);
     return () => clearInterval(timerRef.current);
   }, [gameState, endGame, sound]);
