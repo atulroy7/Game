@@ -25,6 +25,7 @@ export default function ReflexStrike({ sound, onBack, onSaveScore }) {
   const streakRef = useRef(0);
   const bestStreakRef = useRef(0);
   const itemCounterRef = useRef(0);
+  const timeLeftRef = useRef(30);
 
   // Spawn random target or hazard on the grid
   const spawnItem = useCallback(() => {
@@ -80,6 +81,7 @@ export default function ReflexStrike({ sound, onBack, onSaveScore }) {
     setHits(0);
     setMisses(0);
     setBombsHit(0);
+    timeLeftRef.current = 30;
     setTimeLeft(30);
     setGrid(Array(9).fill(null));
     setGameState('playing');
@@ -93,19 +95,21 @@ export default function ReflexStrike({ sound, onBack, onSaveScore }) {
     if (onSaveScore) onSaveScore('reflexStrike', scoreRef.current);
   }, [sound, onSaveScore]);
 
-  // Main countdown timer
+  // Main countdown timer (pure, no setStates within updaters)
   useEffect(() => {
     if (gameState !== 'playing') return;
 
     timerRef.current = setInterval(() => {
-      setTimeLeft(t => {
-        if (t <= 1) {
-          endGame();
-          return 0;
-        }
-        if (t <= 5) sound.playTick();
-        return t - 1;
-      });
+      const next = timeLeftRef.current - 1;
+      if (next <= 0) {
+        timeLeftRef.current = 0;
+        setTimeLeft(0);
+        endGame();
+      } else {
+        timeLeftRef.current = next;
+        setTimeLeft(next);
+        if (next <= 5) sound.playTick();
+      }
     }, 1000);
 
     // Dynamic spawn interval

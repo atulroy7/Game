@@ -60,6 +60,7 @@ export default function WordScramble({ sound, onBack, onSaveScore }) {
   const scoreRef = useRef(0);
   const poolIndexRef = useRef(0);
   const shuffledBankRef = useRef([]);
+  const timeLeftRef = useRef(45);
 
   // Load next word
   const nextWord = useCallback(() => {
@@ -87,6 +88,7 @@ export default function WordScramble({ sound, onBack, onSaveScore }) {
     shuffledBankRef.current = [...WORD_BANK].sort(() => 0.5 - Math.random());
     poolIndexRef.current = 0;
     scoreRef.current = 0;
+    timeLeftRef.current = 45;
     setScore(0);
     setWordsSolved(0);
     setTimeLeft(45);
@@ -102,18 +104,20 @@ export default function WordScramble({ sound, onBack, onSaveScore }) {
     if (onSaveScore) onSaveScore('wordScramble', scoreRef.current);
   }, [sound, onSaveScore]);
 
-  // Timer loop
+  // Timer loop (pure, no setStates within updaters)
   useEffect(() => {
     if (gameState !== 'playing') return;
     timerRef.current = setInterval(() => {
-      setTimeLeft(t => {
-        if (t <= 1) {
-          endGame();
-          return 0;
-        }
-        if (t <= 5) sound.playTick();
-        return t - 1;
-      });
+      const next = timeLeftRef.current - 1;
+      if (next <= 0) {
+        timeLeftRef.current = 0;
+        setTimeLeft(0);
+        endGame();
+      } else {
+        timeLeftRef.current = next;
+        setTimeLeft(next);
+        if (next <= 5) sound.playTick();
+      }
     }, 1000);
     return () => clearInterval(timerRef.current);
   }, [gameState, endGame, sound]);
@@ -162,7 +166,8 @@ export default function WordScramble({ sound, onBack, onSaveScore }) {
       setScoreTrigger(t => t + 1);
 
       // Add +5s bonus time
-      setTimeLeft(t => Math.min(t + 5, 60));
+      timeLeftRef.current = Math.min(timeLeftRef.current + 5, 60);
+      setTimeLeft(timeLeftRef.current);
 
       setTimeout(() => {
         nextWord();

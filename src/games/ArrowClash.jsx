@@ -30,6 +30,7 @@ export default function ArrowClash({ sound, onBack, onSaveScore }) {
   const timerRef = useRef(null);
   const scoreRef = useRef(0);
   const modeRef = useRef('DIRECT');
+  const timeLeftRef = useRef(30);
 
   // Spawn next arrow
   const nextArrow = useCallback(() => {
@@ -55,6 +56,7 @@ export default function ArrowClash({ sound, onBack, onSaveScore }) {
   const startGame = () => {
     scoreRef.current = 0;
     modeRef.current = 'DIRECT';
+    timeLeftRef.current = 30;
     setScore(0);
     setStreak(0);
     setBestStreak(0);
@@ -74,18 +76,20 @@ export default function ArrowClash({ sound, onBack, onSaveScore }) {
     if (onSaveScore) onSaveScore('arrowClash', scoreRef.current);
   }, [sound, onSaveScore]);
 
-  // Timer loop
+  // Timer loop (pure, no setStates within updaters)
   useEffect(() => {
     if (gameState !== 'playing') return;
     timerRef.current = setInterval(() => {
-      setTimeLeft(t => {
-        if (t <= 1) {
-          endGame();
-          return 0;
-        }
-        if (t <= 5) sound.playTick();
-        return t - 1;
-      });
+      const next = timeLeftRef.current - 1;
+      if (next <= 0) {
+        timeLeftRef.current = 0;
+        setTimeLeft(0);
+        endGame();
+      } else {
+        timeLeftRef.current = next;
+        setTimeLeft(next);
+        if (next <= 5) sound.playTick();
+      }
     }, 1000);
     return () => clearInterval(timerRef.current);
   }, [gameState, endGame, sound]);
@@ -112,7 +116,8 @@ export default function ArrowClash({ sound, onBack, onSaveScore }) {
       setScoreTrigger(t => t + 1);
 
       // +1s bonus
-      setTimeLeft(t => Math.min(t + 1, 40));
+      timeLeftRef.current = Math.min(timeLeftRef.current + 1, 40);
+      setTimeLeft(timeLeftRef.current);
 
       if (newStreak % 5 === 0) sound.playStreak();
     } else {

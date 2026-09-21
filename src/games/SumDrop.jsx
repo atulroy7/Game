@@ -36,6 +36,7 @@ export default function SumDrop({ sound, onBack, onSaveScore }) {
   const scoreRef = useRef(0);
   const streakRef = useRef(0);
   const bestStreakRef = useRef(0);
+  const timeLeftRef = useRef(45);
 
   const pickNewTarget = () => {
     const next = TARGET_GOALS[Math.floor(Math.random() * TARGET_GOALS.length)];
@@ -46,6 +47,7 @@ export default function SumDrop({ sound, onBack, onSaveScore }) {
     scoreRef.current = 0;
     streakRef.current = 0;
     bestStreakRef.current = 0;
+    timeLeftRef.current = 45;
     setScore(0);
     setStreak(0);
     setBestStreak(0);
@@ -65,18 +67,20 @@ export default function SumDrop({ sound, onBack, onSaveScore }) {
     if (onSaveScore) onSaveScore('sumDrop', scoreRef.current);
   }, [sound, onSaveScore]);
 
-  // Timer loop
+  // Timer loop (pure, no setStates within updaters)
   useEffect(() => {
     if (gameState !== 'playing') return;
     timerRef.current = setInterval(() => {
-      setTimeLeft(t => {
-        if (t <= 1) {
-          endGame();
-          return 0;
-        }
-        if (t <= 5) sound.playTick();
-        return t - 1;
-      });
+      const next = timeLeftRef.current - 1;
+      if (next <= 0) {
+        timeLeftRef.current = 0;
+        setTimeLeft(0);
+        endGame();
+      } else {
+        timeLeftRef.current = next;
+        setTimeLeft(next);
+        if (next <= 5) sound.playTick();
+      }
     }, 1000);
     return () => clearInterval(timerRef.current);
   }, [gameState, endGame, sound]);
@@ -120,7 +124,8 @@ export default function SumDrop({ sound, onBack, onSaveScore }) {
       setScoreTrigger(t => t + 1);
 
       // +2s bonus time
-      setTimeLeft(t => Math.min(t + 2, 50));
+      timeLeftRef.current = Math.min(timeLeftRef.current + 2, 50);
+      setTimeLeft(timeLeftRef.current);
 
       setTimeout(() => {
         // Replace matched tiles with fresh numbers
