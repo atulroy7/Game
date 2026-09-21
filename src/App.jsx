@@ -32,6 +32,18 @@ function loadStats() {
 function saveStats(s) { localStorage.setItem('brainblitz_stats', JSON.stringify(s)); }
 
 export default function App() {
+  // ── Theme (clean playful minimal default) ───────────────
+  const [theme, setTheme] = useState(() => localStorage.getItem('brainblitz_theme') || 'light');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('brainblitz_theme', theme);
+  }, [theme]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme(t => (t === 'light' ? 'dark' : 'light'));
+  }, []);
+
   // ── Config ────────────────────────────────────────────
   const [screen,     setScreen]     = useState('home');
   const [difficulty, setDifficulty] = useState('easy');
@@ -340,6 +352,8 @@ export default function App() {
           onStartQuiz={startGame}
           onSelectGame={(gameId) => setScreen(gameId)}
           stats={stats}
+          theme={theme}
+          onToggleTheme={toggleTheme}
         />
       )}
       {screen === 'countdown' && (

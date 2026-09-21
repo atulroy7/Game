@@ -21,17 +21,19 @@ const ARCADE_GAMES = [
     id: 'quiz',
     icon: '🧠',
     title: 'Aptitude Quiz',
-    tag: 'Logic & Reasoning',
-    desc: '32 questions across 5 categories with 3 lives and tactical power-ups.',
-    borderAccent: '#6366f1',
+    tag: 'Logic & IQ',
+    desc: '32 questions across 5 categories with 3 lives and power-ups.',
+    accent: 'var(--violet)',
+    soft: 'var(--violet-soft)',
   },
   {
     id: 'reflexStrike',
     icon: '🎯',
     title: 'Reflex Strike',
-    tag: 'Speed & Reaction',
-    desc: 'Tap incoming targets & stars before they vanish, but avoid hazard bombs!',
-    borderAccent: '#e11d48',
+    tag: 'Fast Tap',
+    desc: 'Tap incoming targets & stars before they vanish, dodge hazard bombs!',
+    accent: 'var(--coral)',
+    soft: 'var(--coral-soft)',
   },
   {
     id: 'wordScramble',
@@ -39,23 +41,26 @@ const ARCADE_GAMES = [
     title: 'Word Scramble',
     tag: 'Word Puzzle',
     desc: 'Unscramble jumbled letter tiles against the clock with clues & hints.',
-    borderAccent: '#f59e0b',
+    accent: 'var(--amber)',
+    soft: 'var(--amber-soft)',
   },
   {
     id: 'sumDrop',
     icon: '🔢',
     title: 'Sum Drop',
-    tag: 'Math & Tactics',
+    tag: 'Math Puzzle',
     desc: 'Pick tiles from the 4×4 grid that sum to the target number to clear rows.',
-    borderAccent: '#10b981',
+    accent: 'var(--mint)',
+    soft: 'var(--mint-soft)',
   },
   {
     id: 'memoryMatch',
     icon: '🃏',
     title: 'Memory Match',
-    tag: 'Visual Memory',
-    desc: 'Flip clean cards to find all 8 animal pairs with streak combos & star ratings.',
-    borderAccent: '#3b82f6',
+    tag: 'Card Pairs',
+    desc: 'Flip clean cards to find all 8 animal pairs with streak combos & stars.',
+    accent: 'var(--orange)',
+    soft: 'var(--orange-soft)',
   },
 ];
 
@@ -67,6 +72,8 @@ export default function HomeScreen({
   onStartQuiz,
   onSelectGame,
   stats,
+  theme,
+  onToggleTheme,
 }) {
   const [selectedGameId, setSelectedGameId] = useState('quiz');
 
@@ -75,18 +82,26 @@ export default function HomeScreen({
       <BgOrbs />
       <div className="home-content arcade-home">
 
-        {/* Header */}
+        {/* Top Header Bar with Theme Switch */}
+        <div className="top-utility-bar">
+          <div className="brand-badge">✨ BrainBlitz Hub</div>
+          <button className="btn-theme-toggle" onClick={onToggleTheme} title="Toggle Theme">
+            {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
+          </button>
+        </div>
+
+        {/* Logo */}
         <div className="logo-wrap">
           <span className="logo-icon">🧠</span>
-          <h1 className="logo-title">Brain<span>Blitz</span> <span className="arcade-tag">GAMES</span></h1>
-          <p className="logo-sub">Cognitive Challenges &amp; Fun Mini-Games</p>
+          <h1 className="logo-title">Brain<span>Blitz</span></h1>
+          <p className="logo-sub">Fun, Minimalist Games &amp; Mind Challenges</p>
         </div>
 
         {/* Game Mode Cards Grid */}
         <div className="section-block">
           <div className="section-header-row">
-            <p className="section-label">Choose Game Mode</p>
-            <span className="game-count-badge">5 Games Available</span>
+            <p className="section-label">Select a Game</p>
+            <span className="game-count-badge">5 Fun Games</span>
           </div>
 
           <div className="arcade-cards-grid">
@@ -98,12 +113,17 @@ export default function HomeScreen({
                 <div
                   key={game.id}
                   className={`arcade-card ${isSelected ? 'selected' : ''}`}
-                  style={{ '--card-accent': game.borderAccent }}
+                  style={{
+                    '--card-accent': game.accent,
+                    '--card-soft': game.soft,
+                  }}
                   onClick={() => setSelectedGameId(game.id)}
                 >
                   <div className="arcade-card-top">
                     <span className="arcade-game-icon">{game.icon}</span>
-                    <span className="arcade-game-tag">{game.tag}</span>
+                    <span className="arcade-game-tag" style={{ color: game.accent, background: game.soft }}>
+                      {game.tag}
+                    </span>
                   </div>
                   <h3 className="arcade-game-title">{game.title}</h3>
                   <p className="arcade-game-desc">{game.desc}</p>
@@ -114,6 +134,10 @@ export default function HomeScreen({
                     </span>
                     <button
                       className="btn-arcade-play"
+                      style={{
+                        background: isSelected ? game.accent : 'var(--surface2)',
+                        color: isSelected ? '#fff' : 'var(--text)',
+                      }}
                       onClick={(e) => {
                         e.stopPropagation();
                         if (game.id === 'quiz') {
@@ -123,7 +147,7 @@ export default function HomeScreen({
                         }
                       }}
                     >
-                      {game.id === 'quiz' && !isSelected ? 'Configure' : 'Play Now →'}
+                      {game.id === 'quiz' && !isSelected ? 'Settings' : 'Play →'}
                     </button>
                   </div>
                 </div>
@@ -136,7 +160,7 @@ export default function HomeScreen({
         {selectedGameId === 'quiz' && (
           <div className="quiz-drawer animate-pop">
             <div className="drawer-header">
-              <span className="drawer-badge">🧠 Quiz Configuration</span>
+              <span className="drawer-badge">🧠 Quiz Options</span>
               <h4>Setup Aptitude Round</h4>
             </div>
 
@@ -176,7 +200,7 @@ export default function HomeScreen({
 
             {/* Start Quiz */}
             <button className="btn-start" onClick={onStartQuiz}>
-              <span>Launch Aptitude Round</span>
+              <span>Start Aptitude Round</span>
               <span className="btn-arrow">→</span>
             </button>
           </div>
