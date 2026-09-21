@@ -6,10 +6,10 @@ import CountdownScreen from './components/CountdownScreen';
 import QuizScreen      from './components/QuizScreen';
 import ResultsScreen   from './components/ResultsScreen';
 import ReviewScreen    from './components/ReviewScreen';
-import ColorClash      from './games/ColorClash';
-import QuantumMatrix   from './games/QuantumMatrix';
-import CyberFlip       from './games/CyberFlip';
-import SpeedMath       from './games/SpeedMath';
+import ReflexStrike    from './games/ReflexStrike';
+import WordScramble    from './games/WordScramble';
+import SumDrop         from './games/SumDrop';
+import MemoryMatch     from './games/MemoryMatch';
 import './App.css';
 
 const DIFFICULTY_TIME = { easy: 20, medium: 15, hard: 10 };
@@ -390,29 +390,29 @@ export default function App() {
       )}
 
       {/* Mini-Games */}
-      {screen === 'colorClash' && (
-        <ColorClash
+      {screen === 'reflexStrike' && (
+        <ReflexStrike
           sound={sound}
           onBack={() => setScreen('home')}
           onSaveScore={handleSaveMiniGameScore}
         />
       )}
-      {screen === 'quantumMatrix' && (
-        <QuantumMatrix
+      {screen === 'wordScramble' && (
+        <WordScramble
           sound={sound}
           onBack={() => setScreen('home')}
           onSaveScore={handleSaveMiniGameScore}
         />
       )}
-      {screen === 'cyberFlip' && (
-        <CyberFlip
+      {screen === 'sumDrop' && (
+        <SumDrop
           sound={sound}
           onBack={() => setScreen('home')}
           onSaveScore={handleSaveMiniGameScore}
         />
       )}
-      {screen === 'speedMath' && (
-        <SpeedMath
+      {screen === 'memoryMatch' && (
+        <MemoryMatch
           sound={sound}
           onBack={() => setScreen('home')}
           onSaveScore={handleSaveMiniGameScore}

@@ -3,8 +3,8 @@ import BgOrbs from './BgOrbs';
 
 const DIFFICULTIES = [
   { key: 'easy',   icon: '🌱', label: 'Easy',   time: '20s / Q' },
-  { key: 'medium', icon: '🔥', label: 'Medium', time: '15s / Q' },
-  { key: 'hard',   icon: '💀', label: 'Hard',   time: '10s / Q' },
+  { key: 'medium', icon: '⚡', label: 'Medium', time: '15s / Q' },
+  { key: 'hard',   icon: '🔥', label: 'Hard',   time: '10s / Q' },
 ];
 
 const CATEGORIES = [
@@ -21,46 +21,41 @@ const ARCADE_GAMES = [
     id: 'quiz',
     icon: '🧠',
     title: 'Aptitude Quiz',
-    tag: 'Classic Logic',
-    desc: '32 questions across 5 categories with 3 lives & power-ups.',
-    color: '#7c3aed',
-    accent: 'linear-gradient(135deg, #7c3aed, #a855f7)',
+    tag: 'Logic & Reasoning',
+    desc: '32 questions across 5 categories with 3 lives and tactical power-ups.',
+    borderAccent: '#6366f1',
   },
   {
-    id: 'colorClash',
-    icon: '⚡',
-    title: 'Color Clash',
-    tag: 'Reflex & Focus',
-    desc: 'The Stroop effect! Word vs Ink vs Reflex with 3× frenzy combos.',
-    color: '#06b6d4',
-    accent: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
+    id: 'reflexStrike',
+    icon: '🎯',
+    title: 'Reflex Strike',
+    tag: 'Speed & Reaction',
+    desc: 'Tap incoming targets & stars before they vanish, but avoid hazard bombs!',
+    borderAccent: '#e11d48',
   },
   {
-    id: 'quantumMatrix',
-    icon: '🔮',
-    title: 'Quantum Matrix',
-    tag: 'Sensory Recall',
-    desc: '9-pad harmonic synthesizer! Repeat the expanding cyber pattern.',
-    color: '#ec4899',
-    accent: 'linear-gradient(135deg, #ec4899, #a855f7)',
+    id: 'wordScramble',
+    icon: '🔤',
+    title: 'Word Scramble',
+    tag: 'Word Puzzle',
+    desc: 'Unscramble jumbled letter tiles against the clock with clues & hints.',
+    borderAccent: '#f59e0b',
   },
   {
-    id: 'cyberFlip',
-    icon: '🃏',
-    title: 'Cyber Flip 3D',
-    tag: 'Spatial Memory',
-    desc: '3D card matching with X-Ray Scan, Cryo-Freeze & Radar gadgets.',
-    color: '#10b981',
-    accent: 'linear-gradient(135deg, #10b981, #06b6d4)',
-  },
-  {
-    id: 'speedMath',
+    id: 'sumDrop',
     icon: '🔢',
-    title: 'Speed Math',
-    tag: 'Mental Overdrive',
-    desc: 'Rapid arithmetic blitz! Charge reactor energy for 2.5× Frenzy.',
-    color: '#f59e0b',
-    accent: 'linear-gradient(135deg, #f59e0b, #ef4444)',
+    title: 'Sum Drop',
+    tag: 'Math & Tactics',
+    desc: 'Pick tiles from the 4×4 grid that sum to the target number to clear rows.',
+    borderAccent: '#10b981',
+  },
+  {
+    id: 'memoryMatch',
+    icon: '🃏',
+    title: 'Memory Match',
+    tag: 'Visual Memory',
+    desc: 'Flip clean cards to find all 8 animal pairs with streak combos & star ratings.',
+    borderAccent: '#3b82f6',
   },
 ];
 
@@ -80,18 +75,18 @@ export default function HomeScreen({
       <BgOrbs />
       <div className="home-content arcade-home">
 
-        {/* Logo Header */}
+        {/* Header */}
         <div className="logo-wrap">
           <span className="logo-icon">🧠</span>
-          <h1 className="logo-title">Brain<span>Blitz</span> <span className="arcade-tag">ARCADE</span></h1>
-          <p className="logo-sub">Cognitive &amp; Reflex Mind Arena</p>
+          <h1 className="logo-title">Brain<span>Blitz</span> <span className="arcade-tag">GAMES</span></h1>
+          <p className="logo-sub">Cognitive Challenges &amp; Fun Mini-Games</p>
         </div>
 
         {/* Game Mode Cards Grid */}
         <div className="section-block">
           <div className="section-header-row">
-            <p className="section-label">Select Game Experience</p>
-            <span className="game-count-badge">5 Games Ready</span>
+            <p className="section-label">Choose Game Mode</p>
+            <span className="game-count-badge">5 Games Available</span>
           </div>
 
           <div className="arcade-cards-grid">
@@ -103,7 +98,7 @@ export default function HomeScreen({
                 <div
                   key={game.id}
                   className={`arcade-card ${isSelected ? 'selected' : ''}`}
-                  style={{ '--accent-grad': game.accent }}
+                  style={{ '--card-accent': game.borderAccent }}
                   onClick={() => setSelectedGameId(game.id)}
                 >
                   <div className="arcade-card-top">
@@ -128,7 +123,7 @@ export default function HomeScreen({
                         }
                       }}
                     >
-                      {game.id === 'quiz' && !isSelected ? 'Customize' : 'Launch →'}
+                      {game.id === 'quiz' && !isSelected ? 'Configure' : 'Play Now →'}
                     </button>
                   </div>
                 </div>
@@ -141,13 +136,13 @@ export default function HomeScreen({
         {selectedGameId === 'quiz' && (
           <div className="quiz-drawer animate-pop">
             <div className="drawer-header">
-              <span className="drawer-badge">🧠 Quiz Settings</span>
-              <h4>Configure Aptitude Challenge</h4>
+              <span className="drawer-badge">🧠 Quiz Configuration</span>
+              <h4>Setup Aptitude Round</h4>
             </div>
 
             {/* Difficulty */}
             <div className="section-block">
-              <p className="section-label">Choose Difficulty</p>
+              <p className="section-label">Select Difficulty</p>
               <div className="difficulty-cards">
                 {DIFFICULTIES.map(d => (
                   <button
@@ -165,7 +160,7 @@ export default function HomeScreen({
 
             {/* Category */}
             <div className="section-block">
-              <p className="section-label">Pick Category</p>
+              <p className="section-label">Select Category</p>
               <div className="category-grid">
                 {CATEGORIES.map(c => (
                   <button
@@ -179,9 +174,9 @@ export default function HomeScreen({
               </div>
             </div>
 
-            {/* Launch Quiz Button */}
+            {/* Start Quiz */}
             <button className="btn-start" onClick={onStartQuiz}>
-              <span>Launch Quiz Challenge</span>
+              <span>Launch Aptitude Round</span>
               <span className="btn-arrow">→</span>
             </button>
           </div>
@@ -195,11 +190,11 @@ export default function HomeScreen({
           </div>
           <div className="stat-box">
             <span>{stats.gamesPlayed ?? 0}</span>
-            <label>Total Runs</label>
+            <label>Rounds Played</label>
           </div>
           <div className="stat-box">
             <span>{stats.bestStreak ?? 0}</span>
-            <label>Best Streak</label>
+            <label>Max Streak</label>
           </div>
         </div>
 
