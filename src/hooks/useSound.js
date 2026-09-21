@@ -78,6 +78,12 @@ export function useSound() {
     [400, 300, 200].forEach((f, i) => tone(f, 'triangle', t + i * 0.12, 0.2, 0.25, ac));
   }, []);
 
+  // ⏱️ Timer tick
+  const playTick = useCallback(() => {
+    const ac = ctx();
+    tone(880, 'sine', ac.currentTime, 0.08, 0.2, ac);
+  }, []);
+
   // 🃏 Card flip click
   const playFlip = useCallback(() => {
     const ac = ctx();
