@@ -1,25 +1,34 @@
 import React, { useState } from 'react';
 import BgOrbs from './BgOrbs';
+import GameCardVisual from './GameCardVisual';
+import {
+  BrandLogoIcon,
+  CategoryIcon,
+  DifficultyBars,
+  SunIcon,
+  MoonIcon,
+  TrophyIcon,
+  ArrowRightIcon,
+} from './Icons';
 
 const DIFFICULTIES = [
-  { key: 'easy',   icon: '🌱', label: 'Easy',   time: '20s / Q' },
-  { key: 'medium', icon: '⚡', label: 'Medium', time: '15s / Q' },
-  { key: 'hard',   icon: '🔥', label: 'Hard',   time: '10s / Q' },
+  { key: 'easy',   label: 'Easy',   time: '20s / Q' },
+  { key: 'medium', label: 'Medium', time: '15s / Q' },
+  { key: 'hard',   label: 'Hard',   time: '10s / Q' },
 ];
 
 const CATEGORIES = [
-  { key: 'all',     icon: '🎲', label: 'All Mix'  },
-  { key: 'math',    icon: '➕', label: 'Math'     },
-  { key: 'logical', icon: '🔗', label: 'Logical'  },
-  { key: 'verbal',  icon: '📖', label: 'Verbal'   },
-  { key: 'series',  icon: '🔢', label: 'Series'   },
-  { key: 'spatial', icon: '🔷', label: 'Spatial'  },
+  { key: 'all',     label: 'All Mix'  },
+  { key: 'math',    label: 'Math'     },
+  { key: 'logical', label: 'Logical'  },
+  { key: 'verbal',  label: 'Verbal'   },
+  { key: 'series',  label: 'Series'   },
+  { key: 'spatial', label: 'Spatial'  },
 ];
 
 const GAMES_LIST = [
   {
     id: 'quiz',
-    icon: '🧠',
     title: 'Aptitude Quiz',
     tag: 'Cognitive IQ',
     desc: '32 curated reasoning & aptitude challenges across 5 categories with 3 lives, 50:50, and time boosters.',
@@ -28,7 +37,6 @@ const GAMES_LIST = [
   },
   {
     id: 'scramble5',
-    icon: '🔠',
     title: 'Scramble 5',
     tag: '5 Attempts',
     desc: 'Unscramble the word in 5 attempts! Green reveals exact positions, yellow reveals misplaced letters.',
@@ -37,7 +45,6 @@ const GAMES_LIST = [
   },
   {
     id: 'chronoBeat',
-    icon: '⏱️',
     title: 'Chrono Beat',
     tag: 'Blind Clock',
     desc: 'Can your brain measure seconds without looking? The counter blinds after 1.2s — tap stop at the exact millisecond!',
@@ -46,7 +53,6 @@ const GAMES_LIST = [
   },
   {
     id: 'arrowClash',
-    icon: '🧭',
     title: 'Arrow Clash',
     tag: 'Inversion Reflex',
     desc: 'Directional arrows flash while rules switch between Direct (same) and Inverted (opposite). Tests cognitive control!',
@@ -55,7 +61,6 @@ const GAMES_LIST = [
   },
   {
     id: 'reflexStrike',
-    icon: '🎯',
     title: 'Reflex Strike',
     tag: 'Speed & Reaction',
     desc: 'Lightning target taps on a 3×3 grid. Catch targets & bonus golden stars before they vanish, but avoid hazard bombs!',
@@ -64,7 +69,6 @@ const GAMES_LIST = [
   },
   {
     id: 'wordScramble',
-    icon: '🔤',
     title: 'Word Scramble',
     tag: 'Word Puzzle',
     desc: 'Unscramble jumbled letter tiles against the clock with clue hints, shuffle tools, and bonus time additions.',
@@ -73,7 +77,6 @@ const GAMES_LIST = [
   },
   {
     id: 'sumDrop',
-    icon: '🔢',
     title: 'Sum Drop',
     tag: 'Math Puzzle',
     desc: 'Pick tiles from a 4×4 grid that sum to the target number to clear rows and build multiplier streaks.',
@@ -82,7 +85,6 @@ const GAMES_LIST = [
   },
   {
     id: 'memoryMatch',
-    icon: '🃏',
     title: 'Memory Match',
     tag: 'Visual Focus',
     desc: 'Clean 3D animal pair matching with streak combos, move counters, and a 3-star rating system.',
@@ -114,7 +116,7 @@ export default function HomeScreen({
         {/* Top Header Row (Full Width) */}
         <header className="full-home-header">
           <div className="header-brand-wrap">
-            <span className="brand-logo-icon">🧠</span>
+            <BrandLogoIcon size={38} className="brand-logo-svg" />
             <div>
               <h1 className="brand-heading">Brain<span>Blitz</span></h1>
               <p className="brand-tagline">8 Interactive Mind Games &amp; Cognitive Challenges</p>
@@ -137,57 +139,77 @@ export default function HomeScreen({
               <button
                 className={`btn-palette-pill ${palette === 'crisp' ? 'active' : ''}`}
                 onClick={() => onSelectPalette('crisp')}
-                title="Crisp Studio (Clean Pearl & Vibrant Accents)"
+                title="Crisp Minimal (Pearl & Vibrant Accents)"
               >
-                💎 Crisp
+                <span className="palette-dot dot-crisp" />
+                Crisp
               </button>
               <button
                 className={`btn-palette-pill ${palette === 'matcha' ? 'active' : ''}`}
                 onClick={() => onSelectPalette('matcha')}
                 title="Botanical Sage (Calm Japanese Minimal)"
               >
-                🍵 Sage
+                <span className="palette-dot dot-sage" />
+                Sage
               </button>
               <button
                 className={`btn-palette-pill ${palette === 'sand' ? 'active' : ''}`}
                 onClick={() => onSelectPalette('sand')}
                 title="Warm Sandstone (Desert Minimal)"
               >
-                🏜️ Sand
+                <span className="palette-dot dot-sand" />
+                Sand
               </button>
             </div>
 
             {/* Theme Toggle */}
             <button className="btn-theme-toggle" onClick={onToggleTheme} title="Toggle Dark/Light Mode">
-              {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
+              {theme === 'dark' ? (
+                <>
+                  <SunIcon size={15} />
+                  <span>Light</span>
+                </>
+              ) : (
+                <>
+                  <MoonIcon size={15} />
+                  <span>Dark</span>
+                </>
+              )}
             </button>
           </div>
         </header>
 
-        {/* Full-Screen Cards Grid */}
+        {/* Modern Full-Screen Cards Grid */}
         <div className="full-cards-grid">
-          {GAMES_LIST.map((game) => {
+          {GAMES_LIST.map((game, index) => {
             const bestScore = stats[game.id === 'quiz' ? 'highScore' : `${game.id}High`] || 0;
             const isQuiz = game.id === 'quiz';
 
             return (
               <div
                 key={game.id}
-                className={`full-game-card ${isQuiz && showQuizConfig ? 'card-expanded' : ''}`}
+                className={`full-game-card modern-game-card ${isQuiz && showQuizConfig ? 'card-expanded' : ''}`}
                 style={{
                   '--card-accent': game.accent,
                   '--card-soft': game.soft,
+                  '--i': index,
                 }}
               >
-                <div className="card-top-row">
-                  <span className="game-card-icon">{game.icon}</span>
-                  <span className="game-card-tag" style={{ background: game.soft, color: game.accent }}>
-                    {game.tag}
-                  </span>
+                {/* Visual Header Image Banner */}
+                <div className="card-visual-wrapper">
+                  <GameCardVisual gameId={game.id} accent={game.accent} soft={game.soft} />
+                  <div className="card-banner-badges">
+                    <span className="game-card-tag" style={{ background: 'var(--surface)', color: game.accent }}>
+                      {game.tag}
+                    </span>
+                  </div>
                 </div>
 
                 <div className="card-body">
-                  <h3 className="game-card-title">{game.title}</h3>
+                  <div className="card-title-row">
+                    <span className="card-accent-dot" style={{ background: game.accent }} />
+                    <h3 className="game-card-title">{game.title}</h3>
+                  </div>
                   <p className="game-card-desc">{game.desc}</p>
                 </div>
 
@@ -203,7 +225,8 @@ export default function HomeScreen({
                             className={`mini-diff-pill ${difficulty === d.key ? 'selected' : ''}`}
                             onClick={() => setDifficulty(d.key)}
                           >
-                            {d.icon} {d.label}
+                            <DifficultyBars level={d.key} size={14} />
+                            <span>{d.label}</span>
                           </button>
                         ))}
                       </div>
@@ -218,7 +241,8 @@ export default function HomeScreen({
                             className={`mini-cat-pill ${category === c.key ? 'selected' : ''}`}
                             onClick={() => setCategory(c.key)}
                           >
-                            {c.icon} {c.label}
+                            <CategoryIcon name={c.key} size={14} />
+                            <span>{c.label}</span>
                           </button>
                         ))}
                       </div>
@@ -228,7 +252,10 @@ export default function HomeScreen({
 
                 <div className="card-footer-row">
                   <div className="card-best-badge">
-                    <span className="b-lbl">Best Score</span>
+                    <div className="b-lbl-wrap">
+                      <TrophyIcon size={12} className="trophy-icon" />
+                      <span className="b-lbl">Best Score</span>
+                    </div>
                     <span className="b-val">{bestScore} pts</span>
                   </div>
 
@@ -239,18 +266,18 @@ export default function HomeScreen({
                         onClick={() => setShowQuizConfig(prev => !prev)}
                         title="Configure Difficulty & Category"
                       >
-                        ⚙️ {showQuizConfig ? 'Close' : 'Setup'}
+                        {showQuizConfig ? 'Close' : 'Setup'}
                       </button>
                     )}
                     <button
                       className="btn-card-launch"
-                      style={{ background: game.accent }}
                       onClick={() => {
                         if (isQuiz) onStartQuiz();
                         else onSelectGame(game.id);
                       }}
                     >
-                      Play →
+                      <span>Play</span>
+                      <ArrowRightIcon size={13} className="launch-arrow-icon" />
                     </button>
                   </div>
                 </div>

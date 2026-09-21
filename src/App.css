@@ -305,8 +305,15 @@ button {
   gap: 14px;
 }
 
-.brand-logo-icon {
-  font-size: 2.8rem;
+.brand-logo-svg {
+  flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-sm);
+  border-radius: 10px;
+}
+
+.header-brand-wrap:hover .brand-logo-svg {
+  transform: scale(1.08) rotate(4deg);
 }
 
 .brand-heading {
@@ -371,6 +378,9 @@ button {
 }
 
 .btn-palette-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   padding: 6px 13px;
   font-size: 0.8rem;
   font-weight: 700;
@@ -394,7 +404,21 @@ button {
   font-weight: 800;
 }
 
+.palette-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.dot-crisp { background: linear-gradient(135deg, #f43f5e, #7c3aed); }
+.dot-sage  { background: #2d7a58; }
+.dot-sand  { background: #c45b43; }
+
 .btn-theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 50px;
@@ -412,42 +436,212 @@ button {
   transform: translateY(-1px);
 }
 
-/* Full-Screen Cards Grid */
+/* ──────────────────────────────────────────────
+   MODERN ANIMATED CARDS GRID
+   ────────────────────────────────────────────── */
 .full-cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-  gap: 20px;
+  gap: 22px;
   width: 100%;
 }
 
-.full-game-card {
+@keyframes cardRise {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modern-game-card {
   background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
   box-shadow: var(--shadow-sm);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease;
+  animation: cardRise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 0.055s);
   position: relative;
 }
 
-.full-game-card:hover {
+.modern-game-card:hover {
+  transform: translateY(-7px);
   border-color: var(--card-accent);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.04);
 }
 
-.card-top-row {
+[data-theme="dark"] .modern-game-card:hover {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Visual Card Banner */
+.card-visual-wrapper {
+  position: relative;
+  width: 100%;
+  height: 135px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-visual-banner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modern-game-card:hover .card-visual-banner {
+  transform: scale(1.06);
+}
+
+.card-visual-svg {
+  width: 100%;
+  height: 100%;
+  max-height: 125px;
+}
+
+.card-banner-badges {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+
+/* Content Area */
+.modern-game-card .card-body {
+  padding: 16px 20px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-accent-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.game-card-title {
+  font-size: 1.22rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.game-card-desc {
+  font-size: 0.86rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Footer Row */
+.modern-game-card .card-footer-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 12px 20px 16px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
 }
 
-.game-card-icon {
-  font-size: 2.5rem;
+.b-lbl-wrap {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
 }
+
+.trophy-icon {
+  color: var(--amber);
+}
+
+.btn-card-launch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  background: var(--text);
+  color: var(--bg);
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-card-launch:hover {
+  background: var(--card-accent);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.launch-arrow-icon {
+  transition: transform 0.2s ease;
+}
+
+.modern-game-card:hover .launch-arrow-icon {
+  transform: translateX(3px);
+}
+
+/* Banner SVG Micro-animations */
+@keyframes spinNeedle {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.anim-spin-needle {
+  animation: spinNeedle 10s linear infinite;
+}
+
+@keyframes pulseTarget {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.08); opacity: 0.95; }
+}
+.anim-pulse-target {
+  animation: pulseTarget 2.4s ease-in-out infinite;
+  transform-origin: 140px 65px;
+}
+
+@keyframes floatSlight {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.anim-float {
+  animation: floatSlight 3s ease-in-out infinite;
+}
+
+@keyframes arrowOscillate {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+.anim-arrow-up { animation: arrowOscillate 1.8s ease-in-out infinite; }
+.anim-arrow-down { animation: arrowOscillate 1.8s ease-in-out infinite 0.9s; }
+
 
 .game-card-tag {
   font-size: 0.72rem;
