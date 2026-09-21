@@ -105,27 +105,46 @@ export default function GameCardVisual({ gameId, accent = 'var(--coral)', soft =
         </div>
       );
 
+    case 'detectiveGrid':
     case 'arrowClash':
       return (
         <div className="card-visual-banner" style={{ background: soft }}>
           <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Center Vortex Compass */}
-            <circle cx="140" cy="65" r="42" stroke={accent} strokeWidth="1.5" strokeOpacity="0.2" />
-            <circle cx="140" cy="65" r="28" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+            {/* Investigation Pin Board Background */}
+            <line x1="60" y1="55" x2="140" y2="40" stroke={accent} strokeWidth="1.5" strokeDasharray="4 3" strokeOpacity="0.4" />
+            <line x1="140" y1="40" x2="220" y2="55" stroke={accent} strokeWidth="1.5" strokeDasharray="4 3" strokeOpacity="0.4" />
+            <line x1="60" y1="55" x2="140" y2="85" stroke={accent} strokeWidth="1.5" strokeDasharray="4 3" strokeOpacity="0.4" />
+            <line x1="220" y1="55" x2="140" y2="85" stroke={accent} strokeWidth="1.5" strokeDasharray="4 3" strokeOpacity="0.4" />
 
-            {/* 4 Directions */}
-            {/* UP */}
-            <path className="anim-arrow-up" d="M140 22L147 32H133L140 22Z" fill={accent} />
-            {/* DOWN */}
-            <path className="anim-arrow-down" d="M140 108L147 98H133L140 108Z" fill={accent} />
-            {/* LEFT */}
-            <path className="anim-arrow-left" d="M97 65L107 58V72L97 65Z" fill={accent} />
-            {/* RIGHT */}
-            <path className="anim-arrow-right" d="M183 65L173 58V72L183 65Z" fill={accent} />
+            {/* Suspect Photo Frame Left */}
+            <rect x="42" y="36" width="36" height="42" rx="6" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+            <circle cx="60" cy="50" r="8" fill="var(--surface2)" />
+            <path d="M50 72C50 66 54 62 60 62C66 62 70 66 70 72" fill="var(--surface2)" />
+            <circle cx="60" cy="36" r="3" fill="var(--coral)" />
 
-            {/* Center Inversion Badge */}
-            <circle cx="140" cy="65" r="14" fill={accent} />
-            <path d="M135 63L140 58L145 63M145 67L140 72L135 67" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            {/* Suspect Photo Frame Right */}
+            <rect x="202" y="36" width="36" height="42" rx="6" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+            <circle cx="220" cy="50" r="8" fill="var(--surface2)" />
+            <path d="M210 72C210 66 214 62 220 62C226 62 230 66 230 72" fill="var(--surface2)" />
+            <circle cx="220" cy="36" r="3" fill="var(--coral)" />
+
+            {/* Center Dossier Pin & Magnifying Glass */}
+            <g className="anim-float">
+              {/* Center Target Profile */}
+              <rect x="118" y="24" width="44" height="52" rx="8" fill="var(--surface)" stroke={accent} strokeWidth="2" />
+              <circle cx="140" cy="42" r="10" fill={accent} fillOpacity="0.2" stroke={accent} strokeWidth="1.5" />
+              <path d="M128 68C128 60 133 56 140 56C147 56 152 60 152 68" fill={accent} />
+
+              {/* Magnifying Glass Overlay */}
+              <circle cx="152" cy="72" r="22" stroke={accent} strokeWidth="3" fill="var(--surface)" fillOpacity="0.3" />
+              <line x1="168" y1="88" x2="185" y2="105" stroke={accent} strokeWidth="4.5" strokeLinecap="round" />
+              {/* Lens Glare */}
+              <path d="M142 58C148 55 156 57 162 62" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+            </g>
+
+            {/* Fingerprint / Clue Badge */}
+            <rect x="110" y="106" width="60" height="16" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">CASE FILE</text>
           </svg>
         </div>
       );

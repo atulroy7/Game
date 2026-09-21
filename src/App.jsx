@@ -12,6 +12,7 @@ import SumDrop         from './games/SumDrop';
 import MemoryMatch     from './games/MemoryMatch';
 import ChronoBeat      from './games/ChronoBeat';
 import ArrowClash      from './games/ArrowClash';
+import DetectiveGrid   from './games/DetectiveGrid';
 import Scramble5       from './games/Scramble5';
 import './App.css';
 
@@ -452,6 +453,13 @@ export default function App() {
       )}
       {screen === 'arrowClash' && (
         <ArrowClash
+          sound={sound}
+          onBack={() => setScreen('home')}
+          onSaveScore={handleSaveMiniGameScore}
+        />
+      )}
+      {screen === 'detectiveGrid' && (
+        <DetectiveGrid
           sound={sound}
           onBack={() => setScreen('home')}
           onSaveScore={handleSaveMiniGameScore}

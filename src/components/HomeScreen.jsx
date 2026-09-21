@@ -52,12 +52,12 @@ const GAMES_LIST = [
     soft: 'var(--amber-soft)',
   },
   {
-    id: 'arrowClash',
-    title: 'Arrow Clash',
-    tag: 'Inversion Reflex',
-    desc: 'Directional arrows flash while rules switch between Direct (same) and Inverted (opposite). Tests cognitive control!',
-    accent: 'var(--coral)',
-    soft: 'var(--coral-soft)',
+    id: 'detectiveGrid',
+    title: 'Detective Grid',
+    tag: 'Logic Deduction',
+    desc: 'Analyze witness testimonies, CCTV intercepts, and cell pings to eliminate innocent suspects and arrest the culprit!',
+    accent: 'var(--amber)',
+    soft: 'var(--amber-soft)',
   },
   {
     id: 'reflexStrike',

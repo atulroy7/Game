@@ -2480,3 +2480,330 @@ button {
   background: var(--surface2);
 }
 
+/* ──────────────────────────────────────────────
+   DETECTIVE GRID MINI-GAME
+   ────────────────────────────────────────────── */
+.detective-grid-screen {
+  justify-content: flex-start;
+  padding-bottom: 30px;
+}
+
+.ready-screen-card {
+  width: 100%;
+  max-width: 480px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  box-shadow: var(--shadow-md);
+  margin-top: 10px;
+}
+
+.ready-icon-badge {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.ready-subtitle {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.ready-rules-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  text-align: left;
+}
+
+.rule-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.84rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.rule-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.detective-play-area {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Dossier Clues Card */
+.case-dossier-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: var(--shadow-sm);
+}
+
+.dossier-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dossier-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--amber);
+  background: var(--amber-soft);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.dossier-sub {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+.clues-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.clue-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.clue-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.clue-text {
+  font-size: 0.86rem;
+  color: var(--text);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.case-alert-banner {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-align: center;
+  border: 1px solid;
+}
+
+.case-alert-banner.alert-success {
+  background: var(--mint-soft);
+  border-color: var(--mint);
+  color: var(--mint);
+}
+
+.case-alert-banner.alert-error {
+  background: var(--coral-soft);
+  border-color: var(--coral);
+  color: var(--coral);
+}
+
+/* 3x3 Suspects Grid */
+.suspects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.suspect-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  user-select: none;
+}
+
+.suspect-card:hover:not(.ruled-out) {
+  border-color: var(--amber);
+  transform: translateY(-2px);
+}
+
+.suspect-card.selected {
+  border-color: var(--amber);
+  background: var(--amber-soft);
+  transform: scale(1.02);
+}
+
+.suspect-card.ruled-out {
+  opacity: 0.35;
+  filter: grayscale(0.85);
+  border-style: dashed;
+  transform: scale(0.96);
+}
+
+.suspect-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.sector-tag {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.btn-ruleout {
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 4px;
+  padding: 2px 5px;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.btn-ruleout:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.btn-ruleout.active {
+  background: var(--coral-soft);
+  color: var(--coral);
+  border-color: var(--coral);
+}
+
+.suspect-avatar-icon {
+  color: var(--text-soft);
+  margin: 2px 0;
+}
+
+.suspect-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.suspect-name {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.suspect-trait-badge {
+  font-size: 0.68rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Action Dock */
+.detective-action-dock {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.dock-selected-wrap {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+  flex-wrap: wrap;
+}
+
+.dock-suspect-desc {
+  font-size: 0.84rem;
+  color: var(--text);
+}
+
+.btn-arrest-action {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--coral);
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.84rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-arrest-action:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+.dock-placeholder {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+  padding: 12px 16px;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface2);
+}
+
