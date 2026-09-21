@@ -12,70 +12,170 @@
 }
 
 :root {
-  /* ── Refined Minimal Light Mode (Clean Warm Bone & Ink) ── */
-  --bg:            #f7f6f2;
-  --bg-subtle:     #efede6;
+  /* ── 💎 1. Crisp Minimal Light Mode (Default) ── */
+  --bg:            #f8fafc;
+  --bg-subtle:     #f1f5f9;
   --surface:       #ffffff;
-  --surface2:      #f1efe9;
-  --surface-hover: #e8e5dc;
-  --border:        #e0ddd4;
-  --border-focus:  #1c1b18;
+  --surface2:      #f1f5f9;
+  --surface-hover: #e2e8f0;
+  --border:        #e2e8f0;
+  --border-focus:  #0f172a;
 
-  /* Minimal Mineral & Earth Pigments */
-  --coral:         #b8543f;
-  --coral-soft:    #fbf0ec;
-  --amber:         #ad7d34;
-  --amber-soft:    #f8f2e4;
-  --mint:          #3b6955;
-  --mint-soft:     #eaf2ed;
-  --violet:        #5b5668;
-  --violet-soft:   #edeaf2;
-  --orange:        #9e5d36;
-  --orange-soft:   #f8ece5;
+  /* Fresh, vibrant yet matte accents (zero neon, zero blue) */
+  --coral:         #f43f5e;
+  --coral-soft:    #ffe4e6;
+  --amber:         #d97706;
+  --amber-soft:    #fef3c7;
+  --mint:          #059669;
+  --mint-soft:     #d1fae5;
+  --violet:        #7c3aed;
+  --violet-soft:   #ede9fe;
+  --orange:        #ea580c;
+  --orange-soft:   #ffedd5;
 
-  --primary:       #1c1b18;
-  --primary-hover: #33312c;
-  --text:          #1c1b18;
-  --text-soft:     #4c4a45;
-  --muted:         #827f77;
+  --primary:       #0f172a;
+  --primary-hover: #1e293b;
+  --text:          #0f172a;
+  --text-soft:     #334155;
+  --muted:         #64748b;
 
   --radius:        16px;
   --radius-sm:     10px;
-  --shadow-sm:     0 2px 6px rgba(28, 27, 24, 0.04);
-  --shadow-md:     0 6px 18px rgba(28, 27, 24, 0.06);
-  --shadow-lg:     0 12px 30px rgba(28, 27, 24, 0.08);
+  --shadow-sm:     0 2px 8px rgba(15, 23, 42, 0.04);
+  --shadow-md:     0 6px 20px rgba(15, 23, 42, 0.07);
+  --shadow-lg:     0 14px 32px rgba(15, 23, 42, 0.1);
 }
 
-/* ── Minimal Obsidian & Ash Dark Mode ── */
+/* ── 💎 Crisp Minimal Dark Mode (Deep Velvet Obsidian) ── */
 [data-theme="dark"] {
-  --bg:            #121214;
-  --bg-subtle:     #18181b;
-  --surface:       #1e1e21;
-  --surface2:      #27272c;
-  --surface-hover: #313137;
-  --border:        #2e2e34;
-  --border-focus:  #e2dfd9;
+  --bg:            #090a0f;
+  --bg-subtle:     #11131a;
+  --surface:       #151821;
+  --surface2:      #1c202d;
+  --surface-hover: #252b3c;
+  --border:        #232838;
+  --border-focus:  #f1f5f9;
 
-  --coral:         #d4705b;
-  --coral-soft:    rgba(212, 112, 91, 0.14);
-  --amber:         #cca04f;
-  --amber-soft:    rgba(204, 160, 79, 0.14);
-  --mint:          #5aa182;
-  --mint-soft:     rgba(90, 161, 130, 0.14);
-  --violet:        #928ca0;
-  --violet-soft:   rgba(146, 140, 160, 0.14);
-  --orange:        #c4794e;
-  --orange-soft:   rgba(196, 121, 78, 0.14);
+  --coral:         #fb7185;
+  --coral-soft:    rgba(251, 113, 133, 0.15);
+  --amber:         #fbbf24;
+  --amber-soft:    rgba(251, 191, 36, 0.15);
+  --mint:          #34d399;
+  --mint-soft:     rgba(52, 211, 153, 0.15);
+  --violet:        #a78bfa;
+  --violet-soft:   rgba(167, 139, 250, 0.15);
+  --orange:        #fb923c;
+  --orange-soft:   rgba(251, 146, 60, 0.15);
 
-  --primary:       #f4f3ef;
-  --primary-hover: #dcdad3;
-  --text:          #f4f3ef;
-  --text-soft:     #c4c2bc;
-  --muted:         #84827c;
+  --primary:       #f8fafc;
+  --primary-hover: #e2e8f0;
+  --text:          #f8fafc;
+  --text-soft:     #cbd5e1;
+  --muted:         #94a3b8;
 
-  --shadow-sm:     0 2px 8px rgba(0, 0, 0, 0.22);
-  --shadow-md:     0 6px 20px rgba(0, 0, 0, 0.3);
-  --shadow-lg:     0 12px 36px rgba(0, 0, 0, 0.45);
+  --shadow-sm:     0 2px 8px rgba(0, 0, 0, 0.28);
+  --shadow-md:     0 6px 22px rgba(0, 0, 0, 0.38);
+  --shadow-lg:     0 14px 38px rgba(0, 0, 0, 0.5);
+}
+
+/* ── 🍵 2. Botanical Sage Zen Light Mode ── */
+[data-palette="matcha"] {
+  --bg:            #f5f7f5;
+  --bg-subtle:     #edf2ed;
+  --surface:       #ffffff;
+  --surface2:      #edf2ed;
+  --surface-hover: #e1e9e1;
+  --border:        #d8e2d8;
+  --border-focus:  #16261c;
+
+  --coral:         #c85444;
+  --coral-soft:    #fbeee9;
+  --amber:         #c48c34;
+  --amber-soft:    #f9f2e3;
+  --mint:          #2d7a58;
+  --mint-soft:     #e3f0e8;
+  --violet:        #635c7a;
+  --violet-soft:   #eeeaf5;
+  --orange:        #b8683b;
+  --orange-soft:   #f8ece3;
+
+  --primary:       #16261c;
+  --primary-hover: #263e2f;
+  --text:          #16261c;
+  --text-soft:     #3d5244;
+  --muted:         #667a6e;
+}
+
+[data-theme="dark"][data-palette="matcha"] {
+  --bg:            #0c120f;
+  --bg-subtle:     #121a15;
+  --surface:       #18221d;
+  --surface2:      #202c25;
+  --surface-hover: #2a3a31;
+  --border:        #26362e;
+  --border-focus:  #e2efe7;
+
+  --coral:         #df6e5e;
+  --amber:         #dcb054;
+  --mint:          #48a87d;
+  --violet:        #968eb3;
+  --orange:        #d48455;
+
+  --primary:       #edf5f0;
+  --primary-hover: #d3e4da;
+  --text:          #edf5f0;
+  --text-soft:     #b8cdc2;
+  --muted:         #7e998b;
+}
+
+/* ── 🏜️ 3. Warm Sandstone Desert Light Mode ── */
+[data-palette="sand"] {
+  --bg:            #faf7f2;
+  --bg-subtle:     #f2ece2;
+  --surface:       #ffffff;
+  --surface2:      #f4ede2;
+  --surface-hover: #eae1d3;
+  --border:        #ded5c6;
+  --border-focus:  #231e19;
+
+  --coral:         #c45b43;
+  --coral-soft:    #faebe7;
+  --amber:         #b88235;
+  --amber-soft:    #f9f0e2;
+  --mint:          #43735e;
+  --mint-soft:     #e6f0ea;
+  --violet:        #6d5870;
+  --violet-soft:   #f0ebf2;
+  --orange:        #ad6438;
+  --orange-soft:   #f7ebe2;
+
+  --primary:       #231e19;
+  --primary-hover: #3d342c;
+  --text:          #231e19;
+  --text-soft:     #574c42;
+  --muted:         #8a7b6e;
+}
+
+[data-theme="dark"][data-palette="sand"] {
+  --bg:            #12100e;
+  --bg-subtle:     #191714;
+  --surface:       #211e1a;
+  --surface2:      #2c2722;
+  --surface-hover: #38322c;
+  --border:        #363029;
+  --border-focus:  #f0e9e1;
+
+  --coral:         #db735c;
+  --amber:         #d19e52;
+  --mint:          #5ba083;
+  --violet:        #9d85a1;
+  --orange:        #ca7e50;
+
+  --primary:       #f5efe7;
+  --primary-hover: #dfd5c7;
+  --text:          #f5efe7;
+  --text-soft:     #cfc5b8;
+  --muted:         #948777;
 }
 
 html, body, #root {
@@ -258,6 +358,40 @@ button {
   font-weight: 800;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+.palette-pill-selector {
+  display: flex;
+  align-items: center;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 3px;
+  gap: 3px;
+}
+
+.btn-palette-pill {
+  padding: 6px 13px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 50px;
+  color: var(--muted);
+  background: transparent;
+  transition: all 0.16s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.btn-palette-pill:hover {
+  color: var(--text);
+}
+
+.btn-palette-pill.active {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+  box-shadow: var(--shadow-sm);
+  font-weight: 800;
 }
 
 .btn-theme-toggle {

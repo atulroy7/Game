@@ -101,6 +101,8 @@ export default function HomeScreen({
   stats,
   theme,
   onToggleTheme,
+  palette,
+  onSelectPalette,
 }) {
   const [showQuizConfig, setShowQuizConfig] = useState(false);
 
@@ -130,8 +132,33 @@ export default function HomeScreen({
               <span className="h-lbl">Quiz Record</span>
             </div>
 
+            {/* Palette Switcher */}
+            <div className="palette-pill-selector" role="group" aria-label="Color Palette">
+              <button
+                className={`btn-palette-pill ${palette === 'crisp' ? 'active' : ''}`}
+                onClick={() => onSelectPalette('crisp')}
+                title="Crisp Studio (Clean Pearl & Vibrant Accents)"
+              >
+                💎 Crisp
+              </button>
+              <button
+                className={`btn-palette-pill ${palette === 'matcha' ? 'active' : ''}`}
+                onClick={() => onSelectPalette('matcha')}
+                title="Botanical Sage (Calm Japanese Minimal)"
+              >
+                🍵 Sage
+              </button>
+              <button
+                className={`btn-palette-pill ${palette === 'sand' ? 'active' : ''}`}
+                onClick={() => onSelectPalette('sand')}
+                title="Warm Sandstone (Desert Minimal)"
+              >
+                🏜️ Sand
+              </button>
+            </div>
+
             {/* Theme Toggle */}
-            <button className="btn-theme-toggle" onClick={onToggleTheme} title="Toggle Theme">
+            <button className="btn-theme-toggle" onClick={onToggleTheme} title="Toggle Dark/Light Mode">
               {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
             </button>
           </div>

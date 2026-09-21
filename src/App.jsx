@@ -35,13 +35,19 @@ function loadStats() {
 function saveStats(s) { localStorage.setItem('brainblitz_stats', JSON.stringify(s)); }
 
 export default function App() {
-  // ── Theme (clean playful minimal default) ───────────────
-  const [theme, setTheme] = useState(() => localStorage.getItem('brainblitz_theme') || 'light');
+  // ── Theme & Palette ──────────────────────────────────────
+  const [theme, setTheme]     = useState(() => localStorage.getItem('brainblitz_theme') || 'light');
+  const [palette, setPalette] = useState(() => localStorage.getItem('brainblitz_palette') || 'crisp');
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('brainblitz_theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-palette', palette);
+    localStorage.setItem('brainblitz_palette', palette);
+  }, [palette]);
 
   const toggleTheme = useCallback(() => {
     setTheme(t => (t === 'light' ? 'dark' : 'light'));
@@ -357,6 +363,8 @@ export default function App() {
           stats={stats}
           theme={theme}
           onToggleTheme={toggleTheme}
+          palette={palette}
+          onSelectPalette={setPalette}
         />
       )}
       {screen === 'countdown' && (
