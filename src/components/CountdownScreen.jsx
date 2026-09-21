@@ -9,7 +9,7 @@ export default function CountdownScreen({ onDone, sound }) {
     sound?.playTick();
     const t = setTimeout(() => setCount(c => c - 1), 900);
     return () => clearTimeout(t);
-  }, [count, onDone]);
+  }, [count, onDone, sound]);
 
   const labels = { 3: '3', 2: '2', 1: '1', 0: '🚀' };
 

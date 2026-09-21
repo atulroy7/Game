@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import BgOrbs from './BgOrbs';
 
 function getGrade(score, total = 10) {
@@ -35,7 +35,7 @@ function AnimatedNumber({ value }) {
   return <>{display}</>;
 }
 
-export default function ResultsScreen({ score, answers, bestStreak, difficulty, onPlayAgain, onReview }) {
+export default function ResultsScreen({ score, answers, bestStreak, onPlayAgain, onReview }) {
   const correct  = answers.filter(a => a.correct).length;
   const timedOut = answers.filter(a => a.timedOut).length;
   const wrong    = answers.filter(a => !a.correct && !a.timedOut).length;

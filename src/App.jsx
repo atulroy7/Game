@@ -6,6 +6,10 @@ import CountdownScreen from './components/CountdownScreen';
 import QuizScreen      from './components/QuizScreen';
 import ResultsScreen   from './components/ResultsScreen';
 import ReviewScreen    from './components/ReviewScreen';
+import ColorClash      from './games/ColorClash';
+import QuantumMatrix   from './games/QuantumMatrix';
+import CyberFlip       from './games/CyberFlip';
+import SpeedMath       from './games/SpeedMath';
 import './App.css';
 
 const DIFFICULTY_TIME = { easy: 20, medium: 15, hard: 10 };
@@ -311,6 +315,19 @@ export default function App() {
     advanceQuestion(false);
   }, [powerups, feedback, questions, sound, advanceQuestion]);
 
+  const handleSaveMiniGameScore = useCallback((gameKey, newScore) => {
+    setStats(prev => {
+      const key = `${gameKey}High`;
+      const updated = {
+        ...prev,
+        [key]: Math.max(prev[key] || 0, newScore),
+        gamesPlayed: (prev.gamesPlayed || 0) + 1,
+      };
+      saveStats(updated);
+      return updated;
+    });
+  }, []);
+
   // ─────────────────────────────────────────────────────
   //  RENDER
   // ─────────────────────────────────────────────────────
@@ -320,7 +337,9 @@ export default function App() {
         <HomeScreen
           difficulty={difficulty} setDifficulty={setDifficulty}
           category={category}    setCategory={setCategory}
-          onStart={startGame}    stats={stats}
+          onStartQuiz={startGame}
+          onSelectGame={(gameId) => setScreen(gameId)}
+          stats={stats}
         />
       )}
       {screen === 'countdown' && (
@@ -368,6 +387,36 @@ export default function App() {
       )}
       {screen === 'review' && (
         <ReviewScreen answers={answers} onBack={() => setScreen('results')} />
+      )}
+
+      {/* Mini-Games */}
+      {screen === 'colorClash' && (
+        <ColorClash
+          sound={sound}
+          onBack={() => setScreen('home')}
+          onSaveScore={handleSaveMiniGameScore}
+        />
+      )}
+      {screen === 'quantumMatrix' && (
+        <QuantumMatrix
+          sound={sound}
+          onBack={() => setScreen('home')}
+          onSaveScore={handleSaveMiniGameScore}
+        />
+      )}
+      {screen === 'cyberFlip' && (
+        <CyberFlip
+          sound={sound}
+          onBack={() => setScreen('home')}
+          onSaveScore={handleSaveMiniGameScore}
+        />
+      )}
+      {screen === 'speedMath' && (
+        <SpeedMath
+          sound={sound}
+          onBack={() => setScreen('home')}
+          onSaveScore={handleSaveMiniGameScore}
+        />
       )}
     </div>
   );
