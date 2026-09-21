@@ -27,6 +27,15 @@ const GAMES_LIST = [
     soft: 'var(--violet-soft)',
   },
   {
+    id: 'scramble5',
+    icon: '🔠',
+    title: 'Scramble 5',
+    tag: '5 Attempts',
+    desc: 'Unscramble the word in 5 attempts! Green reveals exact positions, yellow reveals misplaced letters.',
+    accent: 'var(--coral)',
+    soft: 'var(--coral-soft)',
+  },
+  {
     id: 'chronoBeat',
     icon: '⏱️',
     title: 'Chrono Beat',
@@ -106,7 +115,7 @@ export default function HomeScreen({
             <span className="brand-logo-icon">🧠</span>
             <div>
               <h1 className="brand-heading">Brain<span>Blitz</span></h1>
-              <p className="brand-tagline">7 Interactive Mind Games &amp; Cognitive Challenges</p>
+              <p className="brand-tagline">8 Interactive Mind Games &amp; Cognitive Challenges</p>
             </div>
           </div>
 

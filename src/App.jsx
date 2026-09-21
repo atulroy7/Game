@@ -12,6 +12,7 @@ import SumDrop         from './games/SumDrop';
 import MemoryMatch     from './games/MemoryMatch';
 import ChronoBeat      from './games/ChronoBeat';
 import ArrowClash      from './games/ArrowClash';
+import Scramble5       from './games/Scramble5';
 import './App.css';
 
 const DIFFICULTY_TIME = { easy: 20, medium: 15, hard: 10 };
@@ -443,6 +444,13 @@ export default function App() {
       )}
       {screen === 'arrowClash' && (
         <ArrowClash
+          sound={sound}
+          onBack={() => setScreen('home')}
+          onSaveScore={handleSaveMiniGameScore}
+        />
+      )}
+      {screen === 'scramble5' && (
+        <Scramble5
           sound={sound}
           onBack={() => setScreen('home')}
           onSaveScore={handleSaveMiniGameScore}

@@ -1,6 +1,6 @@
 /* ================================================
-   BRAINBLITZ – PLAYFUL MINIMAL THEME (ZERO BLUE)
-   Clean, Warm, Friendly, Delightful Design
+   BRAINBLITZ – MINIMAL EDITORIAL THEME
+   Restrained, Warm Mineral Neutrals & Nordic Earth Tones
    ================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
@@ -12,70 +12,70 @@
 }
 
 :root {
-  /* ── Fresh Playful Minimal Light Mode (Default) ── */
-  --bg:            #fcfbfa;
-  --bg-subtle:     #f5f3ef;
+  /* ── Refined Minimal Light Mode (Clean Warm Bone & Ink) ── */
+  --bg:            #f7f6f2;
+  --bg-subtle:     #efede6;
   --surface:       #ffffff;
-  --surface2:      #f5f2eb;
-  --surface-hover: #ede9e0;
-  --border:        #e8e4dc;
-  --border-focus:  #ff5a5f;
+  --surface2:      #f1efe9;
+  --surface-hover: #e8e5dc;
+  --border:        #e0ddd4;
+  --border-focus:  #1c1b18;
 
-  /* Playful Fun Accents (No Blue!) */
-  --coral:         #ff5a5f;
-  --coral-soft:    #ffebee;
-  --amber:         #f59e0b;
-  --amber-soft:    #fef3c7;
-  --mint:          #10b981;
-  --mint-soft:     #d1fae5;
-  --violet:        #8b5cf6;
-  --violet-soft:   #ede9fe;
-  --orange:        #f97316;
-  --orange-soft:   #ffedd5;
+  /* Minimal Mineral & Earth Pigments */
+  --coral:         #b8543f;
+  --coral-soft:    #fbf0ec;
+  --amber:         #ad7d34;
+  --amber-soft:    #f8f2e4;
+  --mint:          #3b6955;
+  --mint-soft:     #eaf2ed;
+  --violet:        #5b5668;
+  --violet-soft:   #edeaf2;
+  --orange:        #9e5d36;
+  --orange-soft:   #f8ece5;
 
-  --primary:       #ff5a5f;
-  --primary-hover: #e04a4f;
-  --text:          #1c1917;
-  --text-soft:     #44403c;
-  --muted:         #78716c;
+  --primary:       #1c1b18;
+  --primary-hover: #33312c;
+  --text:          #1c1b18;
+  --text-soft:     #4c4a45;
+  --muted:         #827f77;
 
-  --radius:        18px;
+  --radius:        16px;
   --radius-sm:     10px;
-  --shadow-sm:     0 2px 8px rgba(28, 25, 23, 0.04);
-  --shadow-md:     0 6px 20px rgba(28, 25, 23, 0.07);
-  --shadow-lg:     0 12px 32px rgba(28, 25, 23, 0.1);
+  --shadow-sm:     0 2px 6px rgba(28, 27, 24, 0.04);
+  --shadow-md:     0 6px 18px rgba(28, 27, 24, 0.06);
+  --shadow-lg:     0 12px 30px rgba(28, 27, 24, 0.08);
 }
 
-/* ── Cozy Charcoal Dark Mode (ZERO Blue) ── */
+/* ── Minimal Obsidian & Ash Dark Mode ── */
 [data-theme="dark"] {
-  --bg:            #171618;
-  --bg-subtle:     #1f1e22;
-  --surface:       #242328;
-  --surface2:      #2e2c33;
-  --surface-hover: #38353e;
-  --border:        #39363e;
-  --border-focus:  #fb7185;
+  --bg:            #121214;
+  --bg-subtle:     #18181b;
+  --surface:       #1e1e21;
+  --surface2:      #27272c;
+  --surface-hover: #313137;
+  --border:        #2e2e34;
+  --border-focus:  #e2dfd9;
 
-  --coral:         #fb7185;
-  --coral-soft:    rgba(251, 113, 133, 0.15);
-  --amber:         #fbbf24;
-  --amber-soft:    rgba(251, 191, 36, 0.15);
-  --mint:          #34d399;
-  --mint-soft:     rgba(52, 211, 153, 0.15);
-  --violet:        #a78bfa;
-  --violet-soft:   rgba(167, 139, 250, 0.15);
-  --orange:        #fb923c;
-  --orange-soft:   rgba(251, 146, 60, 0.15);
+  --coral:         #d4705b;
+  --coral-soft:    rgba(212, 112, 91, 0.14);
+  --amber:         #cca04f;
+  --amber-soft:    rgba(204, 160, 79, 0.14);
+  --mint:          #5aa182;
+  --mint-soft:     rgba(90, 161, 130, 0.14);
+  --violet:        #928ca0;
+  --violet-soft:   rgba(146, 140, 160, 0.14);
+  --orange:        #c4794e;
+  --orange-soft:   rgba(196, 121, 78, 0.14);
 
-  --primary:       #fb7185;
-  --primary-hover: #f43f5e;
-  --text:          #faf8f5;
-  --text-soft:     #e7e5e4;
-  --muted:         #a8a29e;
+  --primary:       #f4f3ef;
+  --primary-hover: #dcdad3;
+  --text:          #f4f3ef;
+  --text-soft:     #c4c2bc;
+  --muted:         #84827c;
 
-  --shadow-sm:     0 2px 8px rgba(0, 0, 0, 0.25);
-  --shadow-md:     0 6px 20px rgba(0, 0, 0, 0.35);
-  --shadow-lg:     0 12px 36px rgba(0, 0, 0, 0.5);
+  --shadow-sm:     0 2px 8px rgba(0, 0, 0, 0.22);
+  --shadow-md:     0 6px 20px rgba(0, 0, 0, 0.3);
+  --shadow-lg:     0 12px 36px rgba(0, 0, 0, 0.45);
 }
 
 html, body, #root {
@@ -99,7 +99,7 @@ button {
 }
 
 /* ──────────────────────────────────────────────
-   SOFT PLAYFUL PASTEL BACKGROUND
+   SUBTLE MINIMAL AMBIENT BACKGROUND
    ────────────────────────────────────────────── */
 .playful-bg {
   position: fixed;
@@ -112,37 +112,49 @@ button {
 .playful-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.45;
+  filter: blur(90px);
+  opacity: 0.35;
   transition: opacity 0.3s;
 }
 
 [data-theme="dark"] .playful-blob {
-  opacity: 0.18;
+  opacity: 0.15;
 }
 
 .blob-1 {
-  width: 440px;
-  height: 440px;
-  background: #ffe4e6;
-  top: -100px;
+  width: 500px;
+  height: 500px;
+  background: #ede9e0;
+  top: -120px;
   right: -80px;
 }
 
 .blob-2 {
-  width: 380px;
-  height: 380px;
-  background: #fef3c7;
-  bottom: -60px;
+  width: 440px;
+  height: 440px;
+  background: #f2eee5;
+  bottom: -80px;
   left: -80px;
 }
 
 .blob-3 {
-  width: 300px;
-  height: 300px;
-  background: #ede9fe;
+  width: 340px;
+  height: 340px;
+  background: #e9e5dc;
   top: 40%;
-  left: 60%;
+  left: 55%;
+}
+
+[data-theme="dark"] .blob-1 {
+  background: #1c1c20;
+}
+
+[data-theme="dark"] .blob-2 {
+  background: #19191d;
+}
+
+[data-theme="dark"] .blob-3 {
+  background: #16161a;
 }
 
 /* ──────────────────────────────────────────────
@@ -304,12 +316,13 @@ button {
 }
 
 .game-card-tag {
-  font-size: 0.74rem;
-  font-weight: 800;
+  font-size: 0.72rem;
+  font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  padding: 5px 12px;
-  border-radius: 50px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
 }
 
 .card-body {
@@ -457,19 +470,34 @@ button {
 }
 
 .btn-card-launch {
-  padding: 8px 22px;
-  font-size: 0.88rem;
-  font-weight: 800;
+  padding: 8px 20px;
+  font-size: 0.84rem;
+  font-weight: 700;
   border-radius: var(--radius-sm);
-  color: #fff;
-  transition: transform 0.18s, filter 0.18s;
+  background: var(--text);
+  color: var(--bg);
+  transition: all 0.18s ease;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
+  border: 1px solid transparent;
 }
 
 .btn-card-launch:hover {
   transform: translateY(-2px);
-  filter: brightness(1.08);
+  background: var(--card-accent);
+  color: #ffffff;
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme="dark"] .btn-card-launch {
+  background: var(--surface2);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+[data-theme="dark"] .btn-card-launch:hover {
+  background: var(--card-accent);
+  color: #ffffff;
 }
 
 .drawer-header {
@@ -565,13 +593,14 @@ button {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  box-shadow: 0 4px 14px rgba(255, 90, 95, 0.3);
+  box-shadow: var(--shadow-sm);
   transition: transform 0.2s, background 0.2s;
 }
 
 .btn-start:hover {
   background: var(--primary-hover);
   transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 /* Stats Row */
@@ -1877,5 +1906,249 @@ button {
   justify-content: center;
   font-size: 1.4rem;
   opacity: 0.4;
+}
+
+/* ──────────────────────────────────────────────
+   SCRAMBLE 5 MINI-GAME
+   ────────────────────────────────────────────── */
+.scramble5-screen {
+  justify-content: flex-start;
+  padding-bottom: 24px;
+}
+
+.scramble-target-card {
+  width: 100%;
+  max-width: 460px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  box-shadow: var(--shadow-sm);
+  margin-top: 4px;
+}
+
+.scramble-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.scramble-lbl {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.btn-clue-toggle {
+  background: var(--amber-soft);
+  border: 1px solid var(--amber);
+  color: var(--amber);
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-clue-toggle:hover {
+  background: var(--amber);
+  color: #ffffff;
+}
+
+.scrambled-letters-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 4px 0;
+}
+
+.scramble-char-pill {
+  width: 44px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  user-select: none;
+}
+
+.scramble-clue-text {
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-align: center;
+  margin: 2px 0 0 0;
+}
+
+.attempts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 10px 0;
+  align-items: center;
+  width: 100%;
+  max-width: 460px;
+}
+
+.attempt-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.attempt-cell {
+  width: 44px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  user-select: none;
+  background: var(--surface);
+  color: var(--text);
+  transition: transform 0.12s, background 0.15s;
+}
+
+.attempt-cell.filled {
+  border-color: var(--text);
+  transform: scale(1.05);
+}
+
+.attempt-cell.status-exact {
+  background: var(--mint-soft);
+  border-color: var(--mint);
+  color: var(--mint);
+}
+
+.attempt-cell.status-present {
+  background: var(--amber-soft);
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.attempt-cell.status-absent {
+  background: var(--surface2);
+  border-color: var(--border);
+  color: var(--muted);
+  opacity: 0.65;
+}
+
+.round-result-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--surface);
+  border: 2px solid;
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-md);
+  margin-top: 8px;
+}
+
+.result-headline {
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.result-word-reveal {
+  font-size: 0.95rem;
+  color: var(--text);
+  margin: 0;
+}
+
+.btn-next-word {
+  border: none;
+  border-radius: 50px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  padding: 9px 24px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s;
+}
+
+.btn-next-word:hover {
+  transform: translateY(-2px);
+}
+
+.lost-actions-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.virtual-keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  max-width: 460px;
+  margin-top: 8px;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.key-btn {
+  min-width: 32px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.1s;
+  padding: 0 6px;
+  box-shadow: var(--shadow-sm);
+  user-select: none;
+}
+
+.key-btn:hover {
+  background: var(--surface2);
+  border-color: var(--coral);
+}
+
+.key-btn:active {
+  transform: scale(0.93);
+}
+
+.key-enter,
+.key-back {
+  min-width: 50px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: var(--surface2);
 }
 
