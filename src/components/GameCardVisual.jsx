@@ -2,131 +2,281 @@ import React from 'react';
 
 export default function GameCardVisual({ gameId, accent = 'var(--coral)', soft = 'var(--coral-soft)' }) {
   switch (gameId) {
-    case 'quiz':
-      return (
-        <div className="card-visual-banner" style={{ background: soft }}>
-          <svg className="card-visual-svg anim-float" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Background Grid Lines */}
-            <line x1="20" y1="65" x2="260" y2="65" stroke={accent} strokeOpacity="0.12" strokeDasharray="3 3" />
-            <line x1="140" y1="15" x2="140" y2="115" stroke={accent} strokeOpacity="0.12" strokeDasharray="3 3" />
-
-            {/* Neural Connections */}
-            <path d="M70 75L140 35L210 75L140 105Z" stroke={accent} strokeWidth="1.5" strokeDasharray="4 2" />
-            <path d="M140 35V105" stroke={accent} strokeWidth="2" />
-            <path d="M70 75H210" stroke={accent} strokeWidth="2" />
-            <line x1="105" y1="55" x2="175" y2="90" stroke={accent} strokeWidth="1.2" strokeOpacity="0.5" />
-            <line x1="105" y1="90" x2="175" y2="55" stroke={accent} strokeWidth="1.2" strokeOpacity="0.5" />
-
-            {/* Glowing IQ Nodes */}
-            <circle cx="140" cy="35" r="7" fill="var(--surface)" stroke={accent} strokeWidth="2.5" />
-            <circle cx="140" cy="35" r="3" fill={accent} />
-
-            <circle cx="70" cy="75" r="6" fill="var(--surface)" stroke={accent} strokeWidth="2" />
-            <circle cx="70" cy="75" r="2.5" fill={accent} />
-
-            <circle cx="210" cy="75" r="6" fill="var(--surface)" stroke={accent} strokeWidth="2" />
-            <circle cx="210" cy="75" r="2.5" fill={accent} />
-
-            <circle cx="140" cy="105" r="7" fill="var(--surface)" stroke={accent} strokeWidth="2.5" />
-            <circle cx="140" cy="105" r="3" fill={accent} />
-
-            {/* Center Cognitive Core */}
-            <circle cx="140" cy="70" r="14" fill={accent} fillOpacity="0.15" />
-            <circle cx="140" cy="70" r="8" fill={accent} />
-            <circle cx="140" cy="70" r="3.5" fill="var(--surface)" />
-          </svg>
-        </div>
-      );
-
-    case 'laserPrism':
+    case 'numberNinja':
       return (
         <div className="card-visual-banner" style={{ background: soft }}>
           <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Grid Backdrop Lines */}
-            <line x1="30" y1="40" x2="250" y2="40" stroke={accent} strokeOpacity="0.12" strokeDasharray="3 3" />
-            <line x1="30" y1="75" x2="250" y2="75" stroke={accent} strokeOpacity="0.12" strokeDasharray="3 3" />
-            <line x1="30" y1="105" x2="250" y2="105" stroke={accent} strokeOpacity="0.12" strokeDasharray="3 3" />
-            <line x1="75" y1="20" x2="75" y2="115" stroke={accent} strokeOpacity="0.12" strokeDasharray="3 3" />
-            <line x1="140" y1="20" x2="140" y2="115" stroke={accent} strokeOpacity="0.12" strokeDasharray="3 3" />
-            <line x1="205" y1="20" x2="205" y2="115" stroke={accent} strokeOpacity="0.12" strokeDasharray="3 3" />
+            <g transform="translate(30, 36)">
+              {/* Wooden scroll tiles */}
+              <rect x="0" y="8" width="36" height="42" rx="6" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+              <text x="18" y="34" fill="var(--text)" fontSize="16" fontWeight="900" textAnchor="middle">4</text>
 
-            {/* Laser Emitter on Left */}
-            <rect x="36" y="63" width="22" height="24" rx="5" fill="var(--surface)" stroke={accent} strokeWidth="2" />
-            <circle cx="47" cy="75" r="5" fill={accent} />
-            <path d="M58 75H64" stroke={accent} strokeWidth="3" strokeLinecap="round" />
+              <rect x="44" y="8" width="36" height="42" rx="6" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+              <text x="62" y="34" fill="var(--text)" fontSize="16" fontWeight="900" textAnchor="middle">8</text>
 
-            {/* Glowing Laser Paths */}
-            {/* Segment 1: Emitter to Mirror 1 */}
-            <line x1="58" y1="75" x2="120" y2="75" stroke={accent} strokeWidth="3" strokeLinecap="round" />
-            <line x1="58" y1="75" x2="120" y2="75" stroke="#fff" strokeWidth="1.2" strokeLinecap="round" />
+              <rect x="88" y="8" width="36" height="42" rx="6" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+              <text x="106" y="34" fill="var(--text)" fontSize="16" fontWeight="900" textAnchor="middle">16</text>
 
-            {/* Mirror 1: 45 degree angle */}
-            <g transform="translate(120, 75)">
-              <line x1="-12" y1="12" x2="12" y2="-12" stroke="var(--mint)" strokeWidth="4" strokeLinecap="round" />
-              <circle cx="0" cy="0" r="4" fill="var(--surface)" stroke="var(--mint)" strokeWidth="1.5" />
+              {/* Missing tile slashed */}
+              <rect x="132" y="8" width="36" height="42" rx="6" fill={accent} />
+              <text x="150" y="34" fill="#fff" fontSize="18" fontWeight="900" textAnchor="middle">32</text>
+
+              <rect x="176" y="8" width="36" height="42" rx="6" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+              <text x="194" y="34" fill="var(--text)" fontSize="16" fontWeight="900" textAnchor="middle">64</text>
             </g>
 
-            {/* Segment 2: Mirror 1 UP to Mirror 2 */}
-            <line x1="120" y1="75" x2="120" y2="38" stroke={accent} strokeWidth="3" strokeLinecap="round" />
-            <line x1="120" y1="75" x2="120" y2="38" stroke="#fff" strokeWidth="1.2" strokeLinecap="round" />
+            {/* Ninja Katana Slash Trail */}
+            <line x1="60" y1="110" x2="220" y2="20" stroke={accent} strokeWidth="3" strokeLinecap="round" strokeDasharray="180" />
+            <polygon points="220,20 205,25 215,35" fill={accent} />
 
-            {/* Mirror 2: 45 degree angle */}
-            <g transform="translate(120, 38)">
-              <line x1="-12" y1="-12" x2="12" y2="12" stroke="var(--amber)" strokeWidth="4" strokeLinecap="round" />
-              <circle cx="0" cy="0" r="4" fill="var(--surface)" stroke="var(--amber)" strokeWidth="1.5" />
-            </g>
-
-            {/* Segment 3: Mirror 2 RIGHT to Target Crystal */}
-            <line x1="120" y1="38" x2="218" y2="38" stroke={accent} strokeWidth="3" strokeLinecap="round" />
-            <line x1="120" y1="38" x2="218" y2="38" stroke="#fff" strokeWidth="1.2" strokeLinecap="round" />
-
-            {/* Target Crystal at (218, 38) */}
-            <g transform="translate(218, 38)" className="anim-pulse-target">
-              <circle cx="0" cy="0" r="15" fill={accent} fillOpacity="0.25" />
-              <polygon points="0,-11 9,-3 6,10 -6,10 -9,-3" fill="var(--surface)" stroke={accent} strokeWidth="2" />
-              <circle cx="0" cy="0" r="4" fill={accent} />
-            </g>
-
-            {/* Label Pill */}
             <rect x="96" y="106" width="88" height="17" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
-            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">OPTIC BEAM</text>
+            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">SERIES SLICE</text>
           </svg>
         </div>
       );
 
-    case 'arrowClash':
+    case 'logicLock':
       return (
         <div className="card-visual-banner" style={{ background: soft }}>
           <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Outer Circular Compass Reticle */}
-            <circle cx="140" cy="65" r="48" stroke={accent} strokeWidth="1.5" strokeOpacity="0.2" strokeDasharray="4 3" />
-            <circle cx="140" cy="65" r="32" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+            {/* Vault Outer Chassis */}
+            <rect x="65" y="24" width="150" height="74" rx="14" fill="var(--surface)" stroke={accent} strokeWidth="2.5" />
+            <circle cx="80" cy="36" r="3" fill={accent} />
+            <circle cx="200" cy="36" r="3" fill={accent} />
 
-            {/* 4 Cardinal Direction Arrows */}
-            {/* UP Arrow */}
-            <g transform="translate(140, 26)">
-              <path d="M0 -8L-7 2H-3V10H3V2H7L0 -8Z" fill={accent} />
-            </g>
-            {/* DOWN Arrow */}
-            <g transform="translate(140, 104)">
-              <path d="M0 8L-7 -2H-3V-10H3V-2H7L0 8Z" fill="var(--muted)" fillOpacity="0.4" />
-            </g>
-            {/* LEFT Arrow */}
-            <g transform="translate(98, 65)">
-              <path d="M-8 0L2 -7V-3H10V3H2V7L-8 0Z" fill="var(--muted)" fillOpacity="0.4" />
-            </g>
-            {/* RIGHT Arrow */}
-            <g transform="translate(182, 65)">
-              <path d="M8 0L-2 -7V-3H-10V3H-2V7L8 0Z" fill={accent} />
+            {/* 3 Tumblers */}
+            <g transform="translate(85, 36)">
+              <rect x="0" y="0" width="30" height="46" rx="6" fill="var(--surface2)" stroke="var(--border)" strokeWidth="1.5" />
+              <text x="15" y="30" fill="var(--text)" fontSize="20" fontWeight="900" textAnchor="middle" fontFamily="JetBrains Mono">0</text>
+
+              <rect x="40" y="0" width="30" height="46" rx="6" fill="var(--surface2)" stroke="var(--border)" strokeWidth="1.5" />
+              <text x="55" y="30" fill="var(--text)" fontSize="20" fontWeight="900" textAnchor="middle" fontFamily="JetBrains Mono">4</text>
+
+              <rect x="80" y="0" width="30" height="46" rx="6" fill={accent} />
+              <text x="95" y="30" fill="#fff" fontSize="20" fontWeight="900" textAnchor="middle" fontFamily="JetBrains Mono">2</text>
             </g>
 
-            {/* Center Duel Symbol */}
-            <circle cx="140" cy="65" r="16" fill={accent} fillOpacity="0.15" />
-            <text x="140" y="70" fill={accent} fontSize="14" fontWeight="900" textAnchor="middle" fontFamily="Outfit, sans-serif">⚡</text>
+            {/* Lock Shackle */}
+            <path d="M125 24V14C125 7 132 2 140 2C148 2 155 7 155 14V24" stroke={accent} strokeWidth="3" fill="none" strokeLinecap="round" />
 
-            {/* Dynamic Rule Pill */}
-            <rect x="88" y="106" width="104" height="17" rx="8" fill="var(--surface)" stroke={accent} strokeWidth="1.2" />
-            <text x="140" y="118" fill={accent} fontSize="9" fontWeight="900" textAnchor="middle" letterSpacing="0.8">DIRECT ⇄ INVERTED</text>
+            <rect x="96" y="106" width="88" height="17" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">VAULT CODE</text>
+          </svg>
+        </div>
+      );
+
+    case 'missingPiece':
+      return (
+        <div className="card-visual-banner" style={{ background: soft }}>
+          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(95, 20)">
+              {/* 3x3 Mini Grid */}
+              {[0, 1, 2].map(r => [0, 1, 2].map(c => {
+                const isMissing = r === 2 && c === 2;
+                return (
+                  <g key={`${r}-${c}`} transform={`translate(${c * 32}, ${r * 32})`}>
+                    <rect
+                      x="0"
+                      y="0"
+                      width="26"
+                      height="26"
+                      rx="4"
+                      fill={isMissing ? accent : 'var(--surface)'}
+                      stroke={isMissing ? accent : 'var(--border)'}
+                      strokeWidth="1.5"
+                    />
+                    {!isMissing ? (
+                      <circle cx="13" cy="13" r={4 + r + c} fill="var(--text)" fillOpacity="0.4" />
+                    ) : (
+                      <text x="13" y="18" fill="#fff" fontSize="14" fontWeight="900" textAnchor="middle">?</text>
+                    )}
+                  </g>
+                );
+              }))}
+            </g>
+
+            <rect x="90" y="110" width="100" height="16" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="122" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">RAVEN MATRIX</text>
+          </svg>
+        </div>
+      );
+
+    case 'speedMath':
+      return (
+        <div className="card-visual-banner" style={{ background: soft }}>
+          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Speed Lightning bolt */}
+            <path d="M145 15L115 65H142L128 115L170 55H140L145 15Z" fill={accent} opacity="0.2" />
+
+            {/* Arithmetic Formula Badges */}
+            <g transform="translate(45, 42)">
+              <rect x="0" y="0" width="60" height="36" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+              <text x="30" y="24" fill="var(--text)" fontSize="13" fontWeight="900" textAnchor="middle">15% of 80</text>
+            </g>
+
+            <g transform="translate(115, 38)">
+              <circle cx="25" cy="20" r="22" fill={accent} />
+              <text x="25" y="26" fill="#fff" fontSize="16" fontWeight="900" textAnchor="middle">=</text>
+            </g>
+
+            <g transform="translate(175, 42)">
+              <rect x="0" y="0" width="60" height="36" rx="8" fill="var(--surface)" stroke={accent} strokeWidth="2" />
+              <text x="30" y="25" fill={accent} fontSize="16" fontWeight="900" textAnchor="middle">12 ⚡</text>
+            </g>
+
+            <rect x="96" y="106" width="88" height="17" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">SPRINT MATH</text>
+          </svg>
+        </div>
+      );
+
+    case 'codeBreaker':
+      return (
+        <div className="card-visual-banner" style={{ background: soft }}>
+          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(45, 34)">
+              <rect x="0" y="0" width="85" height="38" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+              <text x="42" y="24" fill="var(--text)" fontSize="14" fontWeight="900" textAnchor="middle" letterSpacing="2">TIGER</text>
+
+              <path d="M95 19H115M110 13L118 19L110 25" stroke={accent} strokeWidth="2" strokeLinecap="round" />
+
+              <rect x="125" y="0" width="85" height="38" rx="8" fill={accent} />
+              <text x="167" y="24" fill="#fff" fontSize="14" fontWeight="900" textAnchor="middle" letterSpacing="2">VKIGT</text>
+            </g>
+
+            <rect x="75" y="85" width="130" height="18" rx="9" fill="var(--surface2)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="97" fill="var(--muted)" fontSize="9" fontWeight="800" textAnchor="middle">SHIFT (+2) CIPHER</text>
+          </svg>
+        </div>
+      );
+
+    case 'brainMaze':
+      return (
+        <div className="card-visual-banner" style={{ background: soft }}>
+          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="140" cy="58" r="42" stroke={accent} strokeWidth="2" strokeOpacity="0.3" strokeDasharray="4 4" />
+            <circle cx="140" cy="58" r="32" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+
+            <text x="140" y="32" fill={accent} fontSize="11" fontWeight="900" textAnchor="middle">N</text>
+            <text x="140" y="94" fill="var(--muted)" fontSize="10" fontWeight="800" textAnchor="middle">S</text>
+            <text x="170" y="62" fill="var(--muted)" fontSize="10" fontWeight="800" textAnchor="middle">E</text>
+            <text x="110" y="62" fill="var(--muted)" fontSize="10" fontWeight="800" textAnchor="middle">W</text>
+
+            <polygon points="140,38 145,58 135,58" fill={accent} />
+            <polygon points="140,78 145,58 135,58" fill="var(--muted)" />
+
+            <rect x="96" y="106" width="88" height="17" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">COMPASS SENSE</text>
+          </svg>
+        </div>
+      );
+
+    case 'seatingShuffle':
+      return (
+        <div className="card-visual-banner" style={{ background: soft }}>
+          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(35, 42)">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <g key={i} transform={`translate(${i * 44}, 0)`}>
+                  <rect x="0" y="10" width="34" height="34" rx="8" fill={i === 2 ? accent : 'var(--surface)'} stroke="var(--border)" strokeWidth="1.5" />
+                  <circle cx="17" cy="0" r="7" fill={i === 2 ? accent : 'var(--muted)'} fillOpacity="0.6" />
+                  <text x="17" y="32" fill={i === 2 ? '#fff' : 'var(--text)'} fontSize="12" fontWeight="900" textAnchor="middle">
+                    {['A', 'B', 'C', 'D', 'E'][i]}
+                  </text>
+                </g>
+              ))}
+            </g>
+
+            <rect x="85" y="106" width="110" height="17" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">CHAIR LOGIC</text>
+          </svg>
+        </div>
+      );
+
+    case 'oddOneOut':
+      return (
+        <div className="card-visual-banner" style={{ background: soft }}>
+          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(35, 40)">
+              <rect x="0" y="0" width="45" height="45" rx="10" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+              <text x="22" y="28" fill="var(--text)" fontSize="13" fontWeight="800" textAnchor="middle">17</text>
+
+              <rect x="55" y="0" width="45" height="45" rx="10" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+              <text x="77" y="28" fill="var(--text)" fontSize="13" fontWeight="800" textAnchor="middle">19</text>
+
+              <rect x="110" y="0" width="45" height="45" rx="10" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+              <text x="132" y="28" fill="var(--text)" fontSize="13" fontWeight="800" textAnchor="middle">23</text>
+
+              {/* Outlier */}
+              <rect x="165" y="0" width="45" height="45" rx="10" fill={accent} />
+              <text x="187" y="28" fill="#fff" fontSize="14" fontWeight="900" textAnchor="middle">27 ✕</text>
+            </g>
+
+            <rect x="90" y="106" width="100" height="17" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">SPOT OUTLIER</text>
+          </svg>
+        </div>
+      );
+
+    case 'detectiveMystery':
+      return (
+        <div className="card-visual-banner" style={{ background: soft }}>
+          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Clue Magnifier */}
+            <circle cx="120" cy="55" r="26" stroke={accent} strokeWidth="3.5" fill="var(--surface)" fillOpacity="0.4" />
+            <line x1="140" y1="75" x2="165" y2="100" stroke={accent} strokeWidth="5" strokeLinecap="round" />
+
+            <circle cx="120" cy="50" r="10" fill="var(--surface2)" />
+            <path d="M108 65C108 58 114 55 120 55C126 55 132 58 132 65" fill="var(--surface2)" />
+
+            <rect x="160" y="30" width="60" height="40" rx="6" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+            <text x="190" y="54" fill="var(--text)" fontSize="11" fontWeight="800" textAnchor="middle">CASE 101</text>
+
+            <rect x="85" y="106" width="110" height="17" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">BLOOD RELATIONS</text>
+          </svg>
+        </div>
+      );
+
+    case 'countdown60':
+      return (
+        <div className="card-visual-banner" style={{ background: soft }}>
+          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Clock ring */}
+            <circle cx="140" cy="58" r="40" stroke={accent} strokeWidth="3" strokeDasharray="180 50" />
+            <circle cx="140" cy="58" r="32" fill="var(--surface)" />
+            <text x="140" y="65" fill={accent} fontSize="18" fontWeight="900" textAnchor="middle" fontFamily="JetBrains Mono">60s</text>
+
+            <rect x="96" y="108" width="88" height="17" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="120" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">RAPID BLITZ</text>
+          </svg>
+        </div>
+      );
+
+    case 'equationEscape':
+      return (
+        <div className="card-visual-banner" style={{ background: soft }}>
+          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(35, 42)">
+              <rect x="0" y="0" width="34" height="34" rx="6" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+              <text x="17" y="23" fill="var(--text)" fontSize="16" fontWeight="900" textAnchor="middle">3</text>
+
+              <rect x="42" y="0" width="34" height="34" rx="6" fill="var(--surface2)" stroke="var(--border)" strokeWidth="1.5" />
+              <text x="59" y="23" fill="var(--text)" fontSize="18" fontWeight="900" textAnchor="middle">×</text>
+
+              <rect x="84" y="0" width="34" height="34" rx="6" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+              <text x="101" y="23" fill="var(--text)" fontSize="16" fontWeight="900" textAnchor="middle">8</text>
+
+              <rect x="126" y="0" width="34" height="34" rx="6" fill="var(--surface2)" stroke="var(--border)" strokeWidth="1.5" />
+              <text x="143" y="23" fill="var(--text)" fontSize="18" fontWeight="900" textAnchor="middle">=</text>
+
+              {/* Target */}
+              <rect x="168" y="0" width="42" height="34" rx="6" fill={accent} />
+              <text x="189" y="23" fill="#fff" fontSize="16" fontWeight="900" textAnchor="middle">24 🔓</text>
+            </g>
+
+            <rect x="90" y="106" width="100" height="17" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">EQUATION LOCK</text>
           </svg>
         </div>
       );
@@ -135,166 +285,23 @@ export default function GameCardVisual({ gameId, accent = 'var(--coral)', soft =
       return (
         <div className="card-visual-banner" style={{ background: soft }}>
           <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Precision Radial Stopwatch Ring */}
             <circle cx="140" cy="65" r="44" stroke={accent} strokeWidth="2.5" strokeOpacity="0.25" strokeDasharray="4 4" />
             <circle cx="140" cy="65" r="36" fill="var(--surface)" stroke={accent} strokeWidth="2" />
 
-            {/* Stopwatch Ticks */}
             <line x1="140" y1="33" x2="140" y2="38" stroke={accent} strokeWidth="2.5" strokeLinecap="round" />
             <line x1="140" y1="92" x2="140" y2="97" stroke={accent} strokeWidth="2" strokeLinecap="round" />
             <line x1="108" y1="65" x2="113" y2="65" stroke={accent} strokeWidth="2" strokeLinecap="round" />
             <line x1="167" y1="65" x2="172" y2="65" stroke={accent} strokeWidth="2" strokeLinecap="round" />
 
-            {/* Rotating Stopwatch Needle */}
             <g className="anim-spin-needle" style={{ transformOrigin: '140px 65px' }}>
               <line x1="140" y1="65" x2="140" y2="40" stroke={accent} strokeWidth="3" strokeLinecap="round" />
             </g>
 
-            {/* Crown button */}
             <rect x="136" y="22" width="8" height="5" rx="2" fill={accent} />
             <circle cx="140" cy="65" r="5" fill={accent} />
 
-            {/* Millisecond readout */}
             <rect x="110" y="106" width="60" height="16" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
             <text x="140" y="118" fill="var(--text)" fontSize="10" fontWeight="800" textAnchor="middle" fontFamily="JetBrains Mono, monospace">01.000s</text>
-          </svg>
-        </div>
-      );
-
-    case 'detectiveGrid':
-      return (
-        <div className="card-visual-banner" style={{ background: soft }}>
-          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Investigation Pin Board Background */}
-            <line x1="60" y1="55" x2="140" y2="40" stroke={accent} strokeWidth="1.5" strokeDasharray="4 3" strokeOpacity="0.4" />
-            <line x1="140" y1="40" x2="220" y2="55" stroke={accent} strokeWidth="1.5" strokeDasharray="4 3" strokeOpacity="0.4" />
-            <line x1="60" y1="55" x2="140" y2="85" stroke={accent} strokeWidth="1.5" strokeDasharray="4 3" strokeOpacity="0.4" />
-            <line x1="220" y1="55" x2="140" y2="85" stroke={accent} strokeWidth="1.5" strokeDasharray="4 3" strokeOpacity="0.4" />
-
-            {/* Suspect Photo Frame Left */}
-            <rect x="42" y="36" width="36" height="42" rx="6" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
-            <circle cx="60" cy="50" r="8" fill="var(--surface2)" />
-            <path d="M50 72C50 66 54 62 60 62C66 62 70 66 70 72" fill="var(--surface2)" />
-            <circle cx="60" cy="36" r="3" fill="var(--coral)" />
-
-            {/* Suspect Photo Frame Right */}
-            <rect x="202" y="36" width="36" height="42" rx="6" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
-            <circle cx="220" cy="50" r="8" fill="var(--surface2)" />
-            <path d="M210 72C210 66 214 62 220 62C226 62 230 66 230 72" fill="var(--surface2)" />
-            <circle cx="220" cy="36" r="3" fill="var(--coral)" />
-
-            {/* Center Dossier Pin & Magnifying Glass */}
-            <g className="anim-float">
-              {/* Center Target Profile */}
-              <rect x="118" y="24" width="44" height="52" rx="8" fill="var(--surface)" stroke={accent} strokeWidth="2" />
-              <circle cx="140" cy="42" r="10" fill={accent} fillOpacity="0.2" stroke={accent} strokeWidth="1.5" />
-              <path d="M128 68C128 60 133 56 140 56C147 56 152 60 152 68" fill={accent} />
-
-              {/* Magnifying Glass Overlay */}
-              <circle cx="152" cy="72" r="22" stroke={accent} strokeWidth="3" fill="var(--surface)" fillOpacity="0.3" />
-              <line x1="168" y1="88" x2="185" y2="105" stroke={accent} strokeWidth="4.5" strokeLinecap="round" />
-              {/* Lens Glare */}
-              <path d="M142 58C148 55 156 57 162 62" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-            </g>
-
-            {/* Fingerprint / Clue Badge */}
-            <rect x="110" y="106" width="60" height="16" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
-            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">CASE FILE</text>
-          </svg>
-        </div>
-      );
-
-    case 'reflexStrike':
-      return (
-        <div className="card-visual-banner" style={{ background: soft }}>
-          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Sonar / Radar Concentric Rings */}
-            <circle cx="140" cy="65" r="48" stroke={accent} strokeWidth="1" strokeOpacity="0.2" />
-            <circle className="anim-pulse-target" cx="140" cy="65" r="34" stroke={accent} strokeWidth="2" strokeOpacity="0.6" strokeDasharray="6 3" />
-            <circle cx="140" cy="65" r="20" fill="var(--surface)" stroke={accent} strokeWidth="2" />
-
-            {/* Crosshairs */}
-            <line x1="84" y1="65" x2="120" y2="65" stroke={accent} strokeWidth="2" strokeLinecap="round" />
-            <line x1="160" y1="65" x2="196" y2="65" stroke={accent} strokeWidth="2" strokeLinecap="round" />
-            <line x1="140" y1="9" x2="140" y2="45" stroke={accent} strokeWidth="2" strokeLinecap="round" />
-            <line x1="140" y1="85" x2="140" y2="121" stroke={accent} strokeWidth="2" strokeLinecap="round" />
-
-            {/* Bulls Eye Strike Core */}
-            <circle cx="140" cy="65" r="8" fill={accent} />
-            <circle cx="140" cy="65" r="3" fill="#fff" />
-
-            {/* Target Brackets */}
-            <path d="M126 51H122V55" stroke={accent} strokeWidth="2" strokeLinecap="round" />
-            <path d="M154 51H158V55" stroke={accent} strokeWidth="2" strokeLinecap="round" />
-            <path d="M126 79H122V75" stroke={accent} strokeWidth="2" strokeLinecap="round" />
-            <path d="M154 79H158V75" stroke={accent} strokeWidth="2" strokeLinecap="round" />
-          </svg>
-        </div>
-      );
-
-    case 'wordScramble':
-      return (
-        <div className="card-visual-banner" style={{ background: soft }}>
-          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Orbital path */}
-            <ellipse cx="140" cy="65" rx="85" ry="32" stroke={accent} strokeWidth="1.5" strokeOpacity="0.25" strokeDasharray="5 5" />
-
-            {/* Floating Letter Cubes */}
-            <g transform="translate(60, 42)" className="anim-float">
-              <rect width="32" height="36" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="2" />
-              <text x="16" y="24" fill="var(--text)" fontSize="16" fontWeight="900" textAnchor="middle" fontFamily="Outfit, sans-serif">W</text>
-            </g>
-
-            <g transform="translate(105, 30)" className="anim-float" style={{ animationDelay: '0.2s' }}>
-              <rect width="34" height="38" rx="8" fill={accent} />
-              <text x="17" y="25" fill="#fff" fontSize="18" fontWeight="900" textAnchor="middle" fontFamily="Outfit, sans-serif">O</text>
-            </g>
-
-            <g transform="translate(150, 48)" className="anim-float" style={{ animationDelay: '0.4s' }}>
-              <rect width="32" height="36" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="2" />
-              <text x="16" y="24" fill="var(--text)" fontSize="16" fontWeight="900" textAnchor="middle" fontFamily="Outfit, sans-serif">R</text>
-            </g>
-
-            <g transform="translate(195, 34)" className="anim-float" style={{ animationDelay: '0.6s' }}>
-              <rect width="32" height="36" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="2" />
-              <text x="16" y="24" fill="var(--text)" fontSize="16" fontWeight="900" textAnchor="middle" fontFamily="Outfit, sans-serif">D</text>
-            </g>
-          </svg>
-        </div>
-      );
-
-    case 'sumDrop':
-      return (
-        <div className="card-visual-banner" style={{ background: soft }}>
-          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Number cascade matrix */}
-            <g transform="translate(70, 32)">
-              <rect x="0" y="0" width="30" height="30" rx="6" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
-              <text x="15" y="20" fill="var(--text)" fontSize="14" fontWeight="800" textAnchor="middle">7</text>
-
-              <rect x="36" y="0" width="30" height="30" rx="6" fill={accent} />
-              <text x="51" y="20" fill="#fff" fontSize="14" fontWeight="800" textAnchor="middle">8</text>
-
-              <rect x="72" y="0" width="30" height="30" rx="6" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
-              <text x="87" y="20" fill="var(--text)" fontSize="14" fontWeight="800" textAnchor="middle">3</text>
-
-              <rect x="108" y="0" width="30" height="30" rx="6" fill={accent} />
-              <text x="123" y="20" fill="#fff" fontSize="14" fontWeight="800" textAnchor="middle">9</text>
-
-              {/* Second row */}
-              <rect x="18" y="36" width="30" height="30" rx="6" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
-              <text x="33" y="56" fill="var(--text)" fontSize="14" fontWeight="800" textAnchor="middle">5</text>
-
-              <rect x="54" y="36" width="30" height="30" rx="6" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
-              <text x="69" y="56" fill="var(--text)" fontSize="14" fontWeight="800" textAnchor="middle">2</text>
-
-              <rect x="90" y="36" width="30" height="30" rx="6" fill={accent} />
-              <text x="105" y="56" fill="#fff" fontSize="14" fontWeight="800" textAnchor="middle">6</text>
-            </g>
-
-            {/* Equals Pill */}
-            <rect x="110" y="106" width="60" height="18" rx="9" fill={accent} />
-            <text x="140" y="119" fill="#fff" fontSize="11" fontWeight="900" textAnchor="middle">SUM = 23</text>
           </svg>
         </div>
       );
@@ -303,25 +310,19 @@ export default function GameCardVisual({ gameId, accent = 'var(--coral)', soft =
       return (
         <div className="card-visual-banner" style={{ background: soft }}>
           <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Card 1 (Tilted Left) */}
-            <g transform="translate(100, 65) rotate(-10) translate(-30, -42)" className="anim-float">
-              <rect width="48" height="66" rx="10" fill="var(--surface)" stroke={accent} strokeWidth="2.5" />
-              <rect x="6" y="6" width="36" height="54" rx="6" fill={accent} fillOpacity="0.12" />
-              <circle cx="24" cy="33" r="12" fill={accent} />
-              <path d="M20 33L23 36L28 30" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            <g transform="translate(68, 32)">
+              <rect x="0" y="0" width="42" height="52" rx="10" fill={accent} stroke="#fff" strokeWidth="2" />
+              <text x="21" y="34" fontSize="20" textAnchor="middle">🦊</text>
+
+              <rect x="52" y="0" width="42" height="52" rx="10" fill={accent} stroke="#fff" strokeWidth="2" />
+              <text x="73" y="34" fontSize="20" textAnchor="middle">🦊</text>
+
+              <rect x="104" y="0" width="42" height="52" rx="10" fill="var(--surface)" stroke="var(--border)" strokeWidth="2" />
+              <text x="125" y="34" fontSize="18" textAnchor="middle">?</text>
             </g>
 
-            {/* Card 2 (Tilted Right - Match!) */}
-            <g transform="translate(180, 65) rotate(10) translate(-30, -42)" className="anim-float" style={{ animationDelay: '0.3s' }}>
-              <rect width="48" height="66" rx="10" fill="var(--surface)" stroke={accent} strokeWidth="2.5" />
-              <rect x="6" y="6" width="36" height="54" rx="6" fill={accent} fillOpacity="0.12" />
-              <circle cx="24" cy="33" r="12" fill={accent} />
-              <path d="M20 33L23 36L28 30" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-            </g>
-
-            {/* Match Sparkle Rays */}
-            <circle cx="140" cy="50" r="3" fill={accent} />
-            <path d="M140 40V46M140 54V60M133 50H137M143 50H147" stroke={accent} strokeWidth="2" strokeLinecap="round" />
+            <rect x="96" y="106" width="88" height="17" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">PAIR FOCUS</text>
           </svg>
         </div>
       );

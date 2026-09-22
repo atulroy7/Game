@@ -6,14 +6,19 @@ import CountdownScreen from './components/CountdownScreen';
 import QuizScreen      from './components/QuizScreen';
 import ResultsScreen   from './components/ResultsScreen';
 import ReviewScreen    from './components/ReviewScreen';
-import ReflexStrike    from './games/ReflexStrike';
-import WordScramble    from './games/WordScramble';
-import SumDrop         from './games/SumDrop';
 import MemoryMatch     from './games/MemoryMatch';
 import ChronoBeat      from './games/ChronoBeat';
-import ArrowClash      from './games/ArrowClash';
-import DetectiveGrid   from './games/DetectiveGrid';
-import LaserPrism      from './games/LaserPrism';
+import NumberNinja     from './games/NumberNinja';
+import LogicLock       from './games/LogicLock';
+import MissingPiece    from './games/MissingPiece';
+import SpeedMath       from './games/SpeedMath';
+import CodeBreaker     from './games/CodeBreaker';
+import BrainMaze       from './games/BrainMaze';
+import SeatingShuffle  from './games/SeatingShuffle';
+import OddOneOut       from './games/OddOneOut';
+import DetectiveMystery from './games/DetectiveMystery';
+import Countdown60     from './games/Countdown60';
+import EquationEscape  from './games/EquationEscape';
 import './App.css';
 
 const DIFFICULTY_TIME = { easy: 20, medium: 15, hard: 10 };
@@ -415,62 +420,45 @@ export default function App() {
         <ReviewScreen answers={answers} onBack={() => setScreen('results')} />
       )}
 
-      {/* Mini-Games */}
-      {screen === 'reflexStrike' && (
-        <ReflexStrike
-          sound={sound}
-          onBack={() => setScreen('home')}
-          onSaveScore={handleSaveMiniGameScore}
-        />
+      {/* The 13 BrainBlitz Arcade Games */}
+      {screen === 'numberNinja' && (
+        <NumberNinja sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
       )}
-      {screen === 'wordScramble' && (
-        <WordScramble
-          sound={sound}
-          onBack={() => setScreen('home')}
-          onSaveScore={handleSaveMiniGameScore}
-        />
+      {screen === 'logicLock' && (
+        <LogicLock sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
       )}
-      {screen === 'sumDrop' && (
-        <SumDrop
-          sound={sound}
-          onBack={() => setScreen('home')}
-          onSaveScore={handleSaveMiniGameScore}
-        />
+      {screen === 'missingPiece' && (
+        <MissingPiece sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
+      )}
+      {screen === 'speedMath' && (
+        <SpeedMath sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
+      )}
+      {screen === 'codeBreaker' && (
+        <CodeBreaker sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
+      )}
+      {screen === 'brainMaze' && (
+        <BrainMaze sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
+      )}
+      {screen === 'seatingShuffle' && (
+        <SeatingShuffle sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
+      )}
+      {screen === 'oddOneOut' && (
+        <OddOneOut sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
+      )}
+      {screen === 'detectiveMystery' && (
+        <DetectiveMystery sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
+      )}
+      {screen === 'countdown60' && (
+        <Countdown60 sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
+      )}
+      {screen === 'equationEscape' && (
+        <EquationEscape sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
       )}
       {screen === 'memoryMatch' && (
-        <MemoryMatch
-          sound={sound}
-          onBack={() => setScreen('home')}
-          onSaveScore={handleSaveMiniGameScore}
-        />
+        <MemoryMatch sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
       )}
       {screen === 'chronoBeat' && (
-        <ChronoBeat
-          sound={sound}
-          onBack={() => setScreen('home')}
-          onSaveScore={handleSaveMiniGameScore}
-        />
-      )}
-      {screen === 'arrowClash' && (
-        <ArrowClash
-          sound={sound}
-          onBack={() => setScreen('home')}
-          onSaveScore={handleSaveMiniGameScore}
-        />
-      )}
-      {screen === 'detectiveGrid' && (
-        <DetectiveGrid
-          sound={sound}
-          onBack={() => setScreen('home')}
-          onSaveScore={handleSaveMiniGameScore}
-        />
-      )}
-      {screen === 'laserPrism' && (
-        <LaserPrism
-          sound={sound}
-          onBack={() => setScreen('home')}
-          onSaveScore={handleSaveMiniGameScore}
-        />
+        <ChronoBeat sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
       )}
     </div>
   );
