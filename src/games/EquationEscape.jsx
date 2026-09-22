@@ -5,7 +5,7 @@ import ScorePop from '../components/ScorePop';
 
 const EQUATION_PUZZLES = [
   { target: 24, numbers: [3, 8, 4, 6], parHint: '3 × 8 = 24' },
-  { target: 18, numbers: [5, 4, 2, 7], parHint: '(5 - 2) × 6 or (4 × 5) - 2' },
+  { target: 18, numbers: [5, 4, 2, 7], parHint: '(4 × 5) - 2 = 18' },
   { target: 36, numbers: [9, 3, 2, 4], parHint: '9 × 4 = 36' },
   { target: 25, numbers: [3, 5, 2, 10], parHint: '(10 ÷ 2) × 5 = 25' },
   { target: 42, numbers: [6, 7, 8, 2], parHint: '6 × 7 = 42' },

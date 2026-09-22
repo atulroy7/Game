@@ -140,16 +140,28 @@ function generateDynamicCipher() {
     options = [answer, f1, f2, f3];
   }
 
-  // Ensure 4 unique options and shuffle using Fisher-Yates
-  const uniqueSet = new Set([answer]);
-  options.forEach(o => {
-    if (o && o !== answer) uniqueSet.add(o);
-  });
-  while (uniqueSet.size < 4) {
-    uniqueSet.add(shiftStr(answer, uniqueSet.size));
+  // Collect 3 distinct distractors that do not match answer
+  const distSet = new Set();
+  const rawDistractors = options.filter(o => o && String(o).trim() !== String(answer).trim());
+  for (const d of rawDistractors) {
+    if (d !== answer) distSet.add(d);
   }
-
-  const shuffled = shuffle(Array.from(uniqueSet));
+  let step = 1;
+  while (distSet.size < 3) {
+    let extra = '';
+    if (type === 'val_sum') {
+      const num = Number(answer) || 50;
+      extra = String(num + (step % 2 === 0 ? step * 2 : -step * 2));
+    } else {
+      extra = shiftStr(answer, step);
+    }
+    if (extra && extra !== answer) distSet.add(extra);
+    step++;
+  }
+  const finalOptions = Array.from(distSet).slice(0, 3);
+  // Pick random position 0, 1, 2, or 3 (A, B, C, or D) for the correct answer
+  const correctSlot = Math.floor(Math.random() * 4);
+  finalOptions.splice(correctSlot, 0, answer);
 
   return {
     type: typeName,
@@ -157,7 +169,7 @@ function generateDynamicCipher() {
     example,
     target,
     answer,
-    options: shuffled,
+    options: finalOptions,
   };
 }
 

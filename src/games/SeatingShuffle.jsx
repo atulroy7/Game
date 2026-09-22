@@ -70,12 +70,11 @@ export default function SeatingShuffle({ sound, onBack, onSaveScore }) {
   const handleSeatClick = (seatIdx) => {
     sound.playPop();
     if (selectedPerson) {
-      // Put selected person in this seat
       const next = [...slots];
-      // If someone was there, replace
+      const prevOcc = next[seatIdx];
       next[seatIdx] = selectedPerson;
       setSlots(next);
-      setSelectedPerson(null);
+      setSelectedPerson(prevOcc || null);
     } else if (slots[seatIdx]) {
       // Pick up person from seat
       const person = slots[seatIdx];

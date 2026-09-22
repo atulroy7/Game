@@ -12,8 +12,10 @@ function generateSeriesQuestion(difficulty = 'medium') {
   let ruleText = '';
 
   if (type === 'ap') {
-    const start = Math.floor(Math.random() * 20) + 1;
-    const diff = (Math.floor(Math.random() * 8) + 2) * (Math.random() > 0.3 ? 1 : -1);
+    const isSub = Math.random() > 0.5;
+    const diffVal = Math.floor(Math.random() * 6) + 2;
+    const diff = isSub ? -diffVal : diffVal;
+    const start = isSub ? (Math.floor(Math.random() * 20) + 45) : (Math.floor(Math.random() * 15) + 2);
     const len = 6;
     for (let i = 0; i < len; i++) sequence.push(start + i * diff);
     ruleText = diff > 0 ? `Add ${diff} each step` : `Subtract ${Math.abs(diff)} each step`;
@@ -70,14 +72,23 @@ function generateSeriesQuestion(difficulty = 'medium') {
   const displaySequence = [...sequence];
   displaySequence[hideIdx] = '?';
 
-  // Generate 4 distinct options
+  // Generate 4 distinct options with safe retry bounds
   const optionsSet = new Set([answer]);
-  while (optionsSet.size < 4) {
+  let tries = 0;
+  while (optionsSet.size < 4 && tries < 40) {
+    tries++;
     const offset = (Math.floor(Math.random() * 7) + 1) * (Math.random() > 0.5 ? 1 : -1);
     const fake = answer + offset;
     if (fake > 0 && fake !== answer) optionsSet.add(fake);
   }
-  const options = Array.from(optionsSet);
+  let step = 1;
+  while (optionsSet.size < 4) {
+    const candidate = answer + (step % 2 === 0 ? step * 2 : -step * 2);
+    if (candidate > 0 && candidate !== answer) optionsSet.add(candidate);
+    else optionsSet.add(answer + step * 3);
+    step++;
+  }
+  const options = Array.from(optionsSet).slice(0, 4);
   for (let i = options.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [options[i], options[j]] = [options[j], options[i]];

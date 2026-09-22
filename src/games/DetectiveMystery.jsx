@@ -10,7 +10,7 @@ const DETECTIVE_CASES = [
     story: "Pointing to a photograph of a boy, Suresh said: 'He is the son of the only son of my mother.'",
     question: 'How is Suresh related to the boy in the photograph?',
     answer: 'Father',
-    options: ['Father', 'Brother', 'Uncle', 'Grandfather'],
+    options: ['Brother', 'Father', 'Uncle', 'Grandfather'],
     breakdown: "Mother's only son is Suresh himself. The boy is his son, so Suresh is the Father.",
   },
   {
@@ -19,7 +19,7 @@ const DETECTIVE_CASES = [
     story: "A is B's brother. C is A's mother. D is C's father. E is B's son.",
     question: 'How is D related to A?',
     answer: 'Maternal Grandfather',
-    options: ['Maternal Grandfather', 'Father', 'Uncle', 'Great Grandfather'],
+    options: ['Father', 'Uncle', 'Maternal Grandfather', 'Great Grandfather'],
     breakdown: "A's mother is C, and C's father is D. Therefore, D is A's maternal grandfather.",
   },
   {
@@ -28,7 +28,7 @@ const DETECTIVE_CASES = [
     story: "Introducing a man at a party, a woman said: 'His wife is the only daughter of my father.'",
     question: 'How is the man related to the woman?',
     answer: 'Husband',
-    options: ['Husband', 'Brother', 'Father-in-law', 'Cousin'],
+    options: ['Brother', 'Father-in-law', 'Cousin', 'Husband'],
     breakdown: "The only daughter of the woman's father is the woman herself. Since his wife is the woman herself, the man is her Husband.",
   },
   {
@@ -37,7 +37,7 @@ const DETECTIVE_CASES = [
     story: "Deepak said to Nitin: 'That boy playing with the football is the younger of the two brothers of the daughter of my father’s wife.'",
     question: 'How is the boy playing football related to Deepak?',
     answer: 'Brother',
-    options: ['Brother', 'Son', 'Nephew', 'Cousin'],
+    options: ['Son', 'Brother', 'Nephew', 'Cousin'],
     breakdown: "Father's wife is Deepak's mother. Daughter of his mother is his sister. Brother of his sister is Deepak's Brother.",
   },
   {
@@ -46,7 +46,7 @@ const DETECTIVE_CASES = [
     story: "A man pointing to a lady said: 'Her mother is the only daughter of my mother.'",
     question: 'How is the man related to the lady?',
     answer: 'Maternal Uncle',
-    options: ['Maternal Uncle', 'Father', 'Brother', 'Grandfather'],
+    options: ['Father', 'Brother', 'Maternal Uncle', 'Grandfather'],
     breakdown: "Only daughter of the man's mother is the man's sister. The lady is the daughter of his sister. Therefore, the man is her Maternal Uncle.",
   },
   {
@@ -55,7 +55,7 @@ const DETECTIVE_CASES = [
     story: "Rahul said: 'The girl I met yesterday at the beach was the youngest daughter of the brother-in-law of my friend’s mother.'",
     question: 'How is the girl related to Rahul’s friend?',
     answer: 'Cousin',
-    options: ['Cousin', 'Niece', 'Sister', 'Aunt'],
+    options: ['Niece', 'Sister', 'Cousin', 'Aunt'],
     breakdown: "Brother-in-law of friend's mother is friend's maternal uncle. Daughter of the maternal uncle is the friend's Cousin.",
   },
 ];

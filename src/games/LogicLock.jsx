@@ -38,11 +38,11 @@ const PUZZLE_BANK = [
   {
     secret: [1, 6, 5],
     clues: [
-      { digits: [1, 4, 7], hint: 'One number is correct and well placed' },
-      { digits: [6, 1, 8], hint: 'Two numbers are correct but wrongly placed' },
-      { digits: [4, 8, 9], hint: 'Nothing is correct' },
-      { digits: [7, 6, 2], hint: 'One number is correct and well placed' },
-      { digits: [5, 0, 1], hint: 'Two numbers are correct but wrongly placed' },
+      { digits: [6, 8, 5], hint: 'Two numbers are correct, one well placed' },
+      { digits: [1, 8, 9], hint: 'One number is correct and well placed' },
+      { digits: [2, 0, 6], hint: 'One number is correct but wrongly placed' },
+      { digits: [7, 3, 8], hint: 'Nothing is correct' },
+      { digits: [5, 1, 4], hint: 'Two numbers are correct but wrongly placed' },
     ],
   },
   {
@@ -176,7 +176,12 @@ export default function LogicLock({ sound, onBack, onSaveScore }) {
                   >
                     ▲
                   </button>
-                  <div className="tumbler-digit-window">
+                  <div
+                    className="tumbler-digit-window"
+                    style={{ cursor: unlocked ? 'default' : 'pointer' }}
+                    onClick={() => !unlocked && handleDialChange(dialIdx, 1)}
+                    title="Click to increment"
+                  >
                     <span className="tumbler-digit">{dials[dialIdx]}</span>
                   </div>
                   <button

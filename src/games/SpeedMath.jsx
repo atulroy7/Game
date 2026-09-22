@@ -50,6 +50,13 @@ function generateSpeedMathProblem() {
       answer = Math.floor(Math.random() * 20) + 12;
       const dividend = div * answer;
       question = `${dividend} ÷ ${div} = ?`;
+    } else if (op === '-') {
+      const x1 = Math.floor(Math.random() * 80) + 40;
+      const x2 = Math.floor(Math.random() * 35) + 10;
+      const big = Math.max(x1, x2);
+      const small = Math.min(x1, x2);
+      question = `${big} - ${small} = ?`;
+      answer = big - small;
     } else {
       const a = Math.floor(Math.random() * 80) + 45;
       const b = Math.floor(Math.random() * 60) + 25;
@@ -58,14 +65,23 @@ function generateSpeedMathProblem() {
     }
   }
 
-  // Generate 4 distinct options
+  // Generate 4 distinct options with safe bounds
   const optionsSet = new Set([answer]);
-  while (optionsSet.size < 4) {
+  let tries = 0;
+  while (optionsSet.size < 4 && tries < 40) {
+    tries++;
     const delta = (Math.floor(Math.random() * 5) + 1) * (Math.random() > 0.5 ? 1 : -1) * (answer > 100 ? 5 : 1);
     const fake = answer + delta;
     if (fake > 0 && fake !== answer) optionsSet.add(fake);
   }
-  const options = Array.from(optionsSet);
+  let step = 1;
+  while (optionsSet.size < 4) {
+    const candidate = answer + step * (step % 2 === 0 ? 2 : -2);
+    if (candidate > 0 && candidate !== answer) optionsSet.add(candidate);
+    else optionsSet.add(answer + step * 3);
+    step++;
+  }
+  const options = Array.from(optionsSet).slice(0, 4);
   for (let i = options.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [options[i], options[j]] = [options[j], options[i]];
