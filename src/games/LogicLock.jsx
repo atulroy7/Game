@@ -70,6 +70,7 @@ const PUZZLE_BANK = [
 export default function LogicLock({ sound, onBack, onSaveScore }) {
   const [puzzleIdx, setPuzzleIdx] = useState(0);
   const [dials, setDials] = useState([0, 0, 0]);
+  const [activeDial, setActiveDial] = useState(0);
   const [markedClues, setMarkedClues] = useState({});
   const [unlocked, setUnlocked] = useState(false);
   const [attempts, setAttempts] = useState(0);
@@ -80,15 +81,111 @@ export default function LogicLock({ sound, onBack, onSaveScore }) {
   const [lastPts, setLastPts] = useState(0);
   const [scoreTrigger, setScoreTrigger] = useState(0);
 
+  const input0Ref = useRef(null);
+  const input1Ref = useRef(null);
+  const input2Ref = useRef(null);
+  const inputRefs = [input0Ref, input1Ref, input2Ref];
+
   const currentPuzzle = PUZZLE_BANK[puzzleIdx % PUZZLE_BANK.length];
 
   const handleDialChange = (index, delta) => {
     sound.playPop();
     setDials(prev => {
       const next = [...prev];
-      next[index] = (next[index] + delta + 10) % 10;
+      next[index] = (Number(next[index]) + delta + 10) % 10;
       return next;
     });
+  };
+
+  const handleDigitInput = (index, rawValue) => {
+    if (unlocked) return;
+    const digitsOnly = rawValue.replace(/\D/g, '');
+    if (digitsOnly.length === 0) return;
+    const digit = Number(digitsOnly.slice(-1));
+    sound.playPop();
+
+    setDials(prev => {
+      const next = [...prev];
+      next[index] = digit;
+      return next;
+    });
+
+    if (index < 2) {
+      setActiveDial(index + 1);
+      setTimeout(() => {
+        inputRefs[index + 1].current?.focus();
+        inputRefs[index + 1].current?.select();
+      }, 10);
+    }
+  };
+
+  const handleKeyDown = (index, e) => {
+    if (unlocked) return;
+    if (e.key === 'Backspace') {
+      e.preventDefault();
+      sound.playPop();
+      setDials(prev => {
+        const next = [...prev];
+        next[index] = 0;
+        return next;
+      });
+      if (index > 0) {
+        setActiveDial(index - 1);
+        inputRefs[index - 1].current?.focus();
+        inputRefs[index - 1].current?.select();
+      }
+    } else if (e.key === 'ArrowLeft' && index > 0) {
+      e.preventDefault();
+      setActiveDial(index - 1);
+      inputRefs[index - 1].current?.focus();
+      inputRefs[index - 1].current?.select();
+    } else if (e.key === 'ArrowRight' && index < 2) {
+      e.preventDefault();
+      setActiveDial(index + 1);
+      inputRefs[index + 1].current?.focus();
+      inputRefs[index + 1].current?.select();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      handleDialChange(index, 1);
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      handleDialChange(index, -1);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      handleCrackVault();
+    }
+  };
+
+  const handleKeypadPress = (num) => {
+    if (unlocked) return;
+    sound.playPop();
+    setDials(prev => {
+      const next = [...prev];
+      next[activeDial] = num;
+      return next;
+    });
+    if (activeDial < 2) {
+      const nextIdx = activeDial + 1;
+      setActiveDial(nextIdx);
+      inputRefs[nextIdx].current?.focus();
+      inputRefs[nextIdx].current?.select();
+    }
+  };
+
+  const handleKeypadBackspace = () => {
+    if (unlocked) return;
+    sound.playPop();
+    setDials(prev => {
+      const next = [...prev];
+      next[activeDial] = 0;
+      return next;
+    });
+    if (activeDial > 0) {
+      const prevIdx = activeDial - 1;
+      setActiveDial(prevIdx);
+      inputRefs[prevIdx].current?.focus();
+      inputRefs[prevIdx].current?.select();
+    }
   };
 
   const toggleClueMark = (idx) => {
@@ -100,7 +197,7 @@ export default function LogicLock({ sound, onBack, onSaveScore }) {
   };
 
   const handleCrackVault = () => {
-    const isSuccess = dials.every((d, i) => d === currentPuzzle.secret[i]);
+    const isSuccess = dials.every((d, i) => Number(d) === currentPuzzle.secret[i]);
 
     if (isSuccess) {
       sound.playCorrect();
@@ -125,6 +222,7 @@ export default function LogicLock({ sound, onBack, onSaveScore }) {
   const handleNextLock = () => {
     setPuzzleIdx(i => i + 1);
     setDials([0, 0, 0]);
+    setActiveDial(0);
     setMarkedClues({});
     setUnlocked(false);
     setAttempts(0);
@@ -170,30 +268,81 @@ export default function LogicLock({ sound, onBack, onSaveScore }) {
               {[0, 1, 2].map((dialIdx) => (
                 <div key={dialIdx} className="tumbler-column">
                   <button
+                    type="button"
                     className="btn-tumbler-arrow"
                     onClick={() => handleDialChange(dialIdx, 1)}
                     disabled={unlocked}
+                    title="Increment"
                   >
                     ▲
                   </button>
-                  <div
-                    className="tumbler-digit-window"
-                    style={{ cursor: unlocked ? 'default' : 'pointer' }}
-                    onClick={() => !unlocked && handleDialChange(dialIdx, 1)}
-                    title="Click to increment"
-                  >
-                    <span className="tumbler-digit">{dials[dialIdx]}</span>
-                  </div>
+                  <input
+                    ref={inputRefs[dialIdx]}
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={2}
+                    className={`tumbler-digit-input ${activeDial === dialIdx ? 'active-dial' : ''}`}
+                    value={dials[dialIdx]}
+                    onFocus={() => {
+                      setActiveDial(dialIdx);
+                      inputRefs[dialIdx].current?.select();
+                    }}
+                    onChange={(e) => handleDigitInput(dialIdx, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(dialIdx, e)}
+                    disabled={unlocked}
+                    aria-label={`Digit ${dialIdx + 1}`}
+                  />
                   <button
+                    type="button"
                     className="btn-tumbler-arrow"
                     onClick={() => handleDialChange(dialIdx, -1)}
                     disabled={unlocked}
+                    title="Decrement"
                   >
                     ▼
                   </button>
                 </div>
               ))}
             </div>
+
+            {/* Quick Numeric Keypad */}
+            {!unlocked && (
+              <div className="lock-keypad" role="group" aria-label="Lock numeric keypad">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    className="btn-keypad-digit"
+                    onClick={() => handleKeypadPress(num)}
+                  >
+                    {num}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  className="btn-keypad-digit keypad-backspace"
+                  onClick={handleKeypadBackspace}
+                  title="Backspace"
+                >
+                  ⌫
+                </button>
+                <button
+                  type="button"
+                  className="btn-keypad-digit"
+                  style={{ fontSize: '0.75rem', color: 'var(--amber)' }}
+                  onClick={() => {
+                    sound.playPop();
+                    setDials([0, 0, 0]);
+                    setActiveDial(0);
+                    inputRefs[0].current?.focus();
+                  }}
+                  title="Clear all dials"
+                >
+                  CLR
+                </button>
+              </div>
+            )}
 
             {/* Crack Vault Trigger Button */}
             {!unlocked ? (
