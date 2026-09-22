@@ -65,7 +65,11 @@ function generateSpeedMathProblem() {
     const fake = answer + delta;
     if (fake > 0 && fake !== answer) optionsSet.add(fake);
   }
-  const options = Array.from(optionsSet).sort(() => Math.random() - 0.5);
+  const options = Array.from(optionsSet);
+  for (let i = options.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [options[i], options[j]] = [options[j], options[i]];
+  }
 
   return { question, answer, options, tag };
 }

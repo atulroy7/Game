@@ -78,6 +78,15 @@ const RAPID_QUESTIONS = [
   },
 ];
 
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 export default function Countdown60({ sound, onBack, onSaveScore }) {
   const [gameState, setGameState] = useState('ready');
   const [timeLeft, setTimeLeft] = useState(60);
@@ -96,6 +105,10 @@ export default function Countdown60({ sound, onBack, onSaveScore }) {
   const timeLeftRef = useRef(60);
 
   const current = RAPID_QUESTIONS[qIdx % RAPID_QUESTIONS.length];
+
+  const shuffledOptions = React.useMemo(() => {
+    return shuffleArray(current.options);
+  }, [current]);
 
   const nextQuestion = useCallback(() => {
     setQIdx(i => i + 1);
@@ -239,7 +252,7 @@ export default function Countdown60({ sound, onBack, onSaveScore }) {
 
           {/* Binary Options */}
           <div className="countdown-options-grid">
-            {current.options.map((opt, i) => {
+            {shuffledOptions.map((opt, i) => {
               const isSelected = selectedOpt === opt;
               const isCorrect = opt === current.answer;
               let stateClass = '';

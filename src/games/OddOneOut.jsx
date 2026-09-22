@@ -66,6 +66,15 @@ const ODD_ONE_DATA = [
   },
 ];
 
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 export default function OddOneOut({ sound, onBack, onSaveScore }) {
   const [gameState, setGameState] = useState('ready');
   const [qIdx, setQIdx] = useState(0);
@@ -83,6 +92,10 @@ export default function OddOneOut({ sound, onBack, onSaveScore }) {
   const timeLeftRef = useRef(15);
 
   const current = ODD_ONE_DATA[qIdx % ODD_ONE_DATA.length];
+
+  const shuffledItems = React.useMemo(() => {
+    return shuffleArray(current.items);
+  }, [current]);
 
   const nextQuestion = useCallback(() => {
     setQIdx(i => i + 1);
@@ -208,7 +221,7 @@ export default function OddOneOut({ sound, onBack, onSaveScore }) {
 
           {/* 4 Items Grid */}
           <div className="odd-items-grid">
-            {current.items.map((item, i) => {
+            {shuffledItems.map((item, i) => {
               const isSelected = selectedItem === item;
               const isCorrect = item === current.odd;
               let stateClass = '';

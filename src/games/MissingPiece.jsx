@@ -97,8 +97,11 @@ function generateMatrixPuzzle(level = 1) {
     }
   }
 
-  // Shuffle options
-  options = options.sort(() => Math.random() - 0.5);
+  // Shuffle options with Fisher-Yates
+  for (let i = options.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [options[i], options[j]] = [options[j], options[i]];
+  }
 
   return { matrix, correctOption, options, explanation };
 }

@@ -60,6 +60,15 @@ const DETECTIVE_CASES = [
   },
 ];
 
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
   const [gameState, setGameState] = useState('ready');
   const [caseIdx, setCaseIdx] = useState(0);
@@ -71,6 +80,10 @@ export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
   const [scoreTrigger, setScoreTrigger] = useState(0);
 
   const currentCase = DETECTIVE_CASES[caseIdx % DETECTIVE_CASES.length];
+
+  const shuffledOptions = React.useMemo(() => {
+    return shuffleArray(currentCase.options);
+  }, [currentCase]);
 
   const handleSelect = (opt) => {
     if (selectedOpt !== null || gameState !== 'playing') return;
@@ -167,7 +180,7 @@ export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
 
           {/* Suspect / Relation Options */}
           <div className="detective-options-grid">
-            {currentCase.options.map((opt, i) => {
+            {shuffledOptions.map((opt, i) => {
               const isSelected = selectedOpt === opt;
               const isCorrect = opt === currentCase.answer;
               let stateClass = '';
