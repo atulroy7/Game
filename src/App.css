@@ -2807,3 +2807,673 @@ button {
   background: var(--surface2);
 }
 
+/* ================================================
+   ⚡ LASER PRISM MINI-GAME
+   ================================================ */
+.laser-prism-screen {
+  padding-bottom: 50px;
+}
+
+.laser-level-badge {
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.laser-level-badge:hover {
+  background: var(--surface);
+  border-color: var(--coral);
+  color: var(--coral);
+  transform: translateY(-1px);
+}
+
+.laser-main-container {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.laser-hud-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+.laser-hud-box {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.laser-hud-box .lbl {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+}
+
+.laser-hud-box .val {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.laser-hud-box .val small {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.laser-hud-box .val.highlight {
+  color: var(--coral);
+}
+
+.laser-stage-info {
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.stage-title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.stage-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.stage-diff-pill {
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  padding: 2px 10px;
+  border-radius: 50px;
+  background: var(--coral-soft);
+  color: var(--coral);
+  letter-spacing: 0.5px;
+}
+
+.stage-instruction {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* 6x6 Cyber Laser Board */
+.laser-board-wrapper {
+  width: 100%;
+  max-width: 460px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 12px;
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+
+.laser-grid-board {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 6px;
+  background: var(--bg-subtle);
+  border-radius: 14px;
+  padding: 6px;
+  overflow: hidden;
+}
+
+/* SVG Laser Beam Canvas */
+.laser-svg-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Cell styles */
+.laser-cell {
+  position: relative;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  z-index: 2;
+}
+
+.laser-cell.clickable-cell {
+  cursor: pointer;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.laser-cell.clickable-cell:hover {
+  border-color: var(--coral);
+  transform: scale(1.04);
+  z-index: 6;
+}
+
+.laser-cell.clickable-cell:active {
+  transform: scale(0.96);
+}
+
+/* Cell: Emitter */
+.cell-emitter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.emitter-icon {
+  font-size: 1.4rem;
+  z-index: 2;
+  filter: drop-shadow(0 0 6px var(--coral));
+}
+
+.emitter-pulse {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--coral);
+  opacity: 0.3;
+  animation: pulseCore 1.6s infinite ease-in-out;
+}
+
+@keyframes pulseCore {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.4); opacity: 0.15; }
+  100% { transform: scale(0.8); opacity: 0.5; }
+}
+
+/* Cell: Target Crystal */
+.cell-target {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.target-icon {
+  font-size: 1.35rem;
+  transition: transform 0.3s ease;
+}
+
+.cell-target.target-lit {
+  animation: crystalGlow 1.2s infinite alternate ease-in-out;
+}
+
+.cell-target.target-lit .target-icon {
+  transform: scale(1.25);
+  filter: drop-shadow(0 0 10px #34d399) drop-shadow(0 0 4px #ffffff);
+}
+
+.target-crystal-core {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cell-target.target-lit .target-crystal-core {
+  opacity: 1;
+  background: radial-gradient(circle, var(--mint-soft) 0%, transparent 70%);
+}
+
+@keyframes crystalGlow {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+
+/* Cell: Cyber Wall */
+.cell-wall {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wall-hatch {
+  width: 60%;
+  height: 60%;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--border),
+    var(--border) 3px,
+    transparent 3px,
+    transparent 6px
+  );
+  border-radius: 4px;
+}
+
+/* Cell: Mirror */
+.cell-mirror {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mirror-glass {
+  position: absolute;
+  width: 78%;
+  height: 6px;
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mirror-slash .mirror-glass {
+  transform: rotate(-45deg);
+}
+
+.mirror-backslash .mirror-glass {
+  transform: rotate(45deg);
+}
+
+.mirror-turn-hint {
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  font-size: 0.65rem;
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+/* Cell: Beam Splitter */
+.cell-splitter {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splitter-prism {
+  position: absolute;
+  width: 72%;
+  height: 7px;
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  border-radius: 4px;
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.7);
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.splitter-slash .splitter-prism {
+  transform: rotate(-45deg);
+}
+
+.splitter-backslash .splitter-prism {
+  transform: rotate(45deg);
+}
+
+.splitter-label {
+  position: absolute;
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: var(--text);
+  background: var(--surface);
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  z-index: 3;
+}
+
+/* Toolbar */
+.laser-toolbar {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 460px;
+  justify-content: center;
+}
+
+.btn-laser-tool {
+  flex: 1;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-laser-tool:hover:not(:disabled) {
+  border-color: var(--coral);
+  color: var(--coral);
+  transform: translateY(-1px);
+}
+
+.btn-laser-tool:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.laser-hint-card {
+  width: 100%;
+  max-width: 460px;
+  background: var(--amber-soft);
+  border: 1.5px solid var(--amber);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+/* Level Select Modal */
+.laser-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.level-select-modal {
+  max-width: 440px;
+  width: 100%;
+}
+
+.modal-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modal-header-row h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.btn-close-modal {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.levels-select-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.level-pill-card {
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.level-pill-card:hover {
+  border-color: var(--coral);
+  transform: translateY(-2px);
+}
+
+.level-pill-card.current {
+  border-color: var(--coral);
+  background: var(--coral-soft);
+}
+
+.level-pill-card .l-num {
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: var(--coral);
+  text-transform: uppercase;
+}
+
+.level-pill-card .l-title {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.level-pill-card .l-stars {
+  font-size: 0.8rem;
+  color: var(--amber);
+  margin-top: 2px;
+}
+
+/* Victory Stars */
+.victory-stars {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 12px 0 18px;
+}
+
+.v-star {
+  font-size: 2rem;
+  color: var(--border);
+  transition: transform 0.2s ease;
+}
+
+.v-star.active {
+  color: var(--amber);
+  filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.6));
+}
+
+/* ================================================
+   🧭 ARROW CLASH MINI-GAME
+   ================================================ */
+.arrow-rule-banner {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto 16px;
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+}
+
+.arrow-rule-banner.rule-direct {
+  background: var(--mint-soft);
+  border: 2px solid var(--mint);
+  color: var(--mint);
+}
+
+.arrow-rule-banner.rule-inverted {
+  background: var(--coral-soft);
+  border: 2px solid var(--coral);
+  color: var(--coral);
+}
+
+.arrow-rule-banner .rule-badge {
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  opacity: 0.85;
+}
+
+.arrow-rule-banner .rule-main {
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+}
+
+.mode-switch-toast {
+  position: absolute;
+  top: 90px;
+  background: var(--primary);
+  color: var(--surface);
+  font-weight: 900;
+  font-size: 0.95rem;
+  padding: 8px 20px;
+  border-radius: 50px;
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  letter-spacing: 0.5px;
+}
+
+.arrow-display-card {
+  width: 100%;
+  max-width: 280px;
+  height: 180px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  margin: 0 auto 20px;
+}
+
+.big-arrow-symbol {
+  font-size: 5.5rem;
+  line-height: 1;
+  user-select: none;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
+  animation: arrowPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes arrowPop {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* D-Pad 4-Way Controls */
+.dpad-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.dpad-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-dpad {
+  width: 72px;
+  height: 64px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all 0.12s ease;
+}
+
+.btn-dpad:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  background: var(--surface2);
+}
+
+.btn-dpad:active {
+  transform: translateY(2px) scale(0.95);
+  box-shadow: var(--shadow-sm);
+}
+
+.dpad-center-hub {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: var(--muted);
+  opacity: 0.5;
+}
+
+

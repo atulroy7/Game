@@ -36,12 +36,20 @@ const GAMES_LIST = [
     soft: 'var(--violet-soft)',
   },
   {
-    id: 'scramble5',
-    title: 'Scramble 5',
-    tag: '5 Attempts',
-    desc: 'Unscramble the word in 5 attempts! Green reveals exact positions, yellow reveals misplaced letters.',
+    id: 'laserPrism',
+    title: 'Laser Prism',
+    tag: 'Optics & Physics',
+    desc: 'Rotate angled mirrors & optical splitters on a cyber grid to guide real-time glowing laser beams into target energy crystals!',
     accent: 'var(--coral)',
     soft: 'var(--coral-soft)',
+  },
+  {
+    id: 'arrowClash',
+    title: 'Arrow Clash',
+    tag: 'Cognitive Inversion',
+    desc: 'Rapid Stroop-effect reflex duel! The rule dynamically flips between DIRECT (tap same) and INVERTED (tap opposite) at lightning speed.',
+    accent: 'var(--amber)',
+    soft: 'var(--amber-soft)',
   },
   {
     id: 'chronoBeat',
@@ -119,7 +127,7 @@ export default function HomeScreen({
             <BrandLogoIcon size={38} className="brand-logo-svg" />
             <div>
               <h1 className="brand-heading">Brain<span>Blitz</span></h1>
-              <p className="brand-tagline">8 Interactive Mind Games &amp; Cognitive Challenges</p>
+              <p className="brand-tagline">9 Interactive Mind Games &amp; Cognitive Challenges</p>
             </div>
           </div>
 

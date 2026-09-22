@@ -38,39 +38,95 @@ export default function GameCardVisual({ gameId, accent = 'var(--coral)', soft =
         </div>
       );
 
-    case 'scramble5':
+    case 'laserPrism':
       return (
         <div className="card-visual-banner" style={{ background: soft }}>
           <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* 5 Wordle-style feedback tiles */}
-            <g transform="translate(30, 42)">
-              {/* Tile 1: Green exact */}
-              <rect x="0" y="0" width="40" height="46" rx="8" fill="var(--mint)" />
-              <text x="20" y="30" fill="#fff" fontSize="20" fontWeight="900" textAnchor="middle" fontFamily="Outfit, sans-serif">S</text>
+            {/* Grid Backdrop Lines */}
+            <line x1="30" y1="40" x2="250" y2="40" stroke={accent} strokeOpacity="0.12" strokeDasharray="3 3" />
+            <line x1="30" y1="75" x2="250" y2="75" stroke={accent} strokeOpacity="0.12" strokeDasharray="3 3" />
+            <line x1="30" y1="105" x2="250" y2="105" stroke={accent} strokeOpacity="0.12" strokeDasharray="3 3" />
+            <line x1="75" y1="20" x2="75" y2="115" stroke={accent} strokeOpacity="0.12" strokeDasharray="3 3" />
+            <line x1="140" y1="20" x2="140" y2="115" stroke={accent} strokeOpacity="0.12" strokeDasharray="3 3" />
+            <line x1="205" y1="20" x2="205" y2="115" stroke={accent} strokeOpacity="0.12" strokeDasharray="3 3" />
 
-              {/* Tile 2: Amber misplaced */}
-              <rect x="46" y="0" width="40" height="46" rx="8" fill="var(--amber)" />
-              <text x="66" y="30" fill="#fff" fontSize="20" fontWeight="900" textAnchor="middle" fontFamily="Outfit, sans-serif">H</text>
+            {/* Laser Emitter on Left */}
+            <rect x="36" y="63" width="22" height="24" rx="5" fill="var(--surface)" stroke={accent} strokeWidth="2" />
+            <circle cx="47" cy="75" r="5" fill={accent} />
+            <path d="M58 75H64" stroke={accent} strokeWidth="3" strokeLinecap="round" />
 
-              {/* Tile 3: Neutral */}
-              <rect x="92" y="0" width="40" height="46" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="2" />
-              <text x="112" y="30" fill="var(--text)" fontSize="20" fontWeight="900" textAnchor="middle" fontFamily="Outfit, sans-serif">A</text>
+            {/* Glowing Laser Paths */}
+            {/* Segment 1: Emitter to Mirror 1 */}
+            <line x1="58" y1="75" x2="120" y2="75" stroke={accent} strokeWidth="3" strokeLinecap="round" />
+            <line x1="58" y1="75" x2="120" y2="75" stroke="#fff" strokeWidth="1.2" strokeLinecap="round" />
 
-              {/* Tile 4: Green exact */}
-              <rect x="138" y="0" width="40" height="46" rx="8" fill="var(--mint)" />
-              <text x="158" y="30" fill="#fff" fontSize="20" fontWeight="900" textAnchor="middle" fontFamily="Outfit, sans-serif">R</text>
-
-              {/* Tile 5: Misplaced */}
-              <rect x="184" y="0" width="40" height="46" rx="8" fill="var(--coral)" />
-              <text x="204" y="30" fill="#fff" fontSize="20" fontWeight="900" textAnchor="middle" fontFamily="Outfit, sans-serif">P</text>
+            {/* Mirror 1: 45 degree angle */}
+            <g transform="translate(120, 75)">
+              <line x1="-12" y1="12" x2="12" y2="-12" stroke="var(--mint)" strokeWidth="4" strokeLinecap="round" />
+              <circle cx="0" cy="0" r="4" fill="var(--surface)" stroke="var(--mint)" strokeWidth="1.5" />
             </g>
 
-            {/* Attempt Dots Counter */}
-            <circle cx="112" cy="108" r="3" fill="var(--mint)" />
-            <circle cx="126" cy="108" r="3" fill="var(--amber)" />
-            <circle cx="140" cy="108" r="3" fill={accent} />
-            <circle cx="154" cy="108" r="3" fill="var(--border)" />
-            <circle cx="168" cy="108" r="3" fill="var(--border)" />
+            {/* Segment 2: Mirror 1 UP to Mirror 2 */}
+            <line x1="120" y1="75" x2="120" y2="38" stroke={accent} strokeWidth="3" strokeLinecap="round" />
+            <line x1="120" y1="75" x2="120" y2="38" stroke="#fff" strokeWidth="1.2" strokeLinecap="round" />
+
+            {/* Mirror 2: 45 degree angle */}
+            <g transform="translate(120, 38)">
+              <line x1="-12" y1="-12" x2="12" y2="12" stroke="var(--amber)" strokeWidth="4" strokeLinecap="round" />
+              <circle cx="0" cy="0" r="4" fill="var(--surface)" stroke="var(--amber)" strokeWidth="1.5" />
+            </g>
+
+            {/* Segment 3: Mirror 2 RIGHT to Target Crystal */}
+            <line x1="120" y1="38" x2="218" y2="38" stroke={accent} strokeWidth="3" strokeLinecap="round" />
+            <line x1="120" y1="38" x2="218" y2="38" stroke="#fff" strokeWidth="1.2" strokeLinecap="round" />
+
+            {/* Target Crystal at (218, 38) */}
+            <g transform="translate(218, 38)" className="anim-pulse-target">
+              <circle cx="0" cy="0" r="15" fill={accent} fillOpacity="0.25" />
+              <polygon points="0,-11 9,-3 6,10 -6,10 -9,-3" fill="var(--surface)" stroke={accent} strokeWidth="2" />
+              <circle cx="0" cy="0" r="4" fill={accent} />
+            </g>
+
+            {/* Label Pill */}
+            <rect x="96" y="106" width="88" height="17" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">OPTIC BEAM</text>
+          </svg>
+        </div>
+      );
+
+    case 'arrowClash':
+      return (
+        <div className="card-visual-banner" style={{ background: soft }}>
+          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Outer Circular Compass Reticle */}
+            <circle cx="140" cy="65" r="48" stroke={accent} strokeWidth="1.5" strokeOpacity="0.2" strokeDasharray="4 3" />
+            <circle cx="140" cy="65" r="32" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+
+            {/* 4 Cardinal Direction Arrows */}
+            {/* UP Arrow */}
+            <g transform="translate(140, 26)">
+              <path d="M0 -8L-7 2H-3V10H3V2H7L0 -8Z" fill={accent} />
+            </g>
+            {/* DOWN Arrow */}
+            <g transform="translate(140, 104)">
+              <path d="M0 8L-7 -2H-3V-10H3V-2H7L0 8Z" fill="var(--muted)" fillOpacity="0.4" />
+            </g>
+            {/* LEFT Arrow */}
+            <g transform="translate(98, 65)">
+              <path d="M-8 0L2 -7V-3H10V3H2V7L-8 0Z" fill="var(--muted)" fillOpacity="0.4" />
+            </g>
+            {/* RIGHT Arrow */}
+            <g transform="translate(182, 65)">
+              <path d="M8 0L-2 -7V-3H-10V3H-2V7L8 0Z" fill={accent} />
+            </g>
+
+            {/* Center Duel Symbol */}
+            <circle cx="140" cy="65" r="16" fill={accent} fillOpacity="0.15" />
+            <text x="140" y="70" fill={accent} fontSize="14" fontWeight="900" textAnchor="middle" fontFamily="Outfit, sans-serif">⚡</text>
+
+            {/* Dynamic Rule Pill */}
+            <rect x="88" y="106" width="104" height="17" rx="8" fill="var(--surface)" stroke={accent} strokeWidth="1.2" />
+            <text x="140" y="118" fill={accent} fontSize="9" fontWeight="900" textAnchor="middle" letterSpacing="0.8">DIRECT ⇄ INVERTED</text>
           </svg>
         </div>
       );
@@ -106,7 +162,6 @@ export default function GameCardVisual({ gameId, accent = 'var(--coral)', soft =
       );
 
     case 'detectiveGrid':
-    case 'arrowClash':
       return (
         <div className="card-visual-banner" style={{ background: soft }}>
           <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">

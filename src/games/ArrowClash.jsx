@@ -95,7 +95,7 @@ export default function ArrowClash({ sound, onBack, onSaveScore }) {
   }, [gameState, endGame, sound]);
 
   // Handle direction tap
-  const handleDirectionPress = (selectedKey) => {
+  const handleDirectionPress = useCallback((selectedKey) => {
     if (gameState !== 'playing') return;
 
     const targetKey = mode === 'DIRECT' ? currentDir.key : currentDir.opposite;
@@ -103,49 +103,50 @@ export default function ArrowClash({ sound, onBack, onSaveScore }) {
 
     if (isCorrect) {
       sound.playCorrect();
-      const newStreak = streak + 1;
-      setStreak(newStreak);
-      setBestStreak(b => Math.max(b, newStreak));
+      setStreak(prev => {
+        const newStreak = prev + 1;
+        setBestStreak(b => Math.max(b, newStreak));
+        const multiplier = newStreak >= 8 ? 3 : newStreak >= 4 ? 2 : 1;
+        const pts = 60 * multiplier;
+        scoreRef.current += pts;
+        setScore(scoreRef.current);
+        setLastPts(pts);
+        setScoreTrigger(t => t + 1);
+        if (newStreak % 5 === 0) sound.playStreak();
+        return newStreak;
+      });
       setCorrectHits(c => c + 1);
-
-      const multiplier = newStreak >= 8 ? 3 : newStreak >= 4 ? 2 : 1;
-      const pts = 60 * multiplier;
-      scoreRef.current += pts;
-      setScore(scoreRef.current);
-      setLastPts(pts);
-      setScoreTrigger(t => t + 1);
 
       // +1s bonus
       timeLeftRef.current = Math.min(timeLeftRef.current + 1, 40);
       setTimeLeft(timeLeftRef.current);
-
-      if (newStreak % 5 === 0) sound.playStreak();
     } else {
       sound.playWrong();
       setStreak(0);
       setShake(true);
       setTimeout(() => setShake(false), 300);
       // -2s penalty
-      setTimeLeft(t => Math.max(0, t - 2));
+      timeLeftRef.current = Math.max(0, timeLeftRef.current - 2);
+      setTimeLeft(timeLeftRef.current);
     }
 
     nextArrow();
-  };
+  }, [gameState, mode, currentDir, sound, nextArrow]);
 
   // Keyboard arrow keys listener
   useEffect(() => {
     if (gameState !== 'playing') return;
 
     const handleKeyDown = (e) => {
-      if (e.key === 'ArrowUp')    { e.preventDefault(); handleDirectionPress('UP'); }
-      if (e.key === 'ArrowDown')  { e.preventDefault(); handleDirectionPress('DOWN'); }
-      if (e.key === 'ArrowLeft')  { e.preventDefault(); handleDirectionPress('LEFT'); }
-      if (e.key === 'ArrowRight') { e.preventDefault(); handleDirectionPress('RIGHT'); }
+      if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W')    { e.preventDefault(); handleDirectionPress('UP'); }
+      if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S')  { e.preventDefault(); handleDirectionPress('DOWN'); }
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A')  { e.preventDefault(); handleDirectionPress('LEFT'); }
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') { e.preventDefault(); handleDirectionPress('RIGHT'); }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [gameState, currentDir, mode, handleDirectionPress]);
+  }, [gameState, handleDirectionPress]);
 
   return (
     <div className="screen mini-game-screen">

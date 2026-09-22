@@ -13,7 +13,7 @@ import MemoryMatch     from './games/MemoryMatch';
 import ChronoBeat      from './games/ChronoBeat';
 import ArrowClash      from './games/ArrowClash';
 import DetectiveGrid   from './games/DetectiveGrid';
-import Scramble5       from './games/Scramble5';
+import LaserPrism      from './games/LaserPrism';
 import './App.css';
 
 const DIFFICULTY_TIME = { easy: 20, medium: 15, hard: 10 };
@@ -465,8 +465,8 @@ export default function App() {
           onSaveScore={handleSaveMiniGameScore}
         />
       )}
-      {screen === 'scramble5' && (
-        <Scramble5
+      {screen === 'laserPrism' && (
+        <LaserPrism
           sound={sound}
           onBack={() => setScreen('home')}
           onSaveScore={handleSaveMiniGameScore}
