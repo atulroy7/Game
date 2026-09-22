@@ -237,6 +237,7 @@ export default function OddOneOut({ sound, onBack, onSaveScore }) {
                   onClick={() => handleSelect(item)}
                   disabled={selectedItem !== null}
                 >
+                  <span className="opt-letter-tag">{['A', 'B', 'C', 'D'][i]}</span>
                   <span className="odd-item-name">{item}</span>
                 </button>
               );

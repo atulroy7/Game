@@ -3,74 +3,39 @@ import BgOrbs from '../components/BgOrbs';
 import Confetti from '../components/Confetti';
 import ScorePop from '../components/ScorePop';
 
-const CIPHER_QUESTIONS = [
-  {
-    type: 'Shift +1',
-    rule: 'Each letter is shifted forward by 1 in the alphabet (A→B, B→C)',
-    example: { word: 'BRAIN', code: 'CSBJO' },
-    target: 'SMART',
-    answer: 'TNBUS',
-    options: ['TNBUS', 'TLBQS', 'TMCUS', 'SMBRT'],
-  },
-  {
-    type: 'Shift +2',
-    rule: 'Each letter is shifted forward by 2 in the alphabet (A→C, D→F)',
-    example: { word: 'TIGER', code: 'VKIGT' },
-    target: 'ZEBRA',
-    answer: 'BGDTC',
-    options: ['BGDTC', 'AFCSB', 'BGCUB', 'AGDSB'],
-  },
-  {
-    type: 'Shift -1',
-    rule: 'Each letter is shifted backward by 1 in the alphabet (B→A, Z→Y)',
-    example: { word: 'LIGHT', code: 'KHFGS' },
-    target: 'SHINE',
-    answer: 'RGHMD',
-    options: ['RGHMD', 'THJOF', 'QFHMC', 'RGINE'],
-  },
-  {
-    type: 'Alphabet Reverse Mirror',
-    rule: 'Letters are mapped to their reverse alphabet positions (A↔Z, B↔Y, C↔X)',
-    example: { word: 'BOY', code: 'YLB' },
-    target: 'MAN',
-    answer: 'NZM',
-    options: ['NZM', 'MZN', 'OAM', 'LAM'],
-  },
-  {
-    type: 'Alternating Shift (+1, -1)',
-    rule: 'Odd positions shift +1, even positions shift -1',
-    example: { word: 'GOLD', code: 'HNMC' },
-    target: 'SILVER',
-    answer: 'TJKUDQ',
-    options: ['TJKUDQ', 'THKWDQ', 'TJMVCQ', 'RIKUCP'],
-  },
-  {
-    type: 'Letter Position Value Sum',
-    rule: 'Sum of alphabet order values (A=1, B=2, C=3... Z=26)',
-    example: { word: 'CAT (3+1+20)', code: '24' },
-    target: 'DOG (4+15+7)',
-    answer: '26',
-    options: ['26', '24', '28', '25'],
-  },
-  {
-    type: 'Vowel/Consonant Double',
-    rule: 'Each vowel shifts +2, each consonant shifts +1',
-    example: { word: 'BIRD', code: 'CKSE' },
-    target: 'FROG',
-    answer: 'GSQH',
-    options: ['GSQH', 'GSOG', 'FRPH', 'HTRI'],
-  },
-  {
-    type: 'Reverse String + Shift',
-    rule: 'Word is reversed then shifted forward by 1',
-    example: { word: 'STAR', code: 'SBUU (RATS + 1)' },
-    target: 'MOON',
-    answer: 'OPPN',
-    options: ['OPPN', 'NOOM', 'OPPM', 'NPPO'],
-  },
+const WORDS = [
+  'BRAIN', 'SMART', 'LIGHT', 'SHINE', 'FOCUS', 'FLASH',
+  'POWER', 'MAGIC', 'TIGER', 'ZEBRA', 'FROST', 'STORM',
+  'CLOUD', 'SOLAR', 'LUNAR', 'ORBIT', 'SWIFT', 'FLAME',
+  'STONE', 'WATER', 'EARTH', 'SPACE', 'CYBER', 'ROBOT'
 ];
 
-function shuffleArray(arr) {
+function shiftStr(str, n) {
+  return str
+    .split('')
+    .map(ch => {
+      const code = ch.charCodeAt(0) - 65;
+      const shifted = (code + n + 26) % 26;
+      return String.fromCharCode(65 + shifted);
+    })
+    .join('');
+}
+
+function atbashStr(str) {
+  return str
+    .split('')
+    .map(ch => {
+      const code = ch.charCodeAt(0) - 65;
+      return String.fromCharCode(65 + (25 - code));
+    })
+    .join('');
+}
+
+function wordValue(str) {
+  return str.split('').reduce((acc, ch) => acc + (ch.charCodeAt(0) - 64), 0);
+}
+
+function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -79,9 +44,127 @@ function shuffleArray(arr) {
   return a;
 }
 
+function generateDynamicCipher() {
+  const types = ['shift_pos', 'shift_neg', 'atbash', 'alternating', 'val_sum', 'reverse_shift'];
+  const type = types[Math.floor(Math.random() * types.length)];
+
+  // Pick 2 distinct words
+  const w1 = WORDS[Math.floor(Math.random() * WORDS.length)];
+  let w2 = WORDS[Math.floor(Math.random() * WORDS.length)];
+  while (w2 === w1) {
+    w2 = WORDS[Math.floor(Math.random() * WORDS.length)];
+  }
+
+  let typeName = '';
+  let rule = '';
+  let example = {};
+  let target = '';
+  let answer = '';
+  let options = [];
+
+  if (type === 'shift_pos') {
+    const shift = Math.floor(Math.random() * 3) + 1; // +1, +2, or +3
+    typeName = `Alphabet Shift (+${shift})`;
+    rule = `Each letter is shifted forward by ${shift} in the alphabet`;
+    example = { word: w1, code: shiftStr(w1, shift) };
+    target = w2;
+    answer = shiftStr(w2, shift);
+
+    // Distractors
+    const f1 = shiftStr(w2, shift + 1);
+    const f2 = shiftStr(w2, shift - 1);
+    const f3 = shiftStr(w2, shift + 2);
+    options = [answer, f1, f2, f3];
+  } else if (type === 'shift_neg') {
+    const shift = Math.floor(Math.random() * 2) + 1; // -1 or -2
+    typeName = `Alphabet Shift (-${shift})`;
+    rule = `Each letter is shifted backward by ${shift} in the alphabet`;
+    example = { word: w1, code: shiftStr(w1, -shift) };
+    target = w2;
+    answer = shiftStr(w2, -shift);
+
+    // Distractors
+    const f1 = shiftStr(w2, -shift - 1);
+    const f2 = shiftStr(w2, -shift + 1);
+    const f3 = shiftStr(w2, shift);
+    options = [answer, f1, f2, f3];
+  } else if (type === 'atbash') {
+    typeName = 'Reverse Mirror Cipher';
+    rule = 'Letters mapped to reverse alphabet positions (A↔Z, B↔Y, C↔X)';
+    example = { word: w1, code: atbashStr(w1) };
+    target = w2;
+    answer = atbashStr(w2);
+
+    // Distractors: alter 1 or 2 letters
+    const arr = answer.split('');
+    const f1Arr = [...arr];
+    f1Arr[0] = String.fromCharCode(65 + ((f1Arr[0].charCodeAt(0) - 64) % 26));
+    const f2Arr = [...arr];
+    f2Arr[f2Arr.length - 1] = String.fromCharCode(65 + ((f2Arr[f2Arr.length - 1].charCodeAt(0) - 63) % 26));
+    const f3 = shiftStr(w2, 1);
+    options = [answer, f1Arr.join(''), f2Arr.join(''), f3];
+  } else if (type === 'alternating') {
+    typeName = 'Alternating Shift (+1, -1)';
+    rule = 'Odd position letters shift +1, even position letters shift -1';
+    const alt = (w) => w.split('').map((ch, i) => shiftStr(ch, i % 2 === 0 ? 1 : -1)).join('');
+    example = { word: w1, code: alt(w1) };
+    target = w2;
+    answer = alt(w2);
+
+    const f1 = w2.split('').map((ch, i) => shiftStr(ch, i % 2 === 0 ? -1 : 1)).join('');
+    const f2 = shiftStr(w2, 1);
+    const f3 = shiftStr(w2, -1);
+    options = [answer, f1, f2, f3];
+  } else if (type === 'val_sum') {
+    typeName = 'Letter Position Sum';
+    rule = 'Sum of alphabet position numbers (A=1, B=2, C=3... Z=26)';
+    const v1 = wordValue(w1);
+    const v2 = wordValue(w2);
+    example = { word: `${w1} (Sum)`, code: `${v1}` };
+    target = `${w2} (Sum)`;
+    answer = `${v2}`;
+
+    options = [`${v2}`, `${v2 + 2}`, `${v2 - 2}`, `${v2 + 4}`];
+  } else {
+    // Reverse + Shift
+    typeName = 'Reverse Word + Shift (+1)';
+    rule = 'Word is reversed, then each letter is shifted forward by 1';
+    const revShift = (w) => shiftStr(w.split('').reverse().join(''), 1);
+    example = { word: w1, code: revShift(w1) };
+    target = w2;
+    answer = revShift(w2);
+
+    const f1 = w2.split('').reverse().join('');
+    const f2 = shiftStr(w2, 1);
+    const f3 = shiftStr(w2.split('').reverse().join(''), 2);
+    options = [answer, f1, f2, f3];
+  }
+
+  // Ensure 4 unique options and shuffle using Fisher-Yates
+  const uniqueSet = new Set([answer]);
+  options.forEach(o => {
+    if (o && o !== answer) uniqueSet.add(o);
+  });
+  while (uniqueSet.size < 4) {
+    uniqueSet.add(shiftStr(answer, uniqueSet.size));
+  }
+
+  const shuffled = shuffle(Array.from(uniqueSet));
+
+  return {
+    type: typeName,
+    rule,
+    example,
+    target,
+    answer,
+    options: shuffled,
+  };
+}
+
 export default function CodeBreaker({ sound, onBack, onSaveScore }) {
   const [gameState, setGameState] = useState('ready');
-  const [qIdx, setQIdx] = useState(0);
+  const [currentQ, setCurrentQ] = useState(null);
+  const [round, setRound] = useState(1);
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [solved, setSolved] = useState(0);
@@ -96,14 +179,8 @@ export default function CodeBreaker({ sound, onBack, onSaveScore }) {
   const scoreRef = useRef(0);
   const timeLeftRef = useRef(25);
 
-  const q = CIPHER_QUESTIONS[qIdx % CIPHER_QUESTIONS.length];
-
-  const shuffledOptions = React.useMemo(() => {
-    return shuffleArray(q.options);
-  }, [q]);
-
   const nextQuestion = useCallback(() => {
-    setQIdx(i => i + 1);
+    setCurrentQ(generateDynamicCipher());
     setSelectedOpt(null);
     timeLeftRef.current = 25;
     setTimeLeft(25);
@@ -121,7 +198,7 @@ export default function CodeBreaker({ sound, onBack, onSaveScore }) {
     setScore(0);
     setStreak(0);
     setSolved(0);
-    setQIdx(0);
+    setRound(1);
     setGameState('playing');
     nextQuestion();
   };
@@ -147,7 +224,7 @@ export default function CodeBreaker({ sound, onBack, onSaveScore }) {
     if (selectedOpt !== null || gameState !== 'playing') return;
     setSelectedOpt(opt);
 
-    if (opt === q.answer) {
+    if (opt === currentQ.answer) {
       sound.playCorrect();
       const newStreak = streak + 1;
       setStreak(newStreak);
@@ -160,11 +237,17 @@ export default function CodeBreaker({ sound, onBack, onSaveScore }) {
       setLastPts(pts);
       setScoreTrigger(t => t + 1);
 
-      setTimeout(nextQuestion, 900);
+      setTimeout(() => {
+        setRound(r => r + 1);
+        nextQuestion();
+      }, 900);
     } else {
       sound.playWrong();
       setStreak(0);
-      setTimeout(nextQuestion, 1200);
+      setTimeout(() => {
+        setRound(r => r + 1);
+        nextQuestion();
+      }, 1200);
     }
   };
 
@@ -202,7 +285,7 @@ export default function CodeBreaker({ sound, onBack, onSaveScore }) {
         </div>
       )}
 
-      {gameState === 'playing' && q && (
+      {gameState === 'playing' && currentQ && (
         <div className="cipher-play-area">
           <div className="hud-strip">
             <div className="hud-badge">
@@ -221,21 +304,21 @@ export default function CodeBreaker({ sound, onBack, onSaveScore }) {
 
           {/* Cipher Terminal Dossier */}
           <div className="cipher-dossier-card">
-            <div className="cipher-type-badge">{q.type}</div>
+            <div className="cipher-type-badge">{currentQ.type}</div>
 
             <div className="cipher-clue-box">
               <span className="clue-sub-label">SAMPLE DECRYPT:</span>
               <div className="clue-formula">
-                <span className="c-word">{q.example.word}</span>
+                <span className="c-word">{currentQ.example.word}</span>
                 <span className="c-arrow">➔</span>
-                <span className="c-code">{q.example.code}</span>
+                <span className="c-code">{currentQ.example.code}</span>
               </div>
             </div>
 
             <div className="cipher-target-box">
               <span className="target-sub-label">DECODE TARGET:</span>
               <div className="target-prompt">
-                <span className="t-word">{q.target}</span>
+                <span className="t-word">{currentQ.target}</span>
                 <span className="t-arrow">➔</span>
                 <span className="t-code">? ? ? ?</span>
               </div>
@@ -254,11 +337,11 @@ export default function CodeBreaker({ sound, onBack, onSaveScore }) {
             </div>
           )}
 
-          {/* Options */}
+          {/* Options with A, B, C, D indicators */}
           <div className="cipher-options-grid">
-            {shuffledOptions.map((opt, i) => {
+            {currentQ.options.map((opt, i) => {
               const isSelected = selectedOpt === opt;
-              const isCorrect = opt === q.answer;
+              const isCorrect = opt === currentQ.answer;
               let stateClass = '';
               if (selectedOpt !== null) {
                 if (isSelected) stateClass = isCorrect ? 'c-opt-correct' : 'c-opt-wrong';
@@ -272,6 +355,7 @@ export default function CodeBreaker({ sound, onBack, onSaveScore }) {
                   onClick={() => handleSelectOption(opt)}
                   disabled={selectedOpt !== null}
                 >
+                  <span className="opt-letter-tag">{['A', 'B', 'C', 'D'][i]}</span>
                   <span className="cipher-code-txt">{opt}</span>
                 </button>
               );
@@ -280,7 +364,7 @@ export default function CodeBreaker({ sound, onBack, onSaveScore }) {
 
           {selectedOpt !== null && (
             <div className="cipher-explanation-toast animate-pop">
-              💡 {q.rule}
+              💡 {currentQ.rule}
             </div>
           )}
         </div>

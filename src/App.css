@@ -5049,5 +5049,31 @@ button {
   filter: brightness(1.08);
 }
 
+/* Option Letter Badge (A, B, C, D) */
+.opt-letter-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  font-size: 0.8rem;
+  font-weight: 900;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  margin-right: 10px;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+button:hover .opt-letter-tag {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--text);
+}
+
+
 
 

@@ -242,7 +242,8 @@ export default function BrainMaze({ sound, onBack, onSaveScore }) {
                   onClick={() => handleSelect(opt)}
                   disabled={selectedOpt !== null}
                 >
-                  {opt}
+                  <span className="opt-letter-tag">{['A', 'B', 'C', 'D'][i]}</span>
+                  <span>{opt}</span>
                 </button>
               );
             })}

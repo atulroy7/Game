@@ -196,7 +196,7 @@ export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
                   onClick={() => handleSelect(opt)}
                   disabled={selectedOpt !== null}
                 >
-                  <span className="det-opt-icon">👤</span>
+                  <span className="opt-letter-tag">{['A', 'B', 'C', 'D'][i]}</span>
                   <span className="det-opt-text">{opt}</span>
                 </button>
               );
