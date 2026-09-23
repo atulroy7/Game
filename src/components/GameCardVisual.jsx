@@ -39,32 +39,38 @@ export default function GameCardVisual({ gameId, accent = 'var(--coral)', soft =
       return (
         <div className="card-visual-banner" style={{ background: soft }}>
           <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* 3 Ranked Humorous Scenario Cards in Cascade */}
-            <g transform="translate(45, 18)">
-              {/* Card 1 */}
-              <rect x="0" y="8" width="56" height="74" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
-              <rect x="4" y="12" width="16" height="16" rx="4" fill="#10B981" />
-              <text x="12" y="24" fill="#fff" fontSize="10" fontWeight="900" textAnchor="middle">1</text>
-              <text x="28" y="46" fill="var(--text)" fontSize="20" textAnchor="middle">🍕</text>
-              <path d="M22 66 L28 60 L34 66" stroke={accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            {/* Word Chain: three word-cards connected by chain links */}
+            <g transform="translate(14, 30)">
+              {/* Card 1 - APPLE */}
+              <rect x="0" y="10" width="58" height="36" rx="8" fill="var(--surface)" stroke={accent} strokeWidth="2"/>
+              <text x="29" y="33" fill={accent} fontSize="10" fontWeight="900" textAnchor="middle">APPLE</text>
 
-              {/* Card 2 (Elevated / Active) */}
-              <rect x="66" y="2" width="58" height="82" rx="9" fill="var(--surface)" stroke={accent} strokeWidth="2.5" />
-              <rect x="70" y="6" width="18" height="18" rx="5" fill="#F59E0B" />
-              <text x="79" y="19" fill="#fff" fontSize="11" fontWeight="900" textAnchor="middle">2</text>
-              <text x="95" y="44" fill="var(--text)" fontSize="24" textAnchor="middle">🤪</text>
-              <text x="95" y="68" fill={accent} fontSize="8" fontWeight="800" textAnchor="middle">SWAP</text>
+              {/* Chain link connector */}
+              <g transform="translate(62, 20)">
+                <circle cx="4" cy="8" r="5" stroke={accent} strokeWidth="2" fill="none"/>
+                <circle cx="12" cy="8" r="5" stroke={accent} strokeWidth="2" fill="none"/>
+              </g>
+              <text x="77" y="36" fill="var(--muted)" fontSize="8" fontWeight="800" textAnchor="middle">E→</text>
 
-              {/* Card 3 */}
-              <rect x="134" y="12" width="56" height="70" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
-              <rect x="138" y="16" width="16" height="16" rx="4" fill="#EF4444" />
-              <text x="146" y="28" fill="#fff" fontSize="10" fontWeight="900" textAnchor="middle">3</text>
-              <text x="162" y="48" fill="var(--text)" fontSize="20" textAnchor="middle">💥</text>
-              <path d="M156 62 L162 68 L168 62" stroke={accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              {/* Card 2 - EAGLE */}
+              <rect x="82" y="4" width="58" height="44" rx="8" fill="var(--surface)" stroke={accent} strokeWidth="2.5"/>
+              <text x="111" y="24" fill="var(--muted)" fontSize="8" fontWeight="700" textAnchor="middle">starts with E</text>
+              <text x="111" y="40" fill={accent} fontSize="11" fontWeight="900" textAnchor="middle">EAGLE</text>
+
+              {/* Chain link connector */}
+              <g transform="translate(144, 20)">
+                <circle cx="4" cy="8" r="5" stroke={accent} strokeWidth="2" fill="none"/>
+                <circle cx="12" cy="8" r="5" stroke={accent} strokeWidth="2" fill="none"/>
+              </g>
+              <text x="159" y="36" fill="var(--muted)" fontSize="8" fontWeight="800" textAnchor="middle">E→</text>
+
+              {/* Card 3 - mystery */}
+              <rect x="164" y="10" width="58" height="36" rx="8" fill="var(--surface2)" stroke="var(--border)" strokeWidth="1.5" strokeDasharray="4 3"/>
+              <text x="193" y="33" fill="var(--muted)" fontSize="18" textAnchor="middle">?</text>
             </g>
 
-            <rect x="88" y="106" width="104" height="17" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
-            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">COMEDY RANK</text>
+            <rect x="84" y="106" width="112" height="17" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1"/>
+            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">WORD CHAIN</text>
           </svg>
         </div>
       );

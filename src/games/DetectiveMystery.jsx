@@ -254,6 +254,11 @@ function shuffleArray(arr) {
   return a;
 }
 
+// Easy = Blood Relation + Spatial only; Medium = all categories
+const EASY_CATEGORIES = ['🩸 Blood Relation', '🏠 Spatial Deduction'];
+const MEDIUM_CATEGORIES = ['🩸 Blood Relation', '🏠 Spatial Deduction', '🔍 Logic Paradox', '🔢 Number Deduction', '🚪 Probability Trap'];
+
+
 function getDetectiveRank(solved, total) {
   const ratio = solved / total;
   if (ratio === 1.0) return { title: 'Master Detective', badge: '🏆', desc: 'Flawless deduction across all cases!' };
@@ -344,7 +349,8 @@ function DetectiveBg({ activeClue }) {
 }
 
 export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
-  const [gameState, setGameState] = useState('ready');
+  const [gameState, setGameState] = useState('ready'); // 'ready' | 'difficulty' | 'playing' | 'completed'
+  const [difficulty, setDifficulty] = useState(null); // 'easy' | 'medium'
   const [cases, setCases] = useState(() => shuffleArray(DETECTIVE_CASES).slice(0, CASES_PER_SET));
   const [caseIdx, setCaseIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -380,7 +386,7 @@ export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
 
     if (isCorrect) {
       sound.playCorrect();
-      const pts = 200;
+      const pts = difficulty === 'easy' ? 150 : 200;
       const newScore = score + pts;
       setScore(newScore);
       setLastPts(pts);
@@ -408,8 +414,12 @@ export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
     }
   };
 
-  const startGame = () => {
-    const newSet = shuffleArray(DETECTIVE_CASES).slice(0, CASES_PER_SET);
+  const startGame = (diff) => {
+    const diffToUse = diff || difficulty;
+    const allowedCats = diffToUse === 'easy' ? EASY_CATEGORIES : MEDIUM_CATEGORIES;
+    const filtered = DETECTIVE_CASES.filter(c => allowedCats.includes(c.category));
+    const pool = filtered.length >= CASES_PER_SET ? filtered : DETECTIVE_CASES;
+    const newSet = shuffleArray(pool).slice(0, CASES_PER_SET);
     setCases(newSet);
     setScore(0);
     setSolved(0);
@@ -417,6 +427,7 @@ export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
     setSelectedOpt(null);
     setHoveredClue(false);
     setCaseHistory([]);
+    setDifficulty(diffToUse);
     setGameState('playing');
   };
 
@@ -447,11 +458,29 @@ export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
             <div className="rule-item">📋 10 Investigation Cases per dossier</div>
             <div className="rule-item">🔍 Lateral thinking, paradoxes &amp; probability traps</div>
             <div className="rule-item">🩸 Family blood relations &amp; deductive logic</div>
-            <div className="rule-item">🏆 200 pts per cracked case (Max 2000 pts)</div>
+            <div className="rule-item">🏆 Points per cracked case</div>
           </div>
-          <button className="btn-start-mini" style={{ background: 'var(--amber)' }} onClick={startGame}>
-            <span>Open Case Files (10 Cases)</span> →
-          </button>
+          <div style={{ display:'flex', gap:12, flexDirection:'column', width:'100%', marginTop:8 }}>
+            <div className="det-diff-label">Choose Difficulty:</div>
+            <div className="det-diff-row">
+              <button
+                className="btn-det-diff btn-det-easy"
+                onClick={() => startGame('easy')}
+              >
+                <span className="diff-icon">🟢</span>
+                <span className="diff-name">Easy</span>
+                <span className="diff-sub">Blood Relations &amp; Spatial</span>
+              </button>
+              <button
+                className="btn-det-diff btn-det-medium"
+                onClick={() => startGame('medium')}
+              >
+                <span className="diff-icon">🟡</span>
+                <span className="diff-name">Medium</span>
+                <span className="diff-sub">All categories + Paradoxes</span>
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -614,8 +643,11 @@ export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
           </div>
 
           <div className="det-results-actions">
-            <button className="btn-det-action btn-det-replay" onClick={startGame}>
+            <button className="btn-det-action btn-det-replay" onClick={() => startGame(difficulty)}>
               <span>New 10-Case Dossier</span> 🔄
+            </button>
+            <button className="btn-det-action" style={{ background:'var(--surface2)', color:'var(--text)' }} onClick={() => setGameState('ready')}>
+              Change Difficulty
             </button>
             <button className="btn-det-action btn-det-hub" onClick={onBack}>
               ← Return to Hub
@@ -625,6 +657,12 @@ export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
       )}
 
       {gameState === 'completed' && solved >= 6 && <Confetti />}
+      {/* Difficulty badge during play */}
+      {gameState === 'playing' && difficulty && (
+        <div className="det-diff-playing-badge" style={{ position:'fixed', bottom:16, right:16 }}>
+          {difficulty === 'easy' ? '🟢 Easy' : '🟡 Medium'}
+        </div>
+      )}
     </div>
   );
 }

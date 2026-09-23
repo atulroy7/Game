@@ -6655,3 +6655,413 @@ button:hover .opt-letter-tag {
 }
 
 
+/* ═══════════════════════════════════════════════════
+   WORD CHAIN GAME
+═══════════════════════════════════════════════════ */
+.wc-screen { overflow-y: auto; }
+
+.wc-play-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px 32px;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.wc-chain-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  width: 100%;
+}
+
+.wc-chain-link {
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.chain-link-done {
+  background: var(--surface2);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+.chain-link-active {
+  background: var(--mint-soft);
+  color: var(--mint);
+  border: 1.5px solid var(--mint);
+  font-size: 0.85rem;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--mint) 30%, transparent);
+}
+
+.chain-link-unknown {
+  background: var(--surface2);
+  color: var(--muted);
+  border: 2px dashed var(--border);
+  font-size: 1.1rem;
+  padding: 5px 14px;
+  animation: pulse-border 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.wc-chain-connector {
+  font-size: 1rem;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.wc-question-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.wc-hint-badge {
+  display: inline-block;
+  background: var(--amber-soft);
+  color: var(--amber);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.wc-question-text {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.wc-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.btn-wc-opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.18s;
+  text-align: left;
+}
+
+.btn-wc-opt:hover:not(:disabled) {
+  border-color: var(--mint);
+  background: var(--mint-soft);
+  transform: translateY(-2px);
+}
+
+.wc-opt-letter {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--surface2);
+  color: var(--muted);
+  font-weight: 900;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wc-opt-word {
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+}
+
+.btn-wc-opt.wc-correct {
+  border-color: var(--mint);
+  background: var(--mint-soft);
+}
+.btn-wc-opt.wc-correct .wc-opt-letter { background: var(--mint); color: #fff; }
+
+.btn-wc-opt.wc-wrong {
+  border-color: var(--coral);
+  background: var(--coral-soft);
+}
+.btn-wc-opt.wc-wrong .wc-opt-letter { background: var(--coral); color: #fff; }
+
+.btn-wc-opt.wc-revealed {
+  border-color: var(--mint);
+  background: color-mix(in srgb, var(--mint) 8%, transparent);
+}
+
+.wc-breakdown {
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.wc-result-tag {
+  font-size: 0.95rem;
+  font-weight: 900;
+  padding: 6px 16px;
+  border-radius: 20px;
+}
+.res-correct { background: var(--mint-soft); color: var(--mint); }
+.res-wrong { background: var(--coral-soft); color: var(--coral); }
+
+.wc-fact {
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.btn-wc-next {
+  background: var(--mint);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.18s;
+}
+.btn-wc-next:hover { transform: translateY(-2px); opacity: 0.9; }
+
+.wc-history-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+  margin: 8px 0;
+}
+
+.wc-history-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.hist-ok { background: var(--mint-soft); }
+.hist-miss { background: var(--coral-soft); }
+.hist-num { font-weight: 900; color: var(--muted); width: 22px; }
+.hist-tail { color: var(--muted); }
+.hist-chosen { font-weight: 900; color: var(--text); }
+.hist-status { margin-left: auto; font-size: 0.75rem; }
+
+/* ═══════════════════════════════════════════════════
+   SHARED GAMEOVER / RESULTS MODAL
+═══════════════════════════════════════════════════ */
+.gameover-modal {
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.gameover-icon {
+  font-size: 3.5rem;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.results-metrics {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  width: 100%;
+}
+
+.metric-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface2);
+  border-radius: 12px;
+  padding: 12px 20px;
+  flex: 1;
+}
+
+.m-val {
+  font-size: 1.5rem;
+  font-weight: 900;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text);
+}
+
+.m-lbl {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-play-again, .btn-hub {
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  transition: all 0.18s;
+}
+.btn-hub { background: var(--surface2); color: var(--text); border: 1.5px solid var(--border); }
+.btn-play-again:hover, .btn-hub:hover { transform: translateY(-2px); }
+
+/* ═══════════════════════════════════════════════════
+   SEATING SHUFFLE — held person banner
+═══════════════════════════════════════════════════ */
+.seating-held-banner {
+  background: var(--amber-soft);
+  color: var(--amber);
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-align: center;
+  border: 1.5px solid var(--amber);
+  width: 100%;
+}
+
+/* ═══════════════════════════════════════════════════
+   DETECTIVE MYSTERY — Difficulty Selection
+═══════════════════════════════════════════════════ */
+.det-diff-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  text-align: center;
+}
+
+.det-diff-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.btn-det-diff {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 16px 12px;
+  border-radius: 14px;
+  border: 2px solid var(--border);
+  background: var(--surface2);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.btn-det-diff:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+
+.btn-det-easy:hover { border-color: #10b981; background: #d1fae5; }
+.btn-det-medium:hover { border-color: #f59e0b; background: #fef3c7; }
+
+.diff-icon { font-size: 1.5rem; }
+.diff-name { font-size: 1rem; font-weight: 900; color: var(--text); }
+.diff-sub { font-size: 0.72rem; font-weight: 700; color: var(--muted); text-align: center; }
+
+.det-diff-playing-badge {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--text);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+/* ═══════════════════════════════════════════════════
+   EQUATION ESCAPE — Hint button & eval row
+═══════════════════════════════════════════════════ */
+.btn-eq-hint {
+  background: var(--amber-soft) !important;
+  color: var(--amber) !important;
+  border: 1.5px solid var(--amber) !important;
+}
+.btn-eq-hint:hover { opacity: 0.85; }
+
+.eq-hint-box {
+  background: var(--amber-soft);
+  border: 1.5px solid var(--amber);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 0.88rem;
+  color: var(--text);
+  width: 100%;
+  text-align: center;
+}
+
+.eq-eval-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.eq-paren-indicator {
+  background: var(--amber-soft);
+  color: var(--amber);
+  border-radius: 8px;
+  padding: 2px 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+}
+

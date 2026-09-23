@@ -29,12 +29,12 @@ const GAMES_LIST = [
   },
   {
     id: 'funnySort',
-    title: 'Funny Sort 🤪',
+    title: 'Word Chain ⛓️',
     category: 'logic',
-    tag: 'Comedy Ranking',
-    desc: 'Rank absurd everyday blunders, chaos scenarios, and hilarious mishaps from least awkward to pure comedy gold!',
-    accent: 'var(--amber)',
-    soft: 'var(--amber-soft)',
+    tag: 'Word Association',
+    desc: 'Build an unbreakable chain where each word starts with the last letter of the previous — pick the right link before the chain snaps!',
+    accent: 'var(--mint)',
+    soft: 'var(--mint-soft)',
   },
   {
     id: 'missingPiece',

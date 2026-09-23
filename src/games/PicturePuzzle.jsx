@@ -269,6 +269,110 @@ function VisualArtwork({ visualType, accent = 'var(--mint)' }) {
         </svg>
       );
 
+    case 'rebus_brainstorm':
+      return (
+        <svg viewBox="0 0 280 140" className="picture-puzzle-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="140" rx="16" fill="var(--surface2)" />
+          <text x="140" y="52" fontSize="28" fontWeight="900" fill={accent} textAnchor="middle" letterSpacing="2">BRAIN</text>
+          <text x="140" y="90" fontSize="14" fontWeight="800" fill="var(--muted)" textAnchor="middle">⚡⚡⚡ (Thunder claps)</text>
+          <path d="M90 105 Q140 120 190 105" stroke={accent} strokeWidth="2" fill="none" strokeDasharray="4 3"/>
+          <text x="140" y="128" fontSize="11" fontWeight="700" fill="var(--muted)" textAnchor="middle">with storm effects</text>
+        </svg>
+      );
+
+    case 'rebus_firefly':
+      return (
+        <svg viewBox="0 0 280 140" className="picture-puzzle-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="140" rx="16" fill="#0f172a" />
+          <text x="90" y="80" fontSize="32" fontWeight="900" fill="#ef4444" textAnchor="middle">FIRE</text>
+          <circle cx="175" cy="65" r="18" fill="#fbbf24" opacity="0.9"/>
+          <text x="175" y="72" fontSize="16" textAnchor="middle">🪲</text>
+          <text x="140" y="120" fontSize="12" fontWeight="800" fill="#94a3b8" textAnchor="middle">Glowing insect + flame</text>
+        </svg>
+      );
+
+    case 'rebus_overtime':
+      return (
+        <svg viewBox="0 0 280 140" className="picture-puzzle-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="140" rx="16" fill="var(--surface2)" />
+          <text x="140" y="52" fontSize="16" fontWeight="800" fill="var(--muted)" textAnchor="middle">ABOVE</text>
+          <line x1="50" y1="65" x2="230" y2="65" stroke={accent} strokeWidth="3"/>
+          <text x="140" y="100" fontSize="30" fontWeight="900" fill="var(--text)" textAnchor="middle" letterSpacing="3">TIME</text>
+        </svg>
+      );
+
+    case 'rebus_upside_down':
+      return (
+        <svg viewBox="0 0 280 140" className="picture-puzzle-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="140" rx="16" fill="var(--surface2)" />
+          <text x="140" y="55" fontSize="26" fontWeight="900" fill={accent} textAnchor="middle" transform="rotate(180 140 55)">DOWN</text>
+          <text x="140" y="105" fontSize="14" fontWeight="800" fill="var(--muted)" textAnchor="middle">↕ Flipped vertically</text>
+        </svg>
+      );
+
+    case 'rebus_backseat_driver':
+      return (
+        <svg viewBox="0 0 280 140" className="picture-puzzle-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="140" rx="16" fill="var(--surface2)" />
+          <rect x="60" y="40" width="160" height="60" rx="10" fill="var(--surface)" stroke={accent} strokeWidth="2"/>
+          <text x="140" y="76" fontSize="13" fontWeight="900" fill="var(--text)" textAnchor="middle">🚗 DRIVER</text>
+          <text x="140" y="120" fontSize="13" fontWeight="800" fill={accent} textAnchor="middle">← BACK seat position</text>
+        </svg>
+      );
+
+    case 'rebus_diamond_ring':
+      return (
+        <svg viewBox="0 0 280 140" className="picture-puzzle-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="140" rx="16" fill="var(--surface2)" />
+          <polygon points="140,25 165,55 140,75 115,55" fill="#38bdf8" opacity="0.8"/>
+          <circle cx="140" cy="100" r="22" fill="none" stroke={accent} strokeWidth="4"/>
+          <text x="140" y="132" fontSize="11" fontWeight="800" fill="var(--muted)" textAnchor="middle">Gem shape + circle band</text>
+        </svg>
+      );
+
+    case 'rebus_double_check':
+      return (
+        <svg viewBox="0 0 280 140" className="picture-puzzle-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="140" rx="16" fill="var(--surface2)" />
+          <text x="100" y="80" fontSize="40" fontWeight="900" fill="#10b981" textAnchor="middle">✓</text>
+          <text x="175" y="80" fontSize="40" fontWeight="900" fill="#10b981" textAnchor="middle">✓</text>
+          <text x="140" y="120" fontSize="12" fontWeight="800" fill="var(--muted)" textAnchor="middle">Two verification marks</text>
+        </svg>
+      );
+
+    case 'rebus_weather_forecast':
+      return (
+        <svg viewBox="0 0 280 140" className="picture-puzzle-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="140" rx="16" fill="var(--surface2)" />
+          <text x="80" y="70" fontSize="22" fontWeight="900" fill="#94a3b8" textAnchor="middle">⛈️</text>
+          <text x="140" y="70" fontSize="22" fontWeight="900" fill={accent} textAnchor="middle">→</text>
+          <text x="200" y="70" fontSize="22" textAnchor="middle">☀️</text>
+          <text x="140" y="110" fontSize="13" fontWeight="800" fill="var(--muted)" textAnchor="middle">Predicted: CAST ahead</text>
+        </svg>
+      );
+
+    case 'rebus_flat_broke':
+      return (
+        <svg viewBox="0 0 280 140" className="picture-puzzle-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="140" rx="16" fill="var(--surface2)" />
+          <text x="90" y="75" fontSize="28" fontWeight="900" fill="var(--text)" textAnchor="middle">FLAT</text>
+          <text x="190" y="75" fontSize="28" fontWeight="900" fill="var(--coral)" textAnchor="middle">BROKE</text>
+          <line x1="50" y1="82" x2="230" y2="82" stroke="var(--coral)" strokeWidth="2" strokeDasharray="4 4"/>
+          <text x="140" y="115" fontSize="11" fontWeight="800" fill="var(--muted)" textAnchor="middle">Flat wallet + shattered word</text>
+        </svg>
+      );
+
+    case 'rebus_shortcut':
+      return (
+        <svg viewBox="0 0 280 140" className="picture-puzzle-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="140" rx="16" fill="var(--surface2)" />
+          <line x1="40" y1="40" x2="240" y2="40" stroke="var(--border)" strokeWidth="2" strokeDasharray="5 5"/>
+          <text x="140" y="37" fill="var(--muted)" fontSize="10" fontWeight="700" textAnchor="middle">LONG ROUTE</text>
+          <path d="M40 100 Q140 55 240 100" stroke={accent} strokeWidth="3" fill="none" strokeLinecap="round"/>
+          <text x="140" y="118" fontSize="11" fontWeight="800" fill={accent} textAnchor="middle">CUT = shorter path</text>
+        </svg>
+      );
+
     default:
       return (
         <svg viewBox="0 0 280 140" className="picture-puzzle-svg">
@@ -500,7 +604,118 @@ const PICTURE_PUZZLE_BANK = [
     answer: 'Painless',
     breakdown: 'PAIN with LESS = Painless!',
   },
+  {
+    id: 'pp-21',
+    visualType: 'rebus_brainstorm',
+    title: 'The Electric Mind',
+    category: '🌩️ Weather & Mind',
+    prompt: 'The word "BRAIN" appears at the top with lightning bolts and storm clouds erupting from it.',
+    question: 'What creative group-thinking session is visually depicted?',
+    options: ['Brainstorm', 'Mind Melt', 'Brain Freeze', 'Shock Therapy'],
+    answer: 'Brainstorm',
+    breakdown: 'BRAIN + STORM (lightning/thunder) = Brainstorm — a session to generate creative ideas!',
+  },
+  {
+    id: 'pp-22',
+    visualType: 'rebus_firefly',
+    title: 'The Glowing Insect',
+    category: '🪲 Nature',
+    prompt: 'The word "FIRE" is on the left side, and a glowing beetle-like insect floats on the right side, lit up like a lantern.',
+    question: 'What luminous summertime insect is shown?',
+    options: ['Firefly', 'Glowworm', 'Dragonfly', 'Fireant'],
+    answer: 'Firefly',
+    breakdown: 'FIRE + FLY (glowing flying insect) = Firefly — the bioluminescent beetle!',
+  },
+  {
+    id: 'pp-23',
+    visualType: 'rebus_overtime',
+    title: 'The Extra Period',
+    category: '⏰ Sports & Work',
+    prompt: 'The word "TIME" sits below a horizontal divider. Above the line reads "ABOVE" indicating position.',
+    question: 'What extended period in sports or extra work hours is shown?',
+    options: ['Overtime', 'Extra Time', 'Half Time', 'Deadline'],
+    answer: 'Overtime',
+    breakdown: 'OVER (above the line) + TIME (below) = Overtime — working beyond scheduled hours!',
+  },
+  {
+    id: 'pp-24',
+    visualType: 'rebus_upside_down',
+    title: 'The Inverted Word',
+    category: '🔃 Orientation',
+    prompt: 'The word "DOWN" is printed upside-down (rotated 180°), with a vertical flip indicator arrow.',
+    question: 'What directional phrase describes this inverted state?',
+    options: ['Upside Down', 'Turned Around', 'Inside Out', 'Back to Front'],
+    answer: 'Upside Down',
+    breakdown: 'The word DOWN is flipped UPSIDE = Upside Down!',
+  },
+  {
+    id: 'pp-25',
+    visualType: 'rebus_backseat_driver',
+    title: 'The Car Controller',
+    category: '🚗 Driving Idioms',
+    prompt: 'A car symbol sits front-center labeled DRIVER, and the word BACK points to the rear seat position of the car.',
+    question: 'What term describes someone who annoyingly gives directions from the rear?',
+    options: ['Backseat Driver', 'Road Rage', 'Auto Pilot', 'Passenger Control'],
+    answer: 'Backseat Driver',
+    breakdown: 'BACK (seat position) + DRIVER (in a car) = Backseat driver — someone giving unsolicited instructions!',
+  },
+  {
+    id: 'pp-26',
+    visualType: 'rebus_diamond_ring',
+    title: 'The Gem Band',
+    category: '💍 Jewelry',
+    prompt: 'A sharp diamond polygon shape sits above a circular ring band outline.',
+    question: 'What classic piece of jewelry is shown?',
+    options: ['Diamond Ring', 'Engagement Ring', 'Crystal Crown', 'Ruby Bracelet'],
+    answer: 'Diamond Ring',
+    breakdown: 'DIAMOND (gem shape) + RING (circular band) = Diamond Ring!',
+  },
+  {
+    id: 'pp-27',
+    visualType: 'rebus_double_check',
+    title: 'The Dual Verification',
+    category: '✅ Verification',
+    prompt: 'Two identical large green checkmarks appear side by side.',
+    question: 'What phrase meaning to verify something twice is shown?',
+    options: ['Double Check', 'Two Ticks', 'Verified Twice', 'Checkmate'],
+    answer: 'Double Check',
+    breakdown: 'DOUBLE (two) + CHECK (✓✓ marks) = Double Check — to verify twice for certainty!',
+  },
+  {
+    id: 'pp-28',
+    visualType: 'rebus_weather_forecast',
+    title: 'The Prediction Board',
+    category: '🌤️ Meteorology',
+    prompt: 'A storm cloud transitions via arrow to a sunshine emoji, with the word CAST indicated below.',
+    question: 'What meteorological prediction service is depicted?',
+    options: ['Weather Forecast', 'Storm Warning', 'Climate Report', 'Sun Prediction'],
+    answer: 'Weather Forecast',
+    breakdown: 'WEATHER (storm → sun conditions) + FORE-CAST (predicted ahead) = Weather Forecast!',
+  },
+  {
+    id: 'pp-29',
+    visualType: 'rebus_flat_broke',
+    title: 'The Empty Wallet',
+    category: '💸 Money Idioms',
+    prompt: 'The word "FLAT" is placed next to the cracked, shattered word "BROKE" on a dashed line.',
+    question: 'What idiom means completely out of money?',
+    options: ['Flat Broke', 'Stone Cold', 'Coin Toss', 'Empty Purse'],
+    answer: 'Flat Broke',
+    breakdown: 'FLAT (completely, as in flat out) + BROKE (no money) = Flat Broke — completely penniless!',
+  },
+  {
+    id: 'pp-30',
+    visualType: 'rebus_shortcut',
+    title: 'The Diagonal Path',
+    category: '🛣️ Efficiency',
+    prompt: 'A long dashed route goes straight across at the top, but a curved arc swoops diagonally as a shorter path below — labeled CUT.',
+    question: 'What term for a faster alternative route is shown?',
+    options: ['Shortcut', 'Bypass', 'Quick Path', 'Sprint Route'],
+    answer: 'Shortcut',
+    breakdown: 'SHORT (smaller curved path) + CUT (direct slice through distance) = Shortcut!',
+  },
 ];
+
 
 function shuffleArray(arr) {
   const a = [...arr];
