@@ -10,7 +10,7 @@ import BgOrbs          from './components/BgOrbs';
 import MemoryMatch     from './games/MemoryMatch';
 import ChronoBeat      from './games/ChronoBeat';
 import NumberNinja     from './games/NumberNinja';
-import LogicLock       from './games/LogicLock';
+import FunnySort       from './games/FunnySort';
 import MissingPiece    from './games/MissingPiece';
 import SpeedMath       from './games/SpeedMath';
 import CodeBreaker     from './games/CodeBreaker';
@@ -428,8 +428,8 @@ export default function App() {
       {screen === 'numberNinja' && (
         <NumberNinja sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
       )}
-      {screen === 'logicLock' && (
-        <LogicLock sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
+      {screen === 'funnySort' && (
+        <FunnySort sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
       )}
       {screen === 'missingPiece' && (
         <MissingPiece sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />

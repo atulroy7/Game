@@ -39,8 +39,15 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
     setGameState('waiting');
   };
 
+  const roundRef = useRef(round);
+  roundRef.current = round;
+  const currentTargetRef = useRef(currentTarget);
+  currentTargetRef.current = currentTarget;
+  const gameStateRef = useRef(gameState);
+  gameStateRef.current = gameState;
+
   // Start the timer for the current round
-  const startTimer = () => {
+  const startTimer = useCallback(() => {
     sound.playTick();
     setGameState('running');
     setIsBlinded(false);
@@ -64,22 +71,23 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
     };
 
     animFrameRef.current = requestAnimationFrame(tick);
-  };
+  }, [sound]);
 
   // Stop the timer and calculate accuracy
-  const stopTimer = () => {
-    if (gameState !== 'running') return;
+  const stopTimer = useCallback(() => {
+    if (gameStateRef.current !== 'running') return;
     cancelAnimationFrame(animFrameRef.current);
 
     const finalTime = (performance.now() - startTimestampRef.current) / 1000;
     setElapsed(finalTime);
     setIsBlinded(false);
 
-    const delta = finalTime - currentTarget;
+    const target = currentTargetRef.current;
+    const delta = finalTime - target;
     const deltaMs = Math.round(Math.abs(delta) * 1000);
 
     // Accuracy formula: 100% at 0ms, drops linearly
-    const accuracyPct = Math.max(0, Math.round((1 - Math.abs(delta) / currentTarget) * 1000) / 10);
+    const accuracyPct = Math.max(0, Math.round((1 - Math.abs(delta) / target) * 1000) / 10);
     
     // Points: max 1000 pts
     const roundPts = Math.max(50, Math.round(1000 - deltaMs * 1.5));
@@ -90,7 +98,7 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
 
     const rank = getAccuracyRank(deltaMs);
     const resultObj = {
-      target: currentTarget,
+      target,
       stoppedAt: finalTime,
       delta,
       deltaMs,
@@ -108,11 +116,11 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
     } else {
       sound.playMatch();
     }
-  };
+  }, [sound]);
 
   // Proceed to next round or end game
-  const handleNextRound = () => {
-    const nextRound = round + 1;
+  const handleNextRound = useCallback(() => {
+    const nextRound = roundRef.current + 1;
     if (nextRound >= ROUND_TARGETS.length) {
       setGameState('gameover');
       if (onSaveScore) onSaveScore('chronoBeat', scoreRef.current);
@@ -120,7 +128,27 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
       setRound(nextRound);
       setGameState('waiting');
     }
-  };
+  }, [onSaveScore]);
+
+  // Global spacebar listener
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.code === 'Space' || e.key === ' ') {
+        e.preventDefault();
+        const currentSt = gameStateRef.current;
+        if (currentSt === 'running') {
+          stopTimer();
+        } else if (currentSt === 'waiting') {
+          startTimer();
+        } else if (currentSt === 'revealed') {
+          handleNextRound();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [stopTimer, startTimer, handleNextRound]);
 
   useEffect(() => {
     return () => cancelAnimationFrame(animFrameRef.current);
@@ -207,13 +235,15 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
           <div className="chrono-actions-row">
             {gameState === 'waiting' && (
               <button className="btn-chrono-main btn-start-time" onClick={startTimer}>
-                ▶ Start Timer
+                <span>▶ Start Timer</span>
+                <span className="chrono-hotkey-badge">SPACE</span>
               </button>
             )}
 
             {gameState === 'running' && (
               <button className="btn-chrono-main btn-stop-time" onClick={stopTimer}>
-                ⏹ STOP AT {currentTarget.toFixed(1)}s!
+                <span>⏹ STOP AT {currentTarget.toFixed(1)}s!</span>
+                <span className="chrono-hotkey-badge">SPACE</span>
               </button>
             )}
 
@@ -242,7 +272,8 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
                   className="btn-chrono-main btn-next-time"
                   onClick={handleNextRound}
                 >
-                  {round + 1 < ROUND_TARGETS.length ? 'Next Round →' : 'View Final Summary →'}
+                  <span>{round + 1 < ROUND_TARGETS.length ? 'Next Round →' : 'View Final Summary →'}</span>
+                  <span className="chrono-hotkey-badge">SPACE</span>
                 </button>
               </div>
             )}

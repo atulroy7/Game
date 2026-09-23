@@ -35,32 +35,36 @@ export default function GameCardVisual({ gameId, accent = 'var(--coral)', soft =
         </div>
       );
 
-    case 'logicLock':
+    case 'funnySort':
       return (
         <div className="card-visual-banner" style={{ background: soft }}>
           <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Vault Outer Chassis */}
-            <rect x="65" y="24" width="150" height="74" rx="14" fill="var(--surface)" stroke={accent} strokeWidth="2.5" />
-            <circle cx="80" cy="36" r="3" fill={accent} />
-            <circle cx="200" cy="36" r="3" fill={accent} />
+            {/* 3 Ranked Humorous Scenario Cards in Cascade */}
+            <g transform="translate(45, 18)">
+              {/* Card 1 */}
+              <rect x="0" y="8" width="56" height="74" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+              <rect x="4" y="12" width="16" height="16" rx="4" fill="#10B981" />
+              <text x="12" y="24" fill="#fff" fontSize="10" fontWeight="900" textAnchor="middle">1</text>
+              <text x="28" y="46" fill="var(--text)" fontSize="20" textAnchor="middle">🍕</text>
+              <path d="M22 66 L28 60 L34 66" stroke={accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 
-            {/* 3 Tumblers */}
-            <g transform="translate(85, 36)">
-              <rect x="0" y="0" width="30" height="46" rx="6" fill="var(--surface2)" stroke="var(--border)" strokeWidth="1.5" />
-              <text x="15" y="30" fill="var(--text)" fontSize="20" fontWeight="900" textAnchor="middle" fontFamily="JetBrains Mono">0</text>
+              {/* Card 2 (Elevated / Active) */}
+              <rect x="66" y="2" width="58" height="82" rx="9" fill="var(--surface)" stroke={accent} strokeWidth="2.5" />
+              <rect x="70" y="6" width="18" height="18" rx="5" fill="#F59E0B" />
+              <text x="79" y="19" fill="#fff" fontSize="11" fontWeight="900" textAnchor="middle">2</text>
+              <text x="95" y="44" fill="var(--text)" fontSize="24" textAnchor="middle">🤪</text>
+              <text x="95" y="68" fill={accent} fontSize="8" fontWeight="800" textAnchor="middle">SWAP</text>
 
-              <rect x="40" y="0" width="30" height="46" rx="6" fill="var(--surface2)" stroke="var(--border)" strokeWidth="1.5" />
-              <text x="55" y="30" fill="var(--text)" fontSize="20" fontWeight="900" textAnchor="middle" fontFamily="JetBrains Mono">4</text>
-
-              <rect x="80" y="0" width="30" height="46" rx="6" fill={accent} />
-              <text x="95" y="30" fill="#fff" fontSize="20" fontWeight="900" textAnchor="middle" fontFamily="JetBrains Mono">2</text>
+              {/* Card 3 */}
+              <rect x="134" y="12" width="56" height="70" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" />
+              <rect x="138" y="16" width="16" height="16" rx="4" fill="#EF4444" />
+              <text x="146" y="28" fill="#fff" fontSize="10" fontWeight="900" textAnchor="middle">3</text>
+              <text x="162" y="48" fill="var(--text)" fontSize="20" textAnchor="middle">💥</text>
+              <path d="M156 62 L162 68 L168 62" stroke={accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </g>
 
-            {/* Lock Shackle */}
-            <path d="M125 24V14C125 7 132 2 140 2C148 2 155 7 155 14V24" stroke={accent} strokeWidth="3" fill="none" strokeLinecap="round" />
-
-            <rect x="96" y="106" width="88" height="17" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
-            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">VAULT CODE</text>
+            <rect x="88" y="106" width="104" height="17" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="118" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">COMEDY RANK</text>
           </svg>
         </div>
       );
