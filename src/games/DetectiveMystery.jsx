@@ -3,6 +3,8 @@ import BgOrbs from '../components/BgOrbs';
 import Confetti from '../components/Confetti';
 import ScorePop from '../components/ScorePop';
 
+const CASES_PER_SET = 10;
+
 const DETECTIVE_CASES = [
   // ── Classic Blood Relations ──
   {
@@ -252,6 +254,15 @@ function shuffleArray(arr) {
   return a;
 }
 
+function getDetectiveRank(solved, total) {
+  const ratio = solved / total;
+  if (ratio === 1.0) return { title: 'Master Detective', badge: '🏆', desc: 'Flawless deduction across all cases!' };
+  if (ratio >= 0.8) return { title: 'Senior Inspector', badge: '🕵️‍♂️', desc: 'Exceptional investigative insight!' };
+  if (ratio >= 0.6) return { title: 'Field Investigator', badge: '🔍', desc: 'Solid analytical detective skills!' };
+  if (ratio >= 0.4) return { title: 'Junior Sleuth', badge: '🔎', desc: 'Good leads, keep sharpening your logic!' };
+  return { title: 'Rookie Investigator', badge: '📁', desc: 'Review the case clues and try again!' };
+}
+
 // Animated detective background SVG elements
 function DetectiveBg({ activeClue }) {
   return (
@@ -334,19 +345,21 @@ function DetectiveBg({ activeClue }) {
 
 export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
   const [gameState, setGameState] = useState('ready');
-  const [cases] = useState(() => shuffleArray(DETECTIVE_CASES));
+  const [cases, setCases] = useState(() => shuffleArray(DETECTIVE_CASES).slice(0, CASES_PER_SET));
   const [caseIdx, setCaseIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [solved, setSolved] = useState(0);
   const [selectedOpt, setSelectedOpt] = useState(null);
   const [hoveredClue, setHoveredClue] = useState(false);
+  const [caseHistory, setCaseHistory] = useState([]);
 
   const [lastPts, setLastPts] = useState(0);
   const [scoreTrigger, setScoreTrigger] = useState(0);
 
-  const currentCase = cases[caseIdx % cases.length];
+  const currentCase = cases[caseIdx] || cases[0];
 
   const shuffledOptions = React.useMemo(() => {
+    if (!currentCase) return [];
     return shuffleArray(currentCase.options);
   }, [currentCase]);
 
@@ -354,7 +367,18 @@ export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
     if (selectedOpt !== null || gameState !== 'playing') return;
     setSelectedOpt(opt);
 
-    if (opt === currentCase.answer) {
+    const isCorrect = opt === currentCase.answer;
+    setCaseHistory(prev => [
+      ...prev,
+      {
+        caseNo: currentCase.caseNo,
+        title: currentCase.title,
+        category: currentCase.category,
+        isCorrect,
+      },
+    ]);
+
+    if (isCorrect) {
       sound.playCorrect();
       const pts = 200;
       const newScore = score + pts;
@@ -369,19 +393,34 @@ export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
   };
 
   const handleNextCase = () => {
-    setCaseIdx(i => i + 1);
-    setSelectedOpt(null);
-    setHoveredClue(false);
+    if (caseIdx + 1 < cases.length) {
+      setCaseIdx(i => i + 1);
+      setSelectedOpt(null);
+      setHoveredClue(false);
+    } else {
+      // Completed all 10 cases!
+      setGameState('completed');
+      if (solved >= 6) {
+        sound.playStreak();
+      } else {
+        sound.playCorrect();
+      }
+    }
   };
 
   const startGame = () => {
+    const newSet = shuffleArray(DETECTIVE_CASES).slice(0, CASES_PER_SET);
+    setCases(newSet);
     setScore(0);
     setSolved(0);
     setCaseIdx(0);
     setSelectedOpt(null);
     setHoveredClue(false);
+    setCaseHistory([]);
     setGameState('playing');
   };
+
+  const rank = getDetectiveRank(solved, cases.length);
 
   return (
     <div className="screen mini-game-screen detective-screen">
@@ -391,40 +430,70 @@ export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
       <div className="game-nav-bar">
         <button className="btn-back" onClick={onBack}>← Hub</button>
         <div className="mini-game-title">🕵️ Detective Mystery</div>
-        <div className="hud-badge-compact">Solved: {solved}</div>
+        <div className="hud-badge-compact">Solved: {solved}/{cases.length}</div>
       </div>
 
+      {/* ── Ready Modal ── */}
       {gameState === 'ready' && (
         <div className="mini-card ready-modal">
           <div className="mode-badge-pop" style={{ background: 'var(--amber-soft)', color: 'var(--amber)' }}>
-            Logic · Paradox · Blood Relations
+            Investigation Dossier · 10 Cases
           </div>
           <h2>Detective Mystery</h2>
           <p className="ready-desc">
-            20 unique cases await — from blood relations and logic paradoxes to probability traps and lateral thinking puzzles. Crack them all!
+            Analyze statements, test paradoxes, and solve family bloodlines across a curated set of <strong>10 out-of-the-box mystery cases</strong>.
           </p>
           <div className="rules-grid">
-            <div className="rule-item">🔍 Logic paradoxes & brain teasers</div>
-            <div className="rule-item">🩸 Family blood relation chains</div>
-            <div className="rule-item">🚪 Lateral thinking & spatial puzzles</div>
-            <div className="rule-item">🏆 200 pts per solved case</div>
+            <div className="rule-item">📋 10 Investigation Cases per dossier</div>
+            <div className="rule-item">🔍 Lateral thinking, paradoxes &amp; probability traps</div>
+            <div className="rule-item">🩸 Family blood relations &amp; deductive logic</div>
+            <div className="rule-item">🏆 200 pts per cracked case (Max 2000 pts)</div>
           </div>
           <button className="btn-start-mini" style={{ background: 'var(--amber)' }} onClick={startGame}>
-            <span>Open Case Files</span> →
+            <span>Open Case Files (10 Cases)</span> →
           </button>
         </div>
       )}
 
+      {/* ── Active Investigation ── */}
       {gameState === 'playing' && currentCase && (
         <div className="detective-play-area">
+          {/* 10-Case Progress Tracker Dots */}
+          <div className="det-progress-wrap">
+            <div className="case-dots-strip" role="status" aria-label="Investigation progress">
+              {cases.map((c, i) => {
+                const hist = caseHistory[i];
+                const isCurrent = i === caseIdx;
+                let dotClass = 'dot-pending';
+                let dotContent = i + 1;
+                if (hist) {
+                  dotClass = hist.isCorrect ? 'dot-solved' : 'dot-wrong';
+                  dotContent = hist.isCorrect ? '✓' : '✗';
+                } else if (isCurrent) {
+                  dotClass = 'dot-current';
+                }
+
+                return (
+                  <div
+                    key={i}
+                    className={`case-dot ${dotClass}`}
+                    title={`Case ${i + 1}: ${c.title}`}
+                  >
+                    {dotContent}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           <div className="hud-strip">
             <div className="hud-badge">
               <span className="lbl">Score</span>
               <span className="val">{score}</span>
             </div>
             <div className="hud-badge">
-              <span className="lbl">Case</span>
-              <span className="val">{currentCase.caseNo}</span>
+              <span className="lbl">Case Progress</span>
+              <span className="val">{caseIdx + 1} of {cases.length}</span>
             </div>
             <div className="hud-badge det-category-badge">
               <span className="val" style={{ fontSize: '0.75rem' }}>{currentCase.category}</span>
@@ -438,7 +507,7 @@ export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
             onMouseLeave={() => setHoveredClue(false)}
           >
             <div className="dossier-header-row">
-              <span className="dossier-stamp">CONFIDENTIAL EVIDENCE</span>
+              <span className="dossier-stamp">CONFIDENTIAL EVIDENCE · {currentCase.caseNo}</span>
               <h3 className="dossier-title">{currentCase.title}</h3>
             </div>
 
@@ -487,12 +556,75 @@ export default function DetectiveMystery({ sound, onBack, onSaveScore }) {
               </div>
               <p className="breakdown-text">{currentCase.breakdown}</p>
               <button className="btn-next-case" onClick={handleNextCase}>
-                Next Case File ➔
+                {caseIdx + 1 < cases.length ? `Next Case File (${caseIdx + 2}/10) ➔` : 'Final Case Dossier Report ➔'}
               </button>
             </div>
           )}
         </div>
       )}
+
+      {/* ── Dossier Completed Summary Screen ── */}
+      {gameState === 'completed' && (
+        <div className="detective-results-modal animate-pop">
+          <div className="dossier-stamp" style={{ alignSelf: 'center', fontSize: '0.8rem', padding: '4px 14px' }}>
+            DOSSIER ARCHIVED · 10 CASES RESOLVED
+          </div>
+
+          <div className="det-rank-badge-wrap">
+            <span className="det-rank-icon">{rank.badge}</span>
+            <h2 className="det-rank-title">{rank.title}</h2>
+            <p className="det-rank-desc">{rank.desc}</p>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="det-results-metrics">
+            <div className="det-metric-box">
+              <span className="lbl">Cracked</span>
+              <span className="val" style={{ color: 'var(--mint)' }}>{solved} / {cases.length}</span>
+            </div>
+            <div className="det-metric-box">
+              <span className="lbl">Accuracy</span>
+              <span className="val">{Math.round((solved / cases.length) * 100)}%</span>
+            </div>
+            <div className="det-metric-box">
+              <span className="lbl">Score</span>
+              <span className="val" style={{ color: 'var(--amber)' }}>{score}</span>
+            </div>
+          </div>
+
+          {/* 10 Cases Breakdown Summary List */}
+          <div className="det-summary-panel">
+            <h4 className="det-summary-heading">Case-by-Case Log</h4>
+            <div className="det-summary-list">
+              {caseHistory.map((item, idx) => (
+                <div key={idx} className={`det-summary-item ${item.isCorrect ? 'item-correct' : 'item-wrong'}`}>
+                  <div className="item-left">
+                    <span className="item-num">#{idx + 1}</span>
+                    <div className="item-info">
+                      <span className="item-title">{item.title}</span>
+                      <span className="item-cat">{item.category}</span>
+                    </div>
+                  </div>
+                  <div className="item-status">
+                    {item.isCorrect ? '✅ Solved' : '❌ Missed'}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="det-results-actions">
+            <button className="btn-det-action btn-det-replay" onClick={startGame}>
+              <span>New 10-Case Dossier</span> 🔄
+            </button>
+            <button className="btn-det-action btn-det-hub" onClick={onBack}>
+              ← Return to Hub
+            </button>
+          </div>
+        </div>
+      )}
+
+      {gameState === 'completed' && solved >= 6 && <Confetti />}
     </div>
   );
 }

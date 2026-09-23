@@ -327,6 +327,56 @@ export default function GameCardVisual({ gameId, accent = 'var(--coral)', soft =
         </div>
       );
 
+    case 'tabooReasoning':
+      return (
+        <div className="card-visual-banner" style={{ background: soft }}>
+          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(45, 24)">
+              {/* Central Target Badge */}
+              <rect x="50" y="0" width="90" height="28" rx="8" fill={accent} />
+              <text x="95" y="19" fill="#fff" fontSize="12" fontWeight="900" textAnchor="middle" letterSpacing="1">TARGET</text>
+
+              {/* Forbidden Taboo Cross Badges */}
+              <g transform="translate(0, 36)">
+                <rect x="0" y="0" width="56" height="22" rx="6" fill="var(--surface)" stroke="var(--coral)" strokeWidth="1.2" />
+                <text x="28" y="15" fill="var(--coral)" fontSize="10" fontWeight="900" textAnchor="middle">🚫 CLUE 1</text>
+
+                <rect x="64" y="0" width="62" height="22" rx="6" fill="var(--surface)" stroke="var(--coral)" strokeWidth="1.2" />
+                <text x="95" y="15" fill="var(--coral)" fontSize="10" fontWeight="900" textAnchor="middle">🚫 TABOO</text>
+
+                <rect x="134" y="0" width="56" height="22" rx="6" fill="var(--surface)" stroke="var(--coral)" strokeWidth="1.2" />
+                <text x="162" y="15" fill="var(--coral)" fontSize="10" fontWeight="900" textAnchor="middle">🚫 CLUE 2</text>
+              </g>
+
+              {/* Verified Clean Check */}
+              <rect x="42" y="66" width="106" height="18" rx="6" fill="var(--mint-soft)" stroke="var(--mint)" strokeWidth="1.2" />
+              <text x="95" y="79" fill="var(--mint)" fontSize="9" fontWeight="900" textAnchor="middle">✓ CLEAN DEDUCTION</text>
+            </g>
+
+            <rect x="88" y="110" width="104" height="16" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="122" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">FORBIDDEN CLUES</text>
+          </svg>
+        </div>
+      );
+
+    case 'picturePuzzle':
+      return (
+        <div className="card-visual-banner" style={{ background: soft }}>
+          <svg className="card-visual-svg" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(60, 20)">
+              {/* Mini Rebus Stand/I */}
+              <rect x="15" y="0" width="130" height="78" rx="12" fill="var(--surface)" stroke={accent} strokeWidth="2" />
+              <text x="80" y="32" fill="var(--text)" fontSize="18" fontWeight="900" textAnchor="middle" letterSpacing="3">STAND</text>
+              <line x1="40" y1="42" x2="120" y2="42" stroke={accent} strokeWidth="2" strokeLinecap="round" />
+              <text x="80" y="66" fill={accent} fontSize="20" fontWeight="900" textAnchor="middle">I</text>
+            </g>
+
+            <rect x="90" y="110" width="100" height="16" rx="8" fill="var(--surface)" stroke="var(--border)" strokeWidth="1" />
+            <text x="140" y="122" fill="var(--text)" fontSize="9" fontWeight="800" textAnchor="middle" letterSpacing="0.8">VISUAL REBUS</text>
+          </svg>
+        </div>
+      );
+
     default:
       return null;
   }

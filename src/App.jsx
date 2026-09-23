@@ -17,6 +17,8 @@ import BrainMaze       from './games/BrainMaze';
 import SeatingShuffle  from './games/SeatingShuffle';
 import OddOneOut       from './games/OddOneOut';
 import DetectiveMystery from './games/DetectiveMystery';
+import TabooReasoning   from './games/TabooReasoning';
+import PicturePuzzle    from './games/PicturePuzzle';
 import Countdown60     from './games/Countdown60';
 import EquationEscape  from './games/EquationEscape';
 import './App.css';
@@ -447,6 +449,12 @@ export default function App() {
       )}
       {screen === 'detectiveMystery' && (
         <DetectiveMystery sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
+      )}
+      {screen === 'tabooReasoning' && (
+        <TabooReasoning sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
+      )}
+      {screen === 'picturePuzzle' && (
+        <PicturePuzzle sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />
       )}
       {screen === 'countdown60' && (
         <Countdown60 sound={sound} onBack={() => setScreen('home')} onSaveScore={handleSaveMiniGameScore} />

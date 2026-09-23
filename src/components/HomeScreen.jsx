@@ -10,7 +10,7 @@ import {
 } from './Icons';
 
 const HUB_FILTERS = [
-  { key: 'all',     label: 'All Games (13)' },
+  { key: 'all',     label: 'All Games (15)' },
   { key: 'math',    label: 'Math & Series' },
   { key: 'logic',   label: 'Logic & Deduction' },
   { key: 'spatial', label: 'Spatial & Visual' },
@@ -98,6 +98,24 @@ const GAMES_LIST = [
     desc: 'Step into the shoes of a detective! Untangle family tree relations, testimony alibis, and logical mystery riddles.',
     accent: 'var(--amber)',
     soft: 'var(--amber-soft)',
+  },
+  {
+    id: 'tabooReasoning',
+    title: 'Taboo Reasoning 🚫',
+    category: 'logic',
+    tag: 'Forbidden Clues',
+    desc: 'Deduce secret concepts and spot rule-breaking statements without triggering forbidden taboo words!',
+    accent: 'var(--coral)',
+    soft: 'var(--coral-soft)',
+  },
+  {
+    id: 'picturePuzzle',
+    title: 'Picture Puzzle 🖼️',
+    category: 'spatial',
+    tag: 'Rebus & Visual Logic',
+    desc: 'Decode visual wordplay, iconic rebus pictograms, and optical deduction riddles!',
+    accent: 'var(--mint)',
+    soft: 'var(--mint-soft)',
   },
   {
     id: 'countdown60',
