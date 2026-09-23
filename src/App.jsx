@@ -6,6 +6,7 @@ import CountdownScreen from './components/CountdownScreen';
 import QuizScreen      from './components/QuizScreen';
 import ResultsScreen   from './components/ResultsScreen';
 import ReviewScreen    from './components/ReviewScreen';
+import BgOrbs          from './components/BgOrbs';
 import MemoryMatch     from './games/MemoryMatch';
 import ChronoBeat      from './games/ChronoBeat';
 import NumberNinja     from './games/NumberNinja';
@@ -362,6 +363,7 @@ export default function App() {
   // ─────────────────────────────────────────────────────
   return (
     <div className="app">
+      <BgOrbs />
       {screen === 'home' && (
         <HomeScreen
           difficulty={difficulty} setDifficulty={setDifficulty}
