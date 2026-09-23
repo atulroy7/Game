@@ -4687,6 +4687,114 @@ button {
 /* ================================================
    9. DETECTIVE MYSTERY
    ================================================ */
+
+/* ── Animated Crime Board Background ── */
+.detective-screen {
+  position: relative;
+  overflow: hidden;
+}
+
+.detective-animated-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  color: var(--amber);
+  overflow: hidden;
+}
+
+/* Floating fingerprint rings */
+.det-bg-fingerprint {
+  position: absolute;
+  transition: opacity 0.6s ease;
+  animation: det-fp-float 6s ease-in-out infinite;
+}
+
+.det-bg-fingerprint svg {
+  color: var(--amber);
+}
+
+@keyframes det-fp-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(15deg); }
+}
+
+/* Magnifying glass */
+.det-bg-mag {
+  position: absolute;
+  opacity: 0.10;
+  color: var(--amber);
+  animation: det-mag-swing 8s ease-in-out infinite;
+  transition: opacity 0.6s ease;
+}
+
+.detective-screen:hover .det-bg-mag {
+  opacity: 0.22;
+}
+
+@keyframes det-mag-swing {
+  0%, 100% { transform: rotate(-8deg) scale(1); }
+  50% { transform: rotate(8deg) scale(1.1); }
+}
+
+/* Stacked files */
+.det-bg-files {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  opacity: 0.08;
+  transition: opacity 0.6s ease;
+}
+
+.detective-screen:hover .det-bg-files {
+  opacity: 0.2;
+}
+
+.det-bg-file {
+  width: 52px;
+  height: 66px;
+  background: linear-gradient(135deg, var(--amber-soft) 60%, var(--amber) 100%);
+  border: 1.5px solid var(--amber);
+  border-radius: 4px;
+  position: absolute;
+}
+
+/* Crime board strings */
+.det-bg-strings {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--amber);
+  opacity: 1;
+  animation: det-string-pulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes det-string-pulse {
+  from { opacity: 0.7; }
+  to { opacity: 1.4; }
+}
+
+/* Footsteps */
+.det-bg-footstep {
+  position: absolute;
+  font-size: 1.1rem;
+  opacity: 0.07;
+  animation: det-step-fade 3s ease-in-out infinite;
+  transition: opacity 0.6s ease;
+}
+
+.detective-screen:hover .det-bg-footstep {
+  opacity: 0.18;
+}
+
+@keyframes det-step-fade {
+  0%, 100% { opacity: 0.05; transform: scale(1); }
+  50% { opacity: 0.15; transform: scale(1.15); }
+}
+
+/* ── Play Area ── */
 .detective-play-area {
   width: 100%;
   max-width: 540px;
@@ -4694,8 +4802,11 @@ button {
   display: flex;
   flex-direction: column;
   gap: 18px;
+  position: relative;
+  z-index: 1;
 }
 
+/* ── Dossier Card with hover glow ── */
 .detective-dossier-card {
   background: var(--surface);
   border: 2px solid var(--border);
@@ -4705,12 +4816,26 @@ button {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  cursor: default;
+}
+
+.detective-dossier-card.dossier-lit,
+.detective-dossier-card:hover {
+  border-color: var(--amber);
+  background: linear-gradient(135deg, var(--surface) 70%, var(--amber-soft) 100%);
+  box-shadow:
+    var(--shadow-md),
+    0 0 24px rgba(245, 158, 11, 0.18),
+    0 0 48px rgba(245, 158, 11, 0.08);
 }
 
 .dossier-header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .dossier-stamp {
@@ -4721,6 +4846,12 @@ button {
   background: var(--amber-soft);
   padding: 2px 8px;
   border-radius: 4px;
+  animation: stamp-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes stamp-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0); }
+  50% { box-shadow: 0 0 0 4px rgba(245,158,11,0.12); }
 }
 
 .dossier-title {
@@ -4735,6 +4866,24 @@ button {
   border-radius: 8px;
   padding: 12px 14px;
   position: relative;
+  transition: border-left-width 0.3s ease, padding-left 0.3s ease;
+}
+
+.dossier-lit .testimony-quote-box,
+.detective-dossier-card:hover .testimony-quote-box {
+  border-left-width: 6px;
+  padding-left: 16px;
+}
+
+.quote-mark {
+  position: absolute;
+  top: -6px;
+  left: 10px;
+  font-size: 2.5rem;
+  color: var(--amber);
+  opacity: 0.35;
+  line-height: 1;
+  font-family: Georgia, serif;
 }
 
 .testimony-text {
@@ -4747,12 +4896,19 @@ button {
 .detective-target-question {
   font-size: 0.92rem;
   color: var(--text);
+  background: var(--surface2);
+  border-radius: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
 }
 
+/* ── Options Grid ── */
 .detective-options-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
+  position: relative;
+  z-index: 1;
 }
 
 .btn-detective-opt {
@@ -4765,16 +4921,18 @@ button {
   gap: 10px;
   cursor: pointer;
   box-shadow: var(--shadow-sm);
-  transition: all 0.15s ease;
+  transition: all 0.18s ease;
 }
 
 .btn-detective-opt:hover:not(:disabled) {
   border-color: var(--amber);
-  transform: translateY(-2px);
+  background: var(--amber-soft);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-md), 0 0 12px rgba(245,158,11,0.2);
 }
 
 .det-opt-text {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 800;
   color: var(--text);
 }
@@ -4782,26 +4940,44 @@ button {
 .btn-detective-opt.det-correct {
   border-color: var(--mint);
   background: var(--mint-soft);
+  animation: correct-flash 0.4s ease;
+}
+
+@keyframes correct-flash {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+  100% { transform: scale(1); }
 }
 
 .btn-detective-opt.det-wrong {
   border-color: var(--coral);
   background: var(--coral-soft);
+  animation: wrong-shake 0.35s ease;
+}
+
+@keyframes wrong-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
 }
 
 .btn-detective-opt.det-revealed {
   border-color: var(--mint);
+  border-style: dashed;
 }
 
+/* ── Breakdown card ── */
 .detective-breakdown-card {
   background: var(--surface);
   border: 2px solid var(--amber);
   border-radius: 16px;
   padding: 16px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-sm), 0 0 20px rgba(245,158,11,0.15);
   display: flex;
   flex-direction: column;
   gap: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .breakdown-title {
@@ -4827,7 +5003,19 @@ button {
   font-weight: 800;
   cursor: pointer;
   margin-top: 6px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
+
+.btn-next-case:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(245,158,11,0.35);
+}
+
+/* ── Category badge ── */
+.det-category-badge .val {
+  color: var(--amber) !important;
+}
+
 
 /* ================================================
    10. COUNTDOWN 60
