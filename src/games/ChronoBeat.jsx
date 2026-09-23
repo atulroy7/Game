@@ -31,25 +31,34 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
 
   const currentTarget = ROUND_TARGETS[round] || 5.000;
 
-  const startSession = () => {
-    scoreRef.current = 0;
-    setTotalScore(0);
-    setRoundScores([]);
-    setRound(0);
-    setGameState('waiting');
-  };
-
+  const gameStateRef = useRef(gameState);
+  gameStateRef.current = gameState;
   const roundRef = useRef(round);
   roundRef.current = round;
   const currentTargetRef = useRef(currentTarget);
   currentTargetRef.current = currentTarget;
-  const gameStateRef = useRef(gameState);
-  gameStateRef.current = gameState;
+
+  // Immediate synchronous state synchronization
+  const changeGameState = (nextState) => {
+    gameStateRef.current = nextState;
+    setGameState(nextState);
+  };
+
+  const startSession = useCallback(() => {
+    scoreRef.current = 0;
+    setTotalScore(0);
+    setRoundScores([]);
+    setRound(0);
+    roundRef.current = 0;
+    currentTargetRef.current = ROUND_TARGETS[0];
+    changeGameState('waiting');
+  }, []);
 
   // Start the timer for the current round
   const startTimer = useCallback(() => {
+    if (gameStateRef.current !== 'waiting') return;
+    changeGameState('running');
     sound.playTick();
-    setGameState('running');
     setIsBlinded(false);
     setElapsed(0);
     setRoundResult(null);
@@ -76,6 +85,7 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
   // Stop the timer and calculate accuracy
   const stopTimer = useCallback(() => {
     if (gameStateRef.current !== 'running') return;
+    changeGameState('revealed');
     cancelAnimationFrame(animFrameRef.current);
 
     const finalTime = (performance.now() - startTimestampRef.current) / 1000;
@@ -109,7 +119,6 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
 
     setRoundResult(resultObj);
     setRoundScores(prev => [...prev, resultObj]);
-    setGameState('revealed');
 
     if (deltaMs <= 150) {
       sound.playChime();
@@ -120,35 +129,52 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
 
   // Proceed to next round or end game
   const handleNextRound = useCallback(() => {
+    if (gameStateRef.current !== 'revealed') return;
     const nextRound = roundRef.current + 1;
     if (nextRound >= ROUND_TARGETS.length) {
-      setGameState('gameover');
+      changeGameState('gameover');
       if (onSaveScore) onSaveScore('chronoBeat', scoreRef.current);
     } else {
+      roundRef.current = nextRound;
+      currentTargetRef.current = ROUND_TARGETS[nextRound];
       setRound(nextRound);
-      setGameState('waiting');
+      changeGameState('waiting');
     }
   }, [onSaveScore]);
 
   // Global spacebar listener
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.code === 'Space' || e.key === ' ') {
+      if (e.code === 'Space' || e.key === ' ' || e.keyCode === 32) {
+        if (e.repeat) return; // Prevent key repeat when held down
         e.preventDefault();
+
+        // Prevent space from re-activating any focused button
+        if (document.activeElement && typeof document.activeElement.blur === 'function') {
+          document.activeElement.blur();
+        }
+
         const currentSt = gameStateRef.current;
-        if (currentSt === 'running') {
-          stopTimer();
+        if (currentSt === 'ready') {
+          startSession();
         } else if (currentSt === 'waiting') {
           startTimer();
+        } else if (currentSt === 'running') {
+          // Require at least 80ms from start to avoid accidental micro-tap double fires
+          if (performance.now() - startTimestampRef.current >= 80) {
+            stopTimer();
+          }
         } else if (currentSt === 'revealed') {
           handleNextRound();
+        } else if (currentSt === 'gameover') {
+          startSession();
         }
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown, { passive: false });
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [stopTimer, startTimer, handleNextRound]);
+  }, [startSession, startTimer, stopTimer, handleNextRound]);
 
   useEffect(() => {
     return () => cancelAnimationFrame(animFrameRef.current);
@@ -193,9 +219,10 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
           <button
             className="btn-start-mini"
             style={{ background: 'var(--amber)' }}
-            onClick={startSession}
+            onClick={(e) => { e.currentTarget.blur(); startSession(); }}
           >
-            <span>Calibrate Internal Clock</span> →
+            <span>Calibrate Internal Clock</span>
+            <span className="chrono-hotkey-badge">SPACE</span>
           </button>
         </div>
       )}
@@ -210,9 +237,9 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
             </div>
             <p className="ready-desc" style={{ fontSize: '0.84rem', margin: 0 }}>
               {gameState === 'waiting'
-                ? 'Get your rhythm ready, then hit Start!'
+                ? 'Press Space or Click Start to begin the clock!'
                 : gameState === 'running' && isBlinded
-                ? 'Counter is BLIND! Feel the seconds...'
+                ? 'Counter is BLIND! Press Space or Click Stop!'
                 : 'Counting up...'}
             </p>
           </div>
@@ -222,7 +249,7 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
             {isBlinded ? (
               <div className="blind-tempo-pulse">
                 <span className="blind-dots">?.???</span>
-                <span className="blind-hint">Blind Beat</span>
+                <span className="blind-hint">Blind Beat • Rely on Instinct</span>
               </div>
             ) : (
               <div className="live-clock-digits">
@@ -234,14 +261,20 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
           {/* Action Trigger Buttons */}
           <div className="chrono-actions-row">
             {gameState === 'waiting' && (
-              <button className="btn-chrono-main btn-start-time" onClick={startTimer}>
+              <button
+                className="btn-chrono-main btn-start-time"
+                onClick={(e) => { e.currentTarget.blur(); startTimer(); }}
+              >
                 <span>▶ Start Timer</span>
                 <span className="chrono-hotkey-badge">SPACE</span>
               </button>
             )}
 
             {gameState === 'running' && (
-              <button className="btn-chrono-main btn-stop-time" onClick={stopTimer}>
+              <button
+                className="btn-chrono-main btn-stop-time"
+                onClick={(e) => { e.currentTarget.blur(); stopTimer(); }}
+              >
                 <span>⏹ STOP AT {currentTarget.toFixed(1)}s!</span>
                 <span className="chrono-hotkey-badge">SPACE</span>
               </button>
@@ -270,7 +303,7 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
                 </div>
                 <button
                   className="btn-chrono-main btn-next-time"
-                  onClick={handleNextRound}
+                  onClick={(e) => { e.currentTarget.blur(); handleNextRound(); }}
                 >
                   <span>{round + 1 < ROUND_TARGETS.length ? 'Next Round →' : 'View Final Summary →'}</span>
                   <span className="chrono-hotkey-badge">SPACE</span>
@@ -305,8 +338,13 @@ export default function ChronoBeat({ sound, onBack, onSaveScore }) {
           </div>
 
           <div className="modal-actions">
-            <button className="btn-play-again" style={{ background: 'var(--amber)' }} onClick={startSession}>
-              Test Again ↺
+            <button
+              className="btn-play-again"
+              style={{ background: 'var(--amber)' }}
+              onClick={(e) => { e.currentTarget.blur(); startSession(); }}
+            >
+              <span>Test Again ↺</span>
+              <span className="chrono-hotkey-badge" style={{ marginLeft: 8 }}>SPACE</span>
             </button>
             <button className="btn-hub" onClick={onBack}>
               Arcade Hub
