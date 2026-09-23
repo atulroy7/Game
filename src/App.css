@@ -4484,6 +4484,7 @@ button {
 
 .chair-slot {
   flex: 1;
+  position: relative;
   background: var(--surface2);
   border: 2px dashed var(--border);
   border-radius: 14px;
@@ -4507,6 +4508,75 @@ button {
   border-color: var(--mint);
   background: var(--mint-soft);
 }
+
+.chair-slot.chair-selected {
+  border-color: var(--mint);
+  border-style: solid;
+  background: var(--mint-soft);
+  box-shadow: 0 0 14px rgba(52, 211, 153, 0.45);
+  transform: translateY(-2px);
+}
+
+.chair-slot.chair-target-hint {
+  border-color: var(--mint);
+  border-style: dashed;
+  animation: chair-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes chair-pulse {
+  0%, 100% { border-color: var(--mint); background: var(--surface2); }
+  50% { border-color: #10b981; background: var(--mint-soft); }
+}
+
+.chair-remove-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--coral-soft);
+  color: var(--coral);
+  border: none;
+  font-size: 0.65rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chair-remove-btn:hover {
+  background: var(--coral);
+  color: #fff;
+  transform: scale(1.15);
+}
+
+.seating-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.btn-reset-seating {
+  background: var(--surface2);
+  color: var(--muted);
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  padding: 12px 18px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-reset-seating:hover {
+  border-color: var(--coral);
+  color: var(--coral);
+}
+
 
 .chair-num {
   font-size: 0.65rem;

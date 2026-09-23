@@ -119,10 +119,18 @@ export function useSound() {
     tone(1318, 'sine', t + 0.1, 0.6, 0.2, ac);
   }, []);
 
+  // 🔘 UI pop / click sound
+  const playPop = useCallback(() => {
+    try {
+      const ac = ctx();
+      tone(600, 'sine', ac.currentTime, 0.05, 0.18, ac);
+    } catch (e) {}
+  }, []);
+
   return {
     playCorrect, playWrong, playTimeout, playStreak,
     playPowerup, playLifeLost, playTick,
-    playFlip, playMatch, playPadTone, playLevelUp, playChime
+    playFlip, playMatch, playPadTone, playLevelUp, playChime, playPop
   };
 }
 
