@@ -7,7 +7,14 @@ const WORDS = [
   'BRAIN', 'SMART', 'LIGHT', 'SHINE', 'FOCUS', 'FLASH',
   'POWER', 'MAGIC', 'TIGER', 'ZEBRA', 'FROST', 'STORM',
   'CLOUD', 'SOLAR', 'LUNAR', 'ORBIT', 'SWIFT', 'FLAME',
-  'STONE', 'WATER', 'EARTH', 'SPACE', 'CYBER', 'ROBOT'
+  'STONE', 'WATER', 'EARTH', 'SPACE', 'CYBER', 'ROBOT',
+  'PRISM', 'CHESS', 'LOGIC', 'LASER', 'ALPHA', 'DELTA',
+  'GAMMA', 'SIGMA', 'OMEGA', 'TITAN', 'NOBLE', 'PIVOT',
+  'GLORY', 'QUEST', 'BLAZE', 'PULSE', 'SHOCK', 'STEEL',
+  'GHOST', 'CROWN', 'SONIC', 'TURBO', 'SHARK', 'EAGLE',
+  'VIPER', 'RAVEN', 'RHINO', 'HAWKS', 'OCEAN', 'RADAR',
+  'VIVID', 'NEXUS', 'SPARK', 'BLAST', 'SHARD', 'BEAST',
+  'FORGE', 'GIANT', 'HONOR', 'ROYAL', 'CLIMB', 'DREAM'
 ];
 
 function shiftStr(str, n) {
@@ -44,16 +51,26 @@ function shuffle(arr) {
   return a;
 }
 
-function generateDynamicCipher() {
+function generateDynamicCipher(usedWordsSet) {
   const types = ['shift_pos', 'shift_neg', 'atbash', 'alternating', 'val_sum', 'reverse_shift'];
   const type = types[Math.floor(Math.random() * types.length)];
 
-  // Pick 2 distinct words
-  const w1 = WORDS[Math.floor(Math.random() * WORDS.length)];
-  let w2 = WORDS[Math.floor(Math.random() * WORDS.length)];
-  while (w2 === w1) {
-    w2 = WORDS[Math.floor(Math.random() * WORDS.length)];
+  let availableWords = WORDS;
+  if (usedWordsSet) {
+    availableWords = WORDS.filter(w => !usedWordsSet.has(w));
+    if (availableWords.length < 2) {
+      usedWordsSet.clear();
+      availableWords = WORDS;
+    }
   }
+
+  // Pick target word
+  const w2 = availableWords[Math.floor(Math.random() * availableWords.length)];
+  if (usedWordsSet) usedWordsSet.add(w2);
+
+  // Pick distinct sample word
+  const remaining = WORDS.filter(w => w !== w2);
+  const w1 = remaining[Math.floor(Math.random() * remaining.length)];
 
   let typeName = '';
   let rule = '';
@@ -140,22 +157,26 @@ function generateDynamicCipher() {
     options = [answer, f1, f2, f3];
   }
 
-  // Collect 3 distinct distractors that do not match answer
+  // Collect 3 strictly unique distractors that do not match answer
   const distSet = new Set();
   const rawDistractors = options.filter(o => o && String(o).trim() !== String(answer).trim());
   for (const d of rawDistractors) {
-    if (d !== answer) distSet.add(d);
+    if (d && String(d).trim() !== String(answer).trim()) {
+      distSet.add(String(d).trim());
+    }
   }
   let step = 1;
   while (distSet.size < 3) {
     let extra = '';
     if (type === 'val_sum') {
       const num = Number(answer) || 50;
-      extra = String(num + (step % 2 === 0 ? step * 2 : -step * 2));
+      extra = String(num + (step % 2 === 0 ? step * 3 : -step * 3));
     } else {
-      extra = shiftStr(answer, step);
+      extra = shiftStr(answer, step * 2);
     }
-    if (extra && extra !== answer) distSet.add(extra);
+    if (extra && extra !== answer && !distSet.has(extra)) {
+      distSet.add(extra);
+    }
     step++;
   }
   const finalOptions = Array.from(distSet).slice(0, 3);
@@ -190,9 +211,10 @@ export default function CodeBreaker({ sound, onBack, onSaveScore }) {
   const timerRef = useRef(null);
   const scoreRef = useRef(0);
   const timeLeftRef = useRef(25);
+  const usedWordsRef = useRef(new Set());
 
   const nextQuestion = useCallback(() => {
-    setCurrentQ(generateDynamicCipher());
+    setCurrentQ(generateDynamicCipher(usedWordsRef.current));
     setSelectedOpt(null);
     timeLeftRef.current = 25;
     setTimeLeft(25);
@@ -206,6 +228,7 @@ export default function CodeBreaker({ sound, onBack, onSaveScore }) {
   }, [sound, onSaveScore]);
 
   const startGame = () => {
+    usedWordsRef.current.clear();
     scoreRef.current = 0;
     setScore(0);
     setStreak(0);

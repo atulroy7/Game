@@ -52,7 +52,7 @@ const PUZZLE_BANK = [
       { digits: [4, 1, 8], hint: 'Two numbers are correct, one well placed' },
       { digits: [9, 8, 3], hint: 'Nothing is correct' },
       { digits: [1, 4, 6], hint: 'Two numbers are correct but wrongly placed' },
-      { digits: [0, 7, 5], hint: 'One number is correct and well placed' },
+      { digits: [0, 7, 1], hint: 'Two numbers are correct and well placed' },
     ],
   },
   {
@@ -65,9 +65,59 @@ const PUZZLE_BANK = [
       { digits: [1, 2, 5], hint: 'Two numbers are correct but wrongly placed' },
     ],
   },
+  {
+    secret: [2, 4, 6],
+    clues: [
+      { digits: [2, 9, 1], hint: 'One number is correct and well placed' },
+      { digits: [2, 4, 5], hint: 'Two numbers are correct and well placed' },
+      { digits: [4, 6, 3], hint: 'Two numbers are correct but wrongly placed' },
+      { digits: [5, 7, 8], hint: 'Nothing is correct' },
+      { digits: [5, 6, 1], hint: 'One number is correct but wrongly placed' },
+    ],
+  },
+  {
+    secret: [6, 7, 9],
+    clues: [
+      { digits: [6, 1, 4], hint: 'One number is correct and well placed' },
+      { digits: [7, 6, 2], hint: 'Two numbers are correct but wrongly placed' },
+      { digits: [3, 5, 8], hint: 'Nothing is correct' },
+      { digits: [9, 7, 3], hint: 'Two numbers are correct, one well placed' },
+      { digits: [4, 0, 9], hint: 'One number is correct and well placed' },
+    ],
+  },
+  {
+    secret: [5, 1, 8],
+    clues: [
+      { digits: [5, 4, 2], hint: 'One number is correct and well placed' },
+      { digits: [1, 5, 3], hint: 'Two numbers are correct but wrongly placed' },
+      { digits: [9, 0, 7], hint: 'Nothing is correct' },
+      { digits: [8, 1, 4], hint: 'Two numbers are correct, one well placed' },
+      { digits: [3, 2, 8], hint: 'One number is correct and well placed' },
+    ],
+  },
+  {
+    secret: [7, 3, 2],
+    clues: [
+      { digits: [7, 8, 4], hint: 'One number is correct and well placed' },
+      { digits: [3, 7, 1], hint: 'Two numbers are correct but wrongly placed' },
+      { digits: [9, 6, 5], hint: 'Nothing is correct' },
+      { digits: [2, 3, 8], hint: 'Two numbers are correct, one well placed' },
+      { digits: [0, 4, 2], hint: 'One number is correct and well placed' },
+    ],
+  },
 ];
 
+function shufflePuzzles(bank) {
+  const arr = [...bank];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 export default function LogicLock({ sound, onBack, onSaveScore }) {
+  const [puzzles] = useState(() => shufflePuzzles(PUZZLE_BANK));
   const [puzzleIdx, setPuzzleIdx] = useState(0);
   const [dials, setDials] = useState([0, 0, 0]);
   const [activeDial, setActiveDial] = useState(0);
@@ -86,90 +136,149 @@ export default function LogicLock({ sound, onBack, onSaveScore }) {
   const input2Ref = useRef(null);
   const inputRefs = [input0Ref, input1Ref, input2Ref];
 
-  const currentPuzzle = PUZZLE_BANK[puzzleIdx % PUZZLE_BANK.length];
+  const currentPuzzle = puzzles[puzzleIdx % puzzles.length];
 
-  const handleDialChange = (index, delta) => {
+  // Auto focus active dial on mount or change
+  useEffect(() => {
+    inputRefs[0].current?.focus();
+  }, []);
+
+  const handleDialChange = useCallback((index, delta) => {
     sound.playPop();
+    setActiveDial(index);
     setDials(prev => {
       const next = [...prev];
       next[index] = (Number(next[index]) + delta + 10) % 10;
       return next;
     });
-  };
+  }, [sound]);
 
-  const handleDigitInput = (index, rawValue) => {
+  const setDigitAt = useCallback((index, digit) => {
     if (unlocked) return;
-    const digitsOnly = rawValue.replace(/\D/g, '');
-    if (digitsOnly.length === 0) return;
-    const digit = Number(digitsOnly.slice(-1));
     sound.playPop();
-
     setDials(prev => {
       const next = [...prev];
-      next[index] = digit;
+      next[index] = Number(digit);
       return next;
     });
 
     if (index < 2) {
-      setActiveDial(index + 1);
+      const nextIdx = index + 1;
+      setActiveDial(nextIdx);
       setTimeout(() => {
-        inputRefs[index + 1].current?.focus();
-        inputRefs[index + 1].current?.select();
+        inputRefs[nextIdx].current?.focus();
+        inputRefs[nextIdx].current?.select();
       }, 10);
     }
-  };
+  }, [unlocked, sound]);
 
-  const handleKeyDown = (index, e) => {
+  const handleDigitInput = (index, rawValue) => {
     if (unlocked) return;
-    if (e.key === 'Backspace') {
-      e.preventDefault();
-      sound.playPop();
+    const digitsOnly = rawValue.replace(/\D/g, '');
+    if (digitsOnly.length === 0) {
       setDials(prev => {
         const next = [...prev];
         next[index] = 0;
         return next;
       });
-      if (index > 0) {
-        setActiveDial(index - 1);
-        inputRefs[index - 1].current?.focus();
-        inputRefs[index - 1].current?.select();
-      }
-    } else if (e.key === 'ArrowLeft' && index > 0) {
-      e.preventDefault();
-      setActiveDial(index - 1);
-      inputRefs[index - 1].current?.focus();
-      inputRefs[index - 1].current?.select();
-    } else if (e.key === 'ArrowRight' && index < 2) {
-      e.preventDefault();
-      setActiveDial(index + 1);
-      inputRefs[index + 1].current?.focus();
-      inputRefs[index + 1].current?.select();
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      handleDialChange(index, 1);
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      handleDialChange(index, -1);
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      handleCrackVault();
+      return;
     }
+    // Determine the newly typed digit
+    let digit = Number(digitsOnly.slice(-1));
+    const oldDigitStr = String(dials[index]);
+    if (digitsOnly.length > 1) {
+      if (digitsOnly[0] === oldDigitStr) {
+        digit = Number(digitsOnly[1]);
+      } else if (digitsOnly[1] === oldDigitStr) {
+        digit = Number(digitsOnly[0]);
+      }
+    }
+    setDigitAt(index, digit);
   };
 
-  const handleKeypadPress = (num) => {
-    if (unlocked) return;
-    sound.playPop();
-    setDials(prev => {
-      const next = [...prev];
-      next[activeDial] = num;
-      return next;
-    });
-    if (activeDial < 2) {
-      const nextIdx = activeDial + 1;
-      setActiveDial(nextIdx);
-      inputRefs[nextIdx].current?.focus();
-      inputRefs[nextIdx].current?.select();
+  const handleCrackVault = useCallback(() => {
+    const isSuccess = dials.every((d, i) => Number(d) === currentPuzzle.secret[i]);
+
+    if (isSuccess) {
+      sound.playCorrect();
+      setUnlocked(true);
+      const penalty = attempts * 30;
+      const pts = Math.max(150, 400 - penalty);
+      const newScore = score + pts;
+      setScore(newScore);
+      setLastPts(pts);
+      setScoreTrigger(t => t + 1);
+      setSolvedCount(c => c + 1);
+
+      if (onSaveScore) onSaveScore('logicLock', newScore);
+    } else {
+      sound.playWrong();
+      setAttempts(a => a + 1);
+      setShake(true);
+      setTimeout(() => setShake(false), 400);
     }
+  }, [dials, currentPuzzle, sound, attempts, score, onSaveScore]);
+
+  // Global keyboard listener so typing 0-9, Backspace, Arrow keys, Enter always works
+  useEffect(() => {
+    if (unlocked) return;
+
+    const handleGlobalKeyDown = (e) => {
+      if (/^[0-9]$/.test(e.key)) {
+        e.preventDefault();
+        setDigitAt(activeDial, Number(e.key));
+      } else if (e.key === 'Backspace') {
+        e.preventDefault();
+        sound.playPop();
+        setDials(prev => {
+          const next = [...prev];
+          next[activeDial] = 0;
+          return next;
+        });
+        if (activeDial > 0) {
+          const prevIdx = activeDial - 1;
+          setActiveDial(prevIdx);
+          inputRefs[prevIdx].current?.focus();
+          inputRefs[prevIdx].current?.select();
+        }
+      } else if (e.key === 'Delete') {
+        e.preventDefault();
+        sound.playPop();
+        setDials(prev => {
+          const next = [...prev];
+          next[activeDial] = 0;
+          return next;
+        });
+      } else if (e.key === 'ArrowLeft' && activeDial > 0) {
+        e.preventDefault();
+        const prevIdx = activeDial - 1;
+        setActiveDial(prevIdx);
+        inputRefs[prevIdx].current?.focus();
+        inputRefs[prevIdx].current?.select();
+      } else if (e.key === 'ArrowRight' && activeDial < 2) {
+        e.preventDefault();
+        const nextIdx = activeDial + 1;
+        setActiveDial(nextIdx);
+        inputRefs[nextIdx].current?.focus();
+        inputRefs[nextIdx].current?.select();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        handleDialChange(activeDial, 1);
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        handleDialChange(activeDial, -1);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        handleCrackVault();
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [unlocked, activeDial, setDigitAt, handleDialChange, handleCrackVault, sound]);
+
+  const handleKeypadPress = (num) => {
+    setDigitAt(activeDial, num);
   };
 
   const handleKeypadBackspace = () => {
@@ -196,29 +305,6 @@ export default function LogicLock({ sound, onBack, onSaveScore }) {
     }));
   };
 
-  const handleCrackVault = () => {
-    const isSuccess = dials.every((d, i) => Number(d) === currentPuzzle.secret[i]);
-
-    if (isSuccess) {
-      sound.playCorrect();
-      setUnlocked(true);
-      const penalty = attempts * 30;
-      const pts = Math.max(150, 400 - penalty);
-      const newScore = score + pts;
-      setScore(newScore);
-      setLastPts(pts);
-      setScoreTrigger(t => t + 1);
-      setSolvedCount(c => c + 1);
-
-      if (onSaveScore) onSaveScore('logicLock', newScore);
-    } else {
-      sound.playWrong();
-      setAttempts(a => a + 1);
-      setShake(true);
-      setTimeout(() => setShake(false), 400);
-    }
-  };
-
   const handleNextLock = () => {
     setPuzzleIdx(i => i + 1);
     setDials([0, 0, 0]);
@@ -226,6 +312,10 @@ export default function LogicLock({ sound, onBack, onSaveScore }) {
     setMarkedClues({});
     setUnlocked(false);
     setAttempts(0);
+    setTimeout(() => {
+      inputRefs[0].current?.focus();
+      inputRefs[0].current?.select();
+    }, 50);
   };
 
   return (
@@ -288,8 +378,11 @@ export default function LogicLock({ sound, onBack, onSaveScore }) {
                       setActiveDial(dialIdx);
                       inputRefs[dialIdx].current?.select();
                     }}
+                    onClick={() => {
+                      setActiveDial(dialIdx);
+                      inputRefs[dialIdx].current?.select();
+                    }}
                     onChange={(e) => handleDigitInput(dialIdx, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(dialIdx, e)}
                     disabled={unlocked}
                     aria-label={`Digit ${dialIdx + 1}`}
                   />
