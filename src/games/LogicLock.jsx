@@ -136,29 +136,41 @@ export default function LogicLock({ sound, onBack, onSaveScore }) {
   const input2Ref = useRef(null);
   const inputRefs = [input0Ref, input1Ref, input2Ref];
 
+  // Ref mirrors so event handlers always read fresh values
+  const activeDialRef = useRef(0);
+  const dialsRef = useRef([0, 0, 0]);
+  const unlockedRef = useRef(false);
+  const puzzlesRef = useRef(puzzles);
+  const puzzleIdxRef = useRef(0);
+  const attemptsRef = useRef(0);
+  const scoreRef = useRef(0);
+
+  // Keep refs in sync with state
+  activeDialRef.current = activeDial;
+  dialsRef.current = dials;
+  unlockedRef.current = unlocked;
+  puzzleIdxRef.current = puzzleIdx;
+  attemptsRef.current = attempts;
+  scoreRef.current = score;
+
   const currentPuzzle = puzzles[puzzleIdx % puzzles.length];
 
-  // Auto focus active dial on mount or change
+  // Auto focus first dial on mount
   useEffect(() => {
-    inputRefs[0].current?.focus();
+    setTimeout(() => {
+      inputRefs[0].current?.focus();
+      inputRefs[0].current?.select();
+    }, 100);
   }, []);
 
-  const handleDialChange = useCallback((index, delta) => {
-    sound.playPop();
-    setActiveDial(index);
-    setDials(prev => {
-      const next = [...prev];
-      next[index] = (Number(next[index]) + delta + 10) % 10;
-      return next;
-    });
-  }, [sound]);
-
+  // Helper: set a digit at a position and advance focus
   const setDigitAt = useCallback((index, digit) => {
-    if (unlocked) return;
+    if (unlockedRef.current) return;
     sound.playPop();
+    const num = Number(digit);
     setDials(prev => {
       const next = [...prev];
-      next[index] = Number(digit);
+      next[index] = num;
       return next;
     });
 
@@ -170,46 +182,49 @@ export default function LogicLock({ sound, onBack, onSaveScore }) {
         inputRefs[nextIdx].current?.select();
       }, 10);
     }
-  }, [unlocked, sound]);
+  }, [sound]);
 
-  const handleDigitInput = (index, rawValue) => {
-    if (unlocked) return;
-    const digitsOnly = rawValue.replace(/\D/g, '');
-    if (digitsOnly.length === 0) {
-      setDials(prev => {
-        const next = [...prev];
-        next[index] = 0;
-        return next;
-      });
-      return;
-    }
-    // Determine the newly typed digit
-    let digit = Number(digitsOnly.slice(-1));
-    const oldDigitStr = String(dials[index]);
-    if (digitsOnly.length > 1) {
-      if (digitsOnly[0] === oldDigitStr) {
-        digit = Number(digitsOnly[1]);
-      } else if (digitsOnly[1] === oldDigitStr) {
-        digit = Number(digitsOnly[0]);
-      }
-    }
-    setDigitAt(index, digit);
-  };
+  // Helper: change active dial
+  const focusDial = useCallback((index) => {
+    setActiveDial(index);
+    setTimeout(() => {
+      inputRefs[index].current?.focus();
+      inputRefs[index].current?.select();
+    }, 10);
+  }, []);
 
+  // Tumbler arrows: increment/decrement
+  const handleDialChange = useCallback((index, delta) => {
+    if (unlockedRef.current) return;
+    sound.playPop();
+    setActiveDial(index);
+    setDials(prev => {
+      const next = [...prev];
+      next[index] = (Number(next[index]) + delta + 10) % 10;
+      return next;
+    });
+    setTimeout(() => {
+      inputRefs[index].current?.focus();
+      inputRefs[index].current?.select();
+    }, 10);
+  }, [sound]);
+
+  // Crack vault
   const handleCrackVault = useCallback(() => {
-    const isSuccess = dials.every((d, i) => Number(d) === currentPuzzle.secret[i]);
+    const d = dialsRef.current;
+    const puzzle = puzzlesRef.current[puzzleIdxRef.current % puzzlesRef.current.length];
+    const isSuccess = d.every((val, i) => Number(val) === puzzle.secret[i]);
 
     if (isSuccess) {
       sound.playCorrect();
       setUnlocked(true);
-      const penalty = attempts * 30;
+      const penalty = attemptsRef.current * 30;
       const pts = Math.max(150, 400 - penalty);
-      const newScore = score + pts;
+      const newScore = scoreRef.current + pts;
       setScore(newScore);
       setLastPts(pts);
       setScoreTrigger(t => t + 1);
       setSolvedCount(c => c + 1);
-
       if (onSaveScore) onSaveScore('logicLock', newScore);
     } else {
       sound.playWrong();
@@ -217,56 +232,83 @@ export default function LogicLock({ sound, onBack, onSaveScore }) {
       setShake(true);
       setTimeout(() => setShake(false), 400);
     }
-  }, [dials, currentPuzzle, sound, attempts, score, onSaveScore]);
+  }, [sound, onSaveScore]);
 
-  // Global keyboard listener so typing 0-9, Backspace, Arrow keys, Enter always works
+  // Global keyboard listener — reads from refs, no stale closures
   useEffect(() => {
-    if (unlocked) return;
-
     const handleGlobalKeyDown = (e) => {
+      if (unlockedRef.current) return;
+      const ad = activeDialRef.current;
+
       if (/^[0-9]$/.test(e.key)) {
         e.preventDefault();
-        setDigitAt(activeDial, Number(e.key));
-      } else if (e.key === 'Backspace') {
-        e.preventDefault();
+        const digit = Number(e.key);
         sound.playPop();
         setDials(prev => {
           const next = [...prev];
-          next[activeDial] = 0;
+          next[ad] = digit;
           return next;
         });
-        if (activeDial > 0) {
-          const prevIdx = activeDial - 1;
-          setActiveDial(prevIdx);
-          inputRefs[prevIdx].current?.focus();
-          inputRefs[prevIdx].current?.select();
+        if (ad < 2) {
+          const nextIdx = ad + 1;
+          setActiveDial(nextIdx);
+          setTimeout(() => {
+            inputRefs[nextIdx].current?.focus();
+            inputRefs[nextIdx].current?.select();
+          }, 10);
         }
-      } else if (e.key === 'Delete') {
+      } else if (e.key === 'Backspace' || e.key === 'Delete') {
         e.preventDefault();
         sound.playPop();
         setDials(prev => {
           const next = [...prev];
-          next[activeDial] = 0;
+          next[ad] = 0;
           return next;
         });
-      } else if (e.key === 'ArrowLeft' && activeDial > 0) {
+        if (e.key === 'Backspace' && ad > 0) {
+          const prevIdx = ad - 1;
+          setActiveDial(prevIdx);
+          setTimeout(() => {
+            inputRefs[prevIdx].current?.focus();
+            inputRefs[prevIdx].current?.select();
+          }, 10);
+        }
+      } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        const prevIdx = activeDial - 1;
-        setActiveDial(prevIdx);
-        inputRefs[prevIdx].current?.focus();
-        inputRefs[prevIdx].current?.select();
-      } else if (e.key === 'ArrowRight' && activeDial < 2) {
+        if (ad > 0) {
+          const prevIdx = ad - 1;
+          setActiveDial(prevIdx);
+          setTimeout(() => {
+            inputRefs[prevIdx].current?.focus();
+            inputRefs[prevIdx].current?.select();
+          }, 10);
+        }
+      } else if (e.key === 'ArrowRight') {
         e.preventDefault();
-        const nextIdx = activeDial + 1;
-        setActiveDial(nextIdx);
-        inputRefs[nextIdx].current?.focus();
-        inputRefs[nextIdx].current?.select();
+        if (ad < 2) {
+          const nextIdx = ad + 1;
+          setActiveDial(nextIdx);
+          setTimeout(() => {
+            inputRefs[nextIdx].current?.focus();
+            inputRefs[nextIdx].current?.select();
+          }, 10);
+        }
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
-        handleDialChange(activeDial, 1);
+        sound.playPop();
+        setDials(prev => {
+          const next = [...prev];
+          next[ad] = (Number(next[ad]) + 1 + 10) % 10;
+          return next;
+        });
       } else if (e.key === 'ArrowDown') {
         e.preventDefault();
-        handleDialChange(activeDial, -1);
+        sound.playPop();
+        setDials(prev => {
+          const next = [...prev];
+          next[ad] = (Number(next[ad]) - 1 + 10) % 10;
+          return next;
+        });
       } else if (e.key === 'Enter') {
         e.preventDefault();
         handleCrackVault();
@@ -275,26 +317,50 @@ export default function LogicLock({ sound, onBack, onSaveScore }) {
 
     window.addEventListener('keydown', handleGlobalKeyDown);
     return () => window.removeEventListener('keydown', handleGlobalKeyDown);
-  }, [unlocked, activeDial, setDigitAt, handleDialChange, handleCrackVault, sound]);
+  }, [sound, handleCrackVault]); // stable deps — no re-registration needed
 
+  // Keypad press
   const handleKeypadPress = (num) => {
-    setDigitAt(activeDial, num);
+    if (unlockedRef.current) return;
+    setDigitAt(activeDialRef.current, num);
   };
 
+  // Keypad backspace
   const handleKeypadBackspace = () => {
-    if (unlocked) return;
+    if (unlockedRef.current) return;
+    const ad = activeDialRef.current;
     sound.playPop();
     setDials(prev => {
       const next = [...prev];
-      next[activeDial] = 0;
+      next[ad] = 0;
       return next;
     });
-    if (activeDial > 0) {
-      const prevIdx = activeDial - 1;
+    if (ad > 0) {
+      const prevIdx = ad - 1;
       setActiveDial(prevIdx);
-      inputRefs[prevIdx].current?.focus();
-      inputRefs[prevIdx].current?.select();
+      setTimeout(() => {
+        inputRefs[prevIdx].current?.focus();
+        inputRefs[prevIdx].current?.select();
+      }, 10);
     }
+  };
+
+  // Direct input typing into the box
+  const handleDigitInput = (index, rawValue) => {
+    if (unlockedRef.current) return;
+    const digitsOnly = rawValue.replace(/\D/g, '');
+    if (digitsOnly.length === 0) {
+      sound.playPop();
+      setDials(prev => {
+        const next = [...prev];
+        next[index] = 0;
+        return next;
+      });
+      return;
+    }
+    // Always use the last typed character
+    const digit = Number(digitsOnly[digitsOnly.length - 1]);
+    setDigitAt(index, digit);
   };
 
   const toggleClueMark = (idx) => {
@@ -315,7 +381,7 @@ export default function LogicLock({ sound, onBack, onSaveScore }) {
     setTimeout(() => {
       inputRefs[0].current?.focus();
       inputRefs[0].current?.select();
-    }, 50);
+    }, 80);
   };
 
   return (
