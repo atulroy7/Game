@@ -29,10 +29,10 @@ const GAMES_LIST = [
   },
   {
     id: 'funnySort',
-    title: 'Word Chain ⛓️',
+    title: 'Word Chain: Twisted ⛓️',
     category: 'logic',
-    tag: 'Word Association',
-    desc: 'Build an unbreakable chain where each word starts with the last letter of the previous — pick the right link before the chain snaps!',
+    tag: 'Twisted Association',
+    desc: 'Forge unbreakable chains under pressure! Face 2-letter fusions, banned letter curses, length traps, and ticking blitz fuses.',
     accent: 'var(--mint)',
     soft: 'var(--mint-soft)',
   },
