@@ -5558,6 +5558,15 @@ button {
   font-size: 1.25rem;
   font-weight: 900;
   font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.eq-token:hover {
+  transform: scale(1.08);
+  border-color: var(--coral) !important;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
 }
 
 .eq-token.token-num {
@@ -5577,6 +5586,29 @@ button {
   font-family: 'JetBrains Mono', monospace;
   white-space: nowrap;
   margin-left: 10px;
+}
+
+.eq-display-chassis.target-reached {
+  border-color: var(--mint);
+  background: var(--mint-soft);
+  box-shadow: 0 0 16px rgba(52, 211, 153, 0.4);
+}
+
+.btn-eq-verify.ready-to-unlock {
+  animation: unlock-pulse 1.2s ease-in-out infinite;
+  box-shadow: 0 0 16px rgba(52, 211, 153, 0.5);
+}
+
+@keyframes unlock-pulse {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.03); filter: brightness(1.15); }
+}
+
+.eq-keyboard-note {
+  font-size: 0.73rem;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 4px;
 }
 
 .eq-error-toast {
@@ -5628,8 +5660,16 @@ button {
 }
 
 .btn-eq-num.num-used {
-  opacity: 0.35;
-  cursor: not-allowed;
+  opacity: 0.45;
+  border-style: dashed;
+  cursor: pointer;
+  background: var(--surface2);
+}
+
+.btn-eq-num.num-used:hover {
+  opacity: 0.85;
+  border-color: var(--coral);
+  transform: translateY(-1px);
 }
 
 .eq-ops-grid {
