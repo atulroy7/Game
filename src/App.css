@@ -3,7 +3,7 @@
    Restrained, Warm Mineral Neutrals & Nordic Earth Tones
    ================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Righteous&family=JetBrains+Mono:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Titan+One&family=JetBrains+Mono:wght@400;600;700;800&display=swap');
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -180,7 +180,7 @@
 
 html, body, #root {
   min-height: 100vh;
-  font-family: 'Fredoka', cursive, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Comfortaa', cursive, -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg);
   color: var(--text);
   overflow-x: hidden;
@@ -189,8 +189,8 @@ html, body, #root {
 }
 
 h1, h2, h3, .brand-heading, .mini-game-title, .pvp-champion-title, .ready-modal h2 {
-  font-family: 'Righteous', 'Fredoka', cursive, sans-serif;
-  letter-spacing: 0.5px;
+  font-family: 'Titan One', 'Comfortaa', cursive, sans-serif;
+  letter-spacing: 0.6px;
 }
 
 .app {
@@ -198,7 +198,7 @@ h1, h2, h3, .brand-heading, .mini-game-title, .pvp-champion-title, .ready-modal 
 }
 
 button, input, select, textarea {
-  font-family: 'Fredoka', cursive, sans-serif;
+  font-family: 'Comfortaa', cursive, sans-serif;
   cursor: pointer;
   border: none;
   background: none;
@@ -8338,7 +8338,7 @@ button:hover .opt-letter-tag {
   color: #ffffff;
   padding: 14px 32px;
   border-radius: 50px;
-  font-family: 'Righteous', 'Fredoka', cursive, sans-serif;
+  font-family: 'Titan One', 'Comfortaa', cursive, sans-serif;
   font-size: 1.7rem;
   letter-spacing: 1.5px;
   box-shadow: 0 12px 35px rgba(16, 185, 129, 0.6), 0 0 0 5px rgba(255, 255, 255, 0.85);
@@ -8408,7 +8408,7 @@ button:hover .opt-letter-tag {
 .feedback-text {
   font-size: 1.8rem;
   font-weight: 900;
-  font-family: 'Righteous', 'Fredoka', cursive, sans-serif;
+  font-family: 'Titan One', 'Comfortaa', cursive, sans-serif;
   letter-spacing: 0.8px;
 }
 
@@ -8416,7 +8416,7 @@ button:hover .opt-letter-tag {
   font-size: 1.3rem;
   font-weight: 900;
   color: #FEF08A;
-  font-family: 'Righteous', 'Fredoka', cursive, sans-serif;
+  font-family: 'Titan One', 'Comfortaa', cursive, sans-serif;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
