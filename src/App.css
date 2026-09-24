@@ -3,7 +3,7 @@
    Restrained, Warm Mineral Neutrals & Nordic Earth Tones
    ================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Titan+One&family=JetBrains+Mono:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -180,17 +180,19 @@
 
 html, body, #root {
   min-height: 100vh;
-  font-family: 'Comfortaa', cursive, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
   background: var(--bg);
   color: var(--text);
   overflow-x: hidden;
   transition: background 0.25s ease, color 0.25s ease;
-  letter-spacing: 0.2px;
+  letter-spacing: -0.3px;
 }
 
-h1, h2, h3, .brand-heading, .mini-game-title, .pvp-champion-title, .ready-modal h2 {
-  font-family: 'Titan One', 'Comfortaa', cursive, sans-serif;
-  letter-spacing: 0.6px;
+h1, h2, h3, h4, h5, h6, .brand-heading, .mini-game-title, .pvp-champion-title, .ready-modal h2 {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.5px;
 }
 
 .app {
@@ -198,7 +200,8 @@ h1, h2, h3, .brand-heading, .mini-game-title, .pvp-champion-title, .ready-modal 
 }
 
 button, input, select, textarea {
-  font-family: 'Comfortaa', cursive, sans-serif;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
   cursor: pointer;
   border: none;
   background: none;
@@ -8336,12 +8339,13 @@ button:hover .opt-letter-tag {
 .right-answer-toast-badge {
   background: linear-gradient(135deg, #10B981 0%, #059669 100%);
   color: #ffffff;
-  padding: 14px 32px;
+  padding: 12px 28px;
   border-radius: 50px;
-  font-family: 'Titan One', 'Comfortaa', cursive, sans-serif;
-  font-size: 1.7rem;
-  letter-spacing: 1.5px;
-  box-shadow: 0 12px 35px rgba(16, 185, 129, 0.6), 0 0 0 5px rgba(255, 255, 255, 0.85);
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  font-size: 1.55rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 12px 35px rgba(16, 185, 129, 0.6), 0 0 0 4px rgba(255, 255, 255, 0.85);
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -8406,17 +8410,17 @@ button:hover .opt-letter-tag {
 }
 
 .feedback-text {
-  font-size: 1.8rem;
-  font-weight: 900;
-  font-family: 'Titan One', 'Comfortaa', cursive, sans-serif;
-  letter-spacing: 0.8px;
+  font-size: 1.7rem;
+  font-weight: 600;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: 0.2px;
 }
 
 .feedback-pts {
-  font-size: 1.3rem;
-  font-weight: 900;
+  font-size: 1.25rem;
+  font-weight: 600;
   color: #FEF08A;
-  font-family: 'Titan One', 'Comfortaa', cursive, sans-serif;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -8427,6 +8431,23 @@ button:hover .opt-letter-tag {
   max-width: 440px;
   opacity: 0.95;
 }
+
+/* ──────────────────────────────────────────────
+   SLEEK & SLIM TYPOGRAPHY REFINEMENT
+   Ensures non-bold, stylish, refined stroke weights
+   ────────────────────────────────────────────── */
+h1, h2, h3, h4, .brand-heading, .game-card-title, .pvp-champion-title, .ready-modal h2 {
+  font-weight: 600 !important;
+}
+
+button, .btn-card-launch, .btn-mode-pill, .btn-start, .btn-start-mini, .btn-start-pvp, .btn-chrono-main, .btn-play-again, .btn-hub, .option-btn {
+  font-weight: 500 !important;
+}
+
+.ready-desc, .game-card-desc, .q-text, p {
+  font-weight: 400 !important;
+}
+
 
 
 
