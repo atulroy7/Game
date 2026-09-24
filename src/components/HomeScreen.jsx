@@ -140,7 +140,8 @@ const GAMES_LIST = [
     title: 'Memory Match 🧠',
     category: 'spatial',
     tag: 'Visual Focus',
-    desc: 'Clean 3D animal pair matching with combo streaks, move efficiency counters, and a 3-star rating system.',
+    hasPvp: true,
+    desc: 'Clean 3D animal pair matching with combo streaks, 3-star solo rating, and head-to-head 1v1 Pairs Duel mode!',
     accent: 'var(--orange)',
     soft: 'var(--orange-soft)',
   },
@@ -149,7 +150,8 @@ const GAMES_LIST = [
     title: 'Chrono Beat ⏱️',
     category: 'speed',
     tag: 'Blind Clock',
-    desc: 'Can your brain measure seconds without looking? The counter blinds after 1.2s — tap stop at the exact millisecond!',
+    hasPvp: true,
+    desc: 'Can your brain measure seconds without looking? Blind clock test with solo calibration and simultaneous 1v1 Clock Duel!',
     accent: 'var(--amber)',
     soft: 'var(--amber-soft)',
   },
@@ -271,6 +273,11 @@ export default function HomeScreen({
                     <span className="game-card-tag" style={{ background: 'var(--surface)', color: game.accent }}>
                       {game.tag}
                     </span>
+                    {game.hasPvp && (
+                      <span className="pvp-feature-badge">
+                        ⚔️ 1v1 Mode
+                      </span>
+                    )}
                   </div>
                 </div>
 

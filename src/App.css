@@ -3,7 +3,7 @@
    Restrained, Warm Mineral Neutrals & Nordic Earth Tones
    ================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Righteous&family=JetBrains+Mono:wght@400;600;700;800&display=swap');
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -180,19 +180,25 @@
 
 html, body, #root {
   min-height: 100vh;
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Fredoka', cursive, -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg);
   color: var(--text);
   overflow-x: hidden;
   transition: background 0.25s ease, color 0.25s ease;
+  letter-spacing: 0.2px;
+}
+
+h1, h2, h3, .brand-heading, .mini-game-title, .pvp-champion-title, .ready-modal h2 {
+  font-family: 'Righteous', 'Fredoka', cursive, sans-serif;
+  letter-spacing: 0.5px;
 }
 
 .app {
   min-height: 100vh;
 }
 
-button {
-  font-family: 'Outfit', sans-serif;
+button, input, select, textarea {
+  font-family: 'Fredoka', cursive, sans-serif;
   cursor: pointer;
   border: none;
   background: none;
@@ -7427,4 +7433,1000 @@ button:hover .opt-letter-tag {
   font-weight: 800;
   font-family: 'JetBrains Mono', monospace;
 }
+
+/* ═══════════════════════════════════════════════════
+   1v1 VERSUS & DUEL MODES (CHRONO BEAT & MEMORY MATCH)
+   ═══════════════════════════════════════════════════ */
+
+/* ── Mode Toggle Tabs ────────────────────────────── */
+.game-mode-switch-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+  width: 100%;
+}
+
+.mode-switch-pills {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  padding: 4px;
+  gap: 4px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.btn-mode-pill {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 7px 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  user-select: none;
+}
+
+.btn-mode-pill:hover {
+  color: var(--text);
+}
+
+.btn-mode-pill.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.btn-mode-pill.pvp-active {
+  background: linear-gradient(135deg, #EF4444, #6366F1);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+}
+
+/* ── 1v1 Setup & Config ──────────────────────────── */
+.pvp-config-card {
+  width: 100%;
+  max-width: 520px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow-md);
+  margin: 0 auto;
+}
+
+.pvp-badge-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 50px;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(99, 102, 241, 0.15));
+  color: #EF4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.pvp-players-setup-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.pvp-player-input-box {
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color 0.2s;
+}
+
+.pvp-player-input-box.p1-box {
+  border-left: 4px solid #EF4444;
+}
+
+.pvp-player-input-box.p2-box {
+  border-left: 4px solid #6366F1;
+}
+
+.pvp-player-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.p1-box .pvp-player-label { color: #EF4444; }
+.p2-box .pvp-player-label { color: #6366F1; }
+
+.pvp-name-field {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text);
+  outline: none;
+}
+
+.pvp-key-hint {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.pvp-vs-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  font-size: 0.76rem;
+  font-weight: 900;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+.pvp-rules-strip {
+  width: 100%;
+  background: var(--surface2);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.pvp-rule-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pvp-rule-item strong {
+  color: var(--text);
+}
+
+.btn-start-pvp {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 16px;
+  border: none;
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #6366F1 100%);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform 0.15s, filter 0.15s;
+}
+
+.btn-start-pvp:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+.btn-start-pvp:active {
+  transform: translateY(1px);
+}
+
+/* ── Chrono Beat 1v1 Scoreboard & HUD ────────────── */
+.chrono-pvp-header-hud {
+  width: 100%;
+  max-width: 580px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.chrono-p-hud-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.chrono-p-hud-card.p1 {
+  border-left: 4px solid #EF4444;
+}
+
+.chrono-p-hud-card.p2 {
+  border-left: 4px solid #6366F1;
+}
+
+.chrono-p-hud-card.winner {
+  border-color: #10B981;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+}
+
+.chrono-p-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.chrono-p-name {
+  font-size: 0.88rem;
+  font-weight: 900;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
+.chrono-p-keytag {
+  font-size: 0.68rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 4px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.chrono-p-hud-card.p1 .chrono-p-keytag {
+  background: rgba(239, 68, 68, 0.15);
+  color: #EF4444;
+}
+
+.chrono-p-hud-card.p2 .chrono-p-keytag {
+  background: rgba(99, 102, 241, 0.15);
+  color: #6366F1;
+}
+
+.chrono-p-score-stars {
+  display: flex;
+  gap: 4px;
+}
+
+.chrono-round-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  transition: all 0.25s;
+}
+
+.chrono-round-dot.won-p1 {
+  background: #EF4444;
+  border-color: #EF4444;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+}
+
+.chrono-round-dot.won-p2 {
+  background: #6366F1;
+  border-color: #6366F1;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
+}
+
+.chrono-vs-center-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.chrono-vs-text {
+  font-size: 0.78rem;
+  font-weight: 900;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+.chrono-round-indicator {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--text);
+  background: var(--surface2);
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+/* ── Chrono Beat 1v1 Dual Action Triggers ───────── */
+.chrono-pvp-triggers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
+  max-width: 520px;
+  margin-top: 10px;
+}
+
+.btn-chrono-p-trigger {
+  border-radius: 18px;
+  padding: 16px 12px;
+  min-height: 80px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #ffffff;
+  font-family: inherit;
+  font-weight: 900;
+  user-select: none;
+  transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.12s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-chrono-p-trigger:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+.btn-chrono-p-trigger:active:not(:disabled) {
+  transform: translateY(2px) scale(0.98);
+}
+
+.btn-chrono-p-trigger.p1 {
+  background: linear-gradient(135deg, #EF4444, #B91C1C);
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+}
+
+.btn-chrono-p-trigger.p2 {
+  background: linear-gradient(135deg, #6366F1, #4338CA);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+}
+
+.btn-chrono-p-trigger.is-stopped {
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  color: var(--text);
+  box-shadow: none;
+  cursor: default;
+}
+
+.trigger-main-lbl {
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+}
+
+.trigger-key-badge {
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.25);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-chrono-p-trigger.is-stopped .trigger-key-badge {
+  background: var(--surface);
+  color: var(--muted);
+  border-color: var(--border);
+}
+
+.trigger-locked-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.trigger-locked-delta {
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.trigger-locked-delta.good { color: #10B981; }
+.trigger-locked-delta.warn { color: #F59E0B; }
+
+/* ── Chrono Beat 1v1 Round Evaluation ────────────── */
+.chrono-pvp-reveal-card {
+  width: 100%;
+  max-width: 520px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow-md);
+}
+
+.pvp-winner-banner {
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pvp-winner-banner.p1-won {
+  background: rgba(239, 68, 68, 0.15);
+  color: #EF4444;
+  border: 1.5px solid #EF4444;
+}
+
+.pvp-winner-banner.p2-won {
+  background: rgba(99, 102, 241, 0.15);
+  color: #6366F1;
+  border: 1.5px solid #6366F1;
+}
+
+.pvp-winner-banner.tie {
+  background: var(--amber-soft);
+  color: var(--amber);
+  border: 1.5px solid var(--amber);
+}
+
+.pvp-round-compare-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.pvp-compare-col {
+  background: var(--surface2);
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border: 1.5px solid var(--border);
+}
+
+.pvp-compare-col.is-round-winner {
+  border-color: #10B981;
+  background: color-mix(in srgb, #10B981 10%, var(--surface2));
+}
+
+.pvp-col-name {
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.pvp-col-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.pvp-col-delta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.pvp-col-acc {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+/* ── Chrono Beat 1v1 Final Victory Screen ────────── */
+.pvp-victory-modal {
+  width: 100%;
+  max-width: 520px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 24px;
+  padding: 26px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow-lg);
+  margin: 0 auto;
+}
+
+.pvp-crown-icon {
+  font-size: 3.4rem;
+  line-height: 1;
+  animation: bounceWinner 1.2s infinite ease-in-out;
+}
+
+@keyframes bounceWinner {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.pvp-champion-title {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--text);
+  text-align: center;
+  margin: 0;
+}
+
+.pvp-final-score-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 10px 24px;
+  background: var(--surface2);
+  border-radius: 50px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.pvp-final-score-strip .score-p1 { color: #EF4444; }
+.pvp-final-score-strip .score-p2 { color: #6366F1; }
+.pvp-final-score-strip .score-div { color: var(--muted); }
+
+.pvp-rounds-history-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+  font-size: 0.82rem;
+}
+
+.pvp-rounds-history-table th {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  font-weight: 800;
+  padding: 4px 8px;
+  text-align: center;
+}
+
+.pvp-rounds-history-table td {
+  background: var(--surface2);
+  padding: 8px 10px;
+  text-align: center;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.pvp-rounds-history-table tr td:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.pvp-rounds-history-table tr td:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+/* ── Memory Match 1v1 Styles ─────────────────────── */
+.memory-pvp-header-hud {
+  width: 100%;
+  max-width: 440px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.memory-p-badge {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.memory-p-badge.p1 {
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.memory-p-badge.p2 {
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+.memory-p-badge.is-turn {
+  transform: translateY(-2px);
+}
+
+.memory-p-badge.p1.is-turn {
+  border-color: #EF4444;
+  background: rgba(239, 68, 68, 0.08);
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.35);
+}
+
+.memory-p-badge.p2.is-turn {
+  border-color: #6366F1;
+  background: rgba(99, 102, 241, 0.08);
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.35);
+}
+
+.memory-p-avatar {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.memory-p-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.memory-p-name {
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.memory-p-pairs-count {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.memory-p-badge.p1.is-turn .memory-p-pairs-count { color: #EF4444; }
+.memory-p-badge.p2.is-turn .memory-p-pairs-count { color: #6366F1; }
+
+.memory-turn-banner {
+  width: 100%;
+  max-width: 440px;
+  padding: 8px 14px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.84rem;
+  font-weight: 900;
+  margin-bottom: 8px;
+  animation: turnPulse 1.6s infinite alternate ease-in-out;
+}
+
+@keyframes turnPulse {
+  0% { transform: scale(0.99); }
+  100% { transform: scale(1.01); }
+}
+
+.memory-turn-banner.p1 {
+  background: rgba(239, 68, 68, 0.15);
+  color: #EF4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.memory-turn-banner.p2 {
+  background: rgba(99, 102, 241, 0.15);
+  color: #6366F1;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+/* 1v1 Card Match Coloring */
+.matte-card.matched-p1 .card-front {
+  border-color: #EF4444;
+  background: rgba(239, 68, 68, 0.12);
+  position: relative;
+}
+
+.matte-card.matched-p1 .card-front::after {
+  content: 'P1';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: #EF4444;
+  color: #fff;
+  font-size: 0.55rem;
+  font-weight: 900;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.matte-card.matched-p2 .card-front {
+  border-color: #6366F1;
+  background: rgba(99, 102, 241, 0.12);
+  position: relative;
+}
+
+.matte-card.matched-p2 .card-front::after {
+  content: 'P2';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: #6366F1;
+  color: #fff;
+  font-size: 0.55rem;
+  font-weight: 900;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── 1v1 Hub Cards Tag ───────────────────────────── */
+.pvp-feature-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #EF4444, #6366F1);
+  color: #ffffff !important;
+  font-size: 0.68rem;
+  font-weight: 900;
+  padding: 2px 7px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════
+   1-SECOND RIGHT ANSWER ANIMATION
+   High-energy, juicy celebration for all correct answers
+   ═══════════════════════════════════════════════════ */
+
+@keyframes rightAnswerPop {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.8);
+  }
+  15% {
+    transform: scale(1.08) translateY(-5px);
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0.45), 0 12px 28px rgba(16, 185, 129, 0.5);
+    background: linear-gradient(135deg, #10B981, #059669) !important;
+    border-color: #10B981 !important;
+    color: #ffffff !important;
+  }
+  30% {
+    transform: scale(1.04) rotate(-2deg) translateY(-3px);
+    box-shadow: 0 0 0 18px rgba(16, 185, 129, 0.25), 0 14px 34px rgba(16, 185, 129, 0.45);
+    background: linear-gradient(135deg, #059669, #047857) !important;
+    border-color: #059669 !important;
+    color: #ffffff !important;
+  }
+  45% {
+    transform: scale(1.07) rotate(2deg) translateY(-4px);
+    box-shadow: 0 0 0 24px rgba(16, 185, 129, 0), 0 12px 28px rgba(16, 185, 129, 0.4);
+    background: linear-gradient(135deg, #10B981, #059669) !important;
+    border-color: #10B981 !important;
+    color: #ffffff !important;
+  }
+  65% {
+    transform: scale(1.02) rotate(-0.5deg) translateY(-2px);
+    box-shadow: 0 0 0 12px rgba(16, 185, 129, 0), 0 8px 20px rgba(16, 185, 129, 0.35);
+    background: linear-gradient(135deg, #10B981, #059669) !important;
+    color: #ffffff !important;
+  }
+  85% {
+    transform: scale(1.01) rotate(0deg) translateY(-1px);
+    background: var(--mint-soft) !important;
+    color: var(--mint) !important;
+    border-color: #10B981 !important;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0), 0 4px 14px rgba(16, 185, 129, 0.25);
+    background: var(--mint-soft) !important;
+    color: var(--mint) !important;
+    border-color: #10B981 !important;
+  }
+}
+
+/* Apply 1s animation across all games */
+.option-btn.correct-burst,
+.option-btn.opt-correct,
+.btn-odd-item.odd-correct,
+.btn-taboo-opt.taboo-opt-correct,
+.btn-wc-opt.wc-correct,
+.btn-pic-opt.pic-opt-correct,
+.pic-option-btn.pic-opt-correct,
+.opt-btn.opt-correct,
+.candidate-tile.candidate-correct,
+.slice-target.sliced-correct {
+  animation: rightAnswerPop 1s cubic-bezier(0.2, 0.85, 0.25, 1) both !important;
+  z-index: 10 !important;
+  position: relative !important;
+}
+
+/* 1-Second Screen Energy Aura Flash */
+@keyframes rightAnswerScreenFlash {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  70% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+
+.right-answer-flash-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 990;
+  background: radial-gradient(circle at 50% 45%, rgba(16, 185, 129, 0.26) 0%, rgba(5, 150, 105, 0.1) 45%, transparent 75%);
+  animation: rightAnswerScreenFlash 1s ease-out forwards;
+}
+
+/* 1-Second Floating Success Burst Banner */
+@keyframes correctBadgePop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.25) rotate(-12deg);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.18) rotate(4deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05) rotate(-2deg);
+  }
+  75% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.85) translateY(-26px);
+  }
+}
+
+.right-answer-toast-burst {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 995;
+  pointer-events: none;
+  animation: correctBadgePop 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.right-answer-toast-badge {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: #ffffff;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-family: 'Righteous', 'Fredoka', cursive, sans-serif;
+  font-size: 1.7rem;
+  letter-spacing: 1.5px;
+  box-shadow: 0 12px 35px rgba(16, 185, 129, 0.6), 0 0 0 5px rgba(255, 255, 255, 0.85);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  animation: badgeSparklePulse 0.5s infinite alternate ease-in-out;
+}
+
+@keyframes badgeSparklePulse {
+  0% { transform: scale(1); filter: brightness(1); }
+  100% { transform: scale(1.03); filter: brightness(1.12); }
+}
+
+.burst-sparkle {
+  font-size: 1.5rem;
+  display: inline-block;
+  animation: spinSparkle 1s ease-in-out infinite;
+}
+
+@keyframes spinSparkle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(20deg) scale(1.2); }
+}
+
+/* Feedback Overlay Enhanced Styling */
+.feedback-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(15, 23, 42, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: var(--radius);
+  z-index: 50;
+  padding: 24px;
+  color: #fff;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.feedback-overlay.correct {
+  background: radial-gradient(circle at center, rgba(16, 185, 129, 0.88), rgba(5, 150, 105, 0.94));
+  box-shadow: 0 0 40px rgba(16, 185, 129, 0.5);
+}
+
+.feedback-overlay.wrong {
+  background: radial-gradient(circle at center, rgba(239, 68, 68, 0.88), rgba(185, 28, 28, 0.94));
+  box-shadow: 0 0 40px rgba(239, 68, 68, 0.5);
+}
+
+.feedback-overlay.timeout {
+  background: radial-gradient(circle at center, rgba(245, 158, 11, 0.88), rgba(180, 83, 9, 0.94));
+  box-shadow: 0 0 40px rgba(245, 158, 11, 0.5);
+}
+
+.feedback-icon {
+  font-size: 3.4rem;
+  line-height: 1;
+  animation: bounceWinner 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.feedback-text {
+  font-size: 1.8rem;
+  font-weight: 900;
+  font-family: 'Righteous', 'Fredoka', cursive, sans-serif;
+  letter-spacing: 0.8px;
+}
+
+.feedback-pts {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #FEF08A;
+  font-family: 'Righteous', 'Fredoka', cursive, sans-serif;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.feedback-exp {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  text-align: center;
+  max-width: 440px;
+  opacity: 0.95;
+}
+
+
 

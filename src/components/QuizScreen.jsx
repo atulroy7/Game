@@ -87,8 +87,10 @@ export default function QuizScreen({
   function getOptionClass(idx) {
     if (eliminatedOpts.includes(idx)) return 'eliminated';
     if (!feedback) return '';
-    if (idx === question.answer) return 'reveal';
-    if (feedback.selectedIdx === idx) return `wrong ${shakeOpt === idx ? 'shake' : ''}`;
+    if (idx === question.answer) {
+      return feedback.selectedIdx === idx ? 'correct-burst opt-correct' : 'reveal';
+    }
+    if (feedback.selectedIdx === idx) return `wrong opt-wrong ${shakeOpt === idx ? 'shake' : ''}`;
     return '';
   }
 
@@ -182,6 +184,20 @@ export default function QuizScreen({
             />
           </div>
         </div>
+
+        {/* ── 1-Second Right Answer Animation Burst ── */}
+        {feedback?.type === 'correct' && (
+          <>
+            <div className="right-answer-flash-overlay" />
+            <div className="right-answer-toast-burst">
+              <div className="right-answer-toast-badge">
+                <span className="burst-sparkle">✨</span>
+                <span>CORRECT!</span>
+                <span className="burst-sparkle">🎉</span>
+              </div>
+            </div>
+          </>
+        )}
 
         {/* ── Feedback Overlay ── */}
         {feedback && (
